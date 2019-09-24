@@ -6,13 +6,13 @@ import * as actions from '../actions';
 
 
 const MeassagesFetchingState = handleActions({
-  [actions.fetchTasksRequest]() {
+  [actions.fetchMessagesRequest]() {
     return 'requested';
   },
-  [actions.fetchTasksFailure]() {
+  [actions.fetchMessagesFailure]() {
     return 'failed';
   },
-  [actions.fetchTasksSuccess]() {
+  [actions.fetchMessagesSuccess]() {
     return 'finished';
   },
 }, 'none');
@@ -24,14 +24,14 @@ const messages = handleActions({
       allIds: payload.tasks.map(t => t.id),
     };
   },
-  [actions.addMessagesSuccess](state, { payload: { task } }) {
+  [actions.addMessageSuccess](state, { payload: { task } }) {
     const { byId, allIds } = state;
     return {
       byId: { ...byId, [task.id]: task },
       allIds: [task.id, ...allIds],
     };
   },
-  [actions.removeMessagesSuccess](state, { payload: { id } }) {
+  [actions.removeMessageSuccess](state, { payload: { id } }) {
     const { byId, allIds } = state;
     return {
       byId: omit(byId, id),
