@@ -10,29 +10,45 @@ export const removeMessageRequest = createAction('MESSAGE_REMOVE_REQUEST');
 export const removeMessageSuccess = createAction('MESSAGE_REMOVE_SUCCESS');
 export const removeMessageFailure = createAction('MESSAGE_REMOVE_FAILURE');
 
+export const socketConnected = createAction('SOCKET_CONNECTED');
+export const socketDisconnected = createAction('SOCKET_DISCONNECTED');
+
+
 export const addMessageSuccess = createAction('ADD_MESSAGE_SUCCESS');
+export const addChannelSuccess = createAction('ADD_CHANNEL_SUCCESS');
+
+export const switchChannel = createAction('SWITCH_CHANNEL');
 
 
-export const fetchMessages = () => async (dispatch) => {
-  dispatch(fetchMessagesRequest());
-  try {
-    const url = routes.tasksUrl();
-    const response = await axios.get(url);
-    dispatch(fetchMessagesSuccess({ message: response.data }));
-  } catch (e) {
-    dispatch(fetchMessagesFailure());
-    throw e;
-  }
+export const addMessage = ({ message }) => async () => {
+  await axios.post(routes.channelsPath(), { message });
 };
 
-export const removeMessage = task => async (dispatch) => {
-    dispatch(removeMessageRequest());
-    try {
-      const url = routes.taskUrl(task.id);
-      await axios.delete(url);
-      dispatch(removeMessageSuccess({ id: task.id }));
-    } catch (e) {
-      dispatch(removeMessageFailure());
-      throw e;
-    }
-  };
+export const addChannel = name => async () => {
+  const data = { attributes: name };
+  await axios.post(routes.channelsPath(), { data });
+};
+
+// export const fetchMessages = () => async (dispatch) => {
+//   dispatch(fetchMessagesRequest());
+//   try {
+//     const url = routes.tasksUrl();
+//     const response = await axios.get(url);
+//     dispatch(fetchMessagesSuccess({ message: response.data }));
+//   } catch (e) {
+//     dispatch(fetchMessagesFailure());
+//     throw e;
+//   }
+// };
+
+// export const removeMessage = message => async (dispatch) => {
+//   dispatch(removeMessageRequest());
+//   try {
+//     const url = routes.messageUrl(message.id);
+//     await axios.delete(url);
+//     dispatch(removeMessageSuccess({ id: message.id }));
+//   } catch (e) {
+//     dispatch(removeMessageFailure());
+//     throw e;
+//   }
+// };

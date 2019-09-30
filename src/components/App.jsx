@@ -1,22 +1,21 @@
 import React from 'react';
+import {
+  Container, Row, Col,
+} from 'react-bootstrap';
+
+import SideBar from './SideBar';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  state = {};
-
   render() {
-    const { gon } = this.props;
     return (
-      <div className="container">
-        <div className="row">
-          <ul className="list-group">
-            {gon.channels.map(channel => <li key={channel.id}>{channel.name}</li>)}
-          </ul>
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col xs={2}>
+            <SideBar />
+          </Col>
+          <Col xs={6} />
+        </Row>
+      </Container>
     );
   }
 }

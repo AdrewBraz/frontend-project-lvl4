@@ -1,4 +1,12 @@
 import { name } from 'faker';
 import Cookies from 'js-cookie';
 
-// если есть то вернуть курент, если нет задать.
+export default () => {
+  const currentName = Cookies.get('name');
+  if (currentName) {
+    return currentName;
+  }
+  const userName = name.findName();
+  Cookies.set('name', userName);
+  return userName;
+};

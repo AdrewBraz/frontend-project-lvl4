@@ -17,6 +17,15 @@ const MeassagesFetchingState = handleActions({
   },
 }, 'none');
 
+const connectionState = handleActions({
+  [actions.socketConnected]() {
+    return 'connected';
+  },
+  [actions.socketDisconnected]() {
+    return 'disconnected';
+  },
+}, null);
+
 const messages = handleActions({
   [actions.fetchMessagesSuccess](state, { payload }) {
     return {
@@ -40,8 +49,27 @@ const messages = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
+const channels = handleActions({
+  [actions.addChannelSuccess](state, { payload: { newChannel } }) {
+    const { ByIds, allIds } = state;
+    return {
+      ByIds: { ...ByIds, [newChannel.id]: newChannel },
+      allIds: [newChannel.id, ...allIds],
+    };
+  },
+}, { ByIds: {}, allIds: [] });
+
+const channelState = handleActions({
+  [actions.switchChannel](state, { payload: { id } }) {
+    return { currentChannelId: id };
+  },
+}, { currentChannelId: null });
+
 export default combineReducers({
+  connectionState,
   MeassagesFetchingState,
   messages,
+  channels,
+  channelState,
   form: formReducer,
 });
