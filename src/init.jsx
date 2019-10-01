@@ -55,6 +55,10 @@ const socketInit = (store) => {
     console.log('newChannel');
     store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
+  socket.on('newMessage', ({ data: { attributes } }) => {
+    console.log('newMessage', attributes);
+    store.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
+  });
 };
 
 socketInit(store);

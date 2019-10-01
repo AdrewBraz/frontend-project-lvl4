@@ -27,17 +27,17 @@ const connectionState = handleActions({
 }, null);
 
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload }) {
+  [actions.fetchMessagesSuccess](state, { payload: { messages } }) {
     return {
-      byId: keyBy(payload.tasks, 'id'),
-      allIds: payload.tasks.map(t => t.id),
+      byId: keyBy(messages, 'id'),
+      allIds: messages.map(t => t.id),
     };
   },
-  [actions.addMessageSuccess](state, { payload: { task } }) {
+  [actions.addMessageSuccess](state, { payload }) {
     const { byId, allIds } = state;
     return {
-      byId: { ...byId, [task.id]: task },
-      allIds: [task.id, ...allIds],
+      // byId: { ...byId, [task.id]: task },
+      // allIds: [task.id, ...allIds],
     };
   },
   [actions.removeMessageSuccess](state, { payload: { id } }) {

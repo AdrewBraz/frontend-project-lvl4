@@ -20,8 +20,9 @@ export const addChannelSuccess = createAction('ADD_CHANNEL_SUCCESS');
 export const switchChannel = createAction('SWITCH_CHANNEL');
 
 
-export const addMessage = ({ message }) => async () => {
-  await axios.post(routes.channelsPath(), { message });
+export const addMessage = (id, message) => async () => {
+  const data = { attributes: message };
+  await axios.post(routes.channelMessagesPath(id), { data });
 };
 
 export const addChannel = name => async () => {
@@ -29,17 +30,16 @@ export const addChannel = name => async () => {
   await axios.post(routes.channelsPath(), { data });
 };
 
-// export const fetchMessages = () => async (dispatch) => {
-//   dispatch(fetchMessagesRequest());
-//   try {
-//     const url = routes.tasksUrl();
-//     const response = await axios.get(url);
-//     dispatch(fetchMessagesSuccess({ message: response.data }));
-//   } catch (e) {
-//     dispatch(fetchMessagesFailure());
-//     throw e;
-//   }
-// };
+export const fetchMessages = id => async (dispatch) => {
+  dispatch(fetchMessagesRequest());
+  try {
+    const { data } = await axios.get(routes.channelMessagesPath(id));
+    dispatch(fetchMessagesSuccess({ messages: data }));
+  } catch (e) {
+    dispatch(fetchMessagesFailure());
+    throw e;
+  }
+};
 
 // export const removeMessage = message => async (dispatch) => {
 //   dispatch(removeMessageRequest());

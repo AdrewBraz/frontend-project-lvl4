@@ -25,8 +25,17 @@ class ChannelsList extends React.Component {
     }
   }
 
+  renderChannels = () => {
+    const { channelsList, channelState } = this.props;
+    const { currentChannelId } = channelState;
+    return channelsList.map((channel) => {
+      const isActive = channel.id === currentChannelId;
+        <ListGroupItem key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>{channel.name}</ListGroupItem>;
+    });
+  }
+
   render() {
-    const { channelsList } = this.props;
+    const { channelsList, channelState } = this.props;
     return (
       <ListGroup>
         {channelsList.map(channel => <ListGroupItem key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>{channel.name}</ListGroupItem>)}

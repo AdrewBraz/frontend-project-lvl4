@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 
 import SideBar from './SideBar';
+import Messages from './Messages';
 
 export default class App extends React.Component {
   render() {
@@ -13,7 +14,9 @@ export default class App extends React.Component {
           <Col xs={2}>
             <SideBar />
           </Col>
-          <Col xs={6} />
+          <Col xs={6}>
+            <Messages />
+          </Col>
         </Row>
       </Container>
     );
