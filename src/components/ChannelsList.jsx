@@ -14,14 +14,16 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   switchChannel: actions.switchChannel,
+  fetchMessages: actions.fetchMessages,
 };
 
 export default @connect(mapStateToProps, actionCreators)
 class ChannelsList extends React.Component {
   handleSwitch = id => () => {
-    const { switchChannel, channelState } = this.props;
+    const { switchChannel, channelState, fetchMessages } = this.props;
     if (channelState.currentChannelId !== id) {
       switchChannel({ id });
+      fetchMessages(id);
     }
   }
 

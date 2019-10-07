@@ -27,27 +27,16 @@ const connectionState = handleActions({
 }, null);
 
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload: { messages } }) {
-    return {
-      byId: keyBy(messages, 'id'),
-      allIds: messages.map(t => t.id),
-    };
+  [actions.fetchMessagesSuccess](state, { payload: { id, messages } }) {
+    console.log(id, messages);
+    return { ...state, [id]: messages };
   },
-  [actions.addMessageSuccess](state, { payload }) {
-    const { byId, allIds } = state;
-    return {
-      // byId: { ...byId, [task.id]: task },
-      // allIds: [task.id, ...allIds],
-    };
+  [actions.addMessageSuccess](state, { payload: { newMessage } }) {
+    const { channelId } = newMessage;
+    const messageList = state[channelId] ? [...state[channelId], newMessage] : [newMessage];
+    return { ...state, [channelId]: messageList };
   },
-  [actions.removeMessageSuccess](state, { payload: { id } }) {
-    const { byId, allIds } = state;
-    return {
-      byId: omit(byId, id),
-      allIds: without(allIds, id),
-    };
-  },
-}, { byId: {}, allIds: [] });
+}, {});
 
 const channels = handleActions({
   [actions.addChannelSuccess](state, { payload: { newChannel } }) {

@@ -34,7 +34,7 @@ export const fetchMessages = id => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
     const { data } = await axios.get(routes.channelMessagesPath(id));
-    dispatch(fetchMessagesSuccess({ messages: data }));
+    dispatch(fetchMessagesSuccess({ id, messages: data.map(channel => channel.attributes) }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
     throw e;

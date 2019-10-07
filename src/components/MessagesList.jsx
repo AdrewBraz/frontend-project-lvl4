@@ -7,7 +7,8 @@ import * as actions from '../actions';
 
 const mapStateToProps = (state) => {
   const { messages, channelState } = state;
-  const props = { channelState, messages };
+  const { currentChannelId } = channelState;
+  const props = { currentChannelId, messages };
   return props;
 };
 
@@ -18,14 +19,28 @@ const actionCreators = {
 export default @connect(mapStateToProps, actionCreators)
 class MessagesList extends React.Component {
   componentDidMount() {
-    const { currentChannelId } = this.props.channelState;
+    const { currentChannelId, messages } = this.props;
     const { fetchMessages } = this.props;
-    fetchMessages(currentChannelId);
+    const messageList = messages[currentChannelId];
+    fetchMessages(currentChannelId, messageList);
+  }
+
+  renderMessages() {
+    const { currentChannelId, messages } = this.props;
+    const messageList = messages[currentChannelId];
+    return (
+      <ListGroup>
+        {messageList ? messageList.map(message => <ListGroupItem key={message.id}>{message.text}</ListGroupItem>) : null}
+      </ListGroup>
+    );
   }
 
   render() {
+    const { messageList, channelState } = this.props;
     return (
-      <div />
+      <div>
+        {this.renderMessages()}
+      </div>
     );
   }
 }

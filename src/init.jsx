@@ -24,7 +24,7 @@ const initialState = {
     allIds: gon.channels.map(channel => channel.id),
     ByIds: _.keyBy(gon.channels, 'id'),
   },
-  messages: gon.messages,
+  messages: {},
   channelState: {
     currentChannelId: gon.currentChannelId,
   },
@@ -56,7 +56,7 @@ const socketInit = (store) => {
     store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
-    console.log('newMessage', attributes);
+    console.log('newMessage');
     store.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
   });
 };
