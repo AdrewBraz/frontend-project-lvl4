@@ -17,7 +17,7 @@ check-types:
 	npx flow
 
 lint:
-	npx eslint . --ext js,jsx
+	npx eslint ./src --ext js,jsx --fix
 
 publish:
 	npm publish
