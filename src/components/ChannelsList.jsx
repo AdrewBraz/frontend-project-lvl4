@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import cn from 'classnames';
 
 import * as actions from '../actions';
 
@@ -19,7 +19,8 @@ const actionCreators = {
 
 export default @connect(mapStateToProps, actionCreators)
 class ChannelsList extends React.Component {
-  handleSwitch = id => () => {
+  handleSwitch = id => (e) => {
+    e.preventDefault();
     const { switchChannel, channelState, fetchMessages } = this.props;
     if (channelState.currentChannelId !== id) {
       switchChannel({ id });
@@ -32,16 +33,27 @@ class ChannelsList extends React.Component {
     const { currentChannelId } = channelState;
     return channelsList.map((channel) => {
       const isActive = channel.id === currentChannelId;
-        <ListGroupItem key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>{channel.name}</ListGroupItem>;
+      const classList = cn({
+        active: isActive,
+        'list-group-item': true,
+      });
+      return (
+        <li className={classList} key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>
+          <a>
+            {channel.name}
+          </a>
+        </li>
+      );
     });
   }
 
   render() {
-    const { channelsList, channelState } = this.props;
     return (
-      <ListGroup>
-        {channelsList.map(channel => <ListGroupItem key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>{channel.name}</ListGroupItem>)}
-      </ListGroup>
+      <div className="mb-3">
+        <ul className="list-group">
+          {this.renderChannels()}
+        </ul>
+      </div>
     );
   }
 }

@@ -38,7 +38,7 @@ class MessagesList extends React.Component {
   render() {
     const { messageList, channelState } = this.props;
     return (
-      <div>
+      <div className="overflow-auto mt-auto">
         {this.renderMessages()}
       </div>
     );

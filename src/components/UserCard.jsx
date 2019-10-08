@@ -3,7 +3,7 @@ import User from '../context';
 
 function UserCard() {
   return (
-    <div>
+    <div className="mb-5">
       <span>{useContext(User).name}</span>
     </div>
   );
