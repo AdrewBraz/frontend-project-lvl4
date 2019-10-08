@@ -26,8 +26,8 @@ const connectionState = handleActions({
 }, null);
 
 const messages = handleActions({
-  [actions.fetchMessagesSuccess](state, { payload: { id, messages } }) {
-    return { ...state, [id]: messages };
+  [actions.fetchMessagesSuccess](state, { payload: { id, channelMessages } }) {
+    return { ...state, [id]: channelMessages };
   },
   [actions.addMessageSuccess](state, { payload: { newMessage } }) {
     const { channelId } = newMessage;

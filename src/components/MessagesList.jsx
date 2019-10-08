@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { sortBy } from 'lodash';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 import * as actions from '../actions';
@@ -30,13 +29,13 @@ class MessagesList extends React.Component {
     const messageList = messages[currentChannelId];
     return (
       <ListGroup>
-        {messageList ? messageList.map(message => <ListGroupItem key={message.id}>{message.text}</ListGroupItem>) : null}
+        {messageList ? messageList.map(message => <ListGroupItem key={message.id}>{message.text}</ListGroupItem>) : null
+        }
       </ListGroup>
     );
   }
 
   render() {
-    const { messageList, channelState } = this.props;
     return (
       <div className="overflow-auto mt-auto">
         {this.renderMessages()}
