@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import gon from 'gon';
 import io from 'socket.io-client';
-// import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import _ from 'lodash';
 import reducers from './reducers';
 import * as actions from './actions';
@@ -33,7 +33,7 @@ const initialState = {
 const store = createStore(
   reducers,
   initialState,
-  // composeWithDevTools(applyMiddleware(thunk)),
+  composeWithDevTools(applyMiddleware([thunk])),
 );
 
 const socketInit = (socketStore) => {
