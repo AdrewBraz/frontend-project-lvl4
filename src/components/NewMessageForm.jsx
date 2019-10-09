@@ -19,6 +19,8 @@ const actionCreators = {
 export default @reduxForm({ form: 'newChannelForm' })
 @connect(mapStateToProps, actionCreators)
 class NewMessageForm extends React.Component {
+  static contextType = User;
+
   handleSubmit = async (value) => {
     const { addMessage, reset, currentChannelId } = this.props;
     const { name } = this.context;
@@ -32,8 +34,6 @@ class NewMessageForm extends React.Component {
     }
     reset();
   }
-
-  static contextType = User;
 
   render() {
     const {

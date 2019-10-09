@@ -34,21 +34,9 @@ export const fetchMessages = id => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
     const { data } = await axios.get(routes.channelMessagesPath(id));
-    dispatch(fetchMessagesSuccess({ id, messages: data.map(channel => channel.attributes) }));
+    dispatch(fetchMessagesSuccess({ id, channelMessages: data.map(ch => ch.attributes) }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
     throw e;
   }
 };
-
-// export const removeMessage = message => async (dispatch) => {
-//   dispatch(removeMessageRequest());
-//   try {
-//     const url = routes.messageUrl(message.id);
-//     await axios.delete(url);
-//     dispatch(removeMessageSuccess({ id: message.id }));
-//   } catch (e) {
-//     dispatch(removeMessageFailure());
-//     throw e;
-//   }
-// };

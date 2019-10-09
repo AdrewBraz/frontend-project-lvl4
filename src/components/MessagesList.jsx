@@ -30,7 +30,7 @@ class MessagesList extends React.Component {
     if (!messageList || messageList.length < 1) {
       return (
         <div>
-          <strong>No messages</strong>
+          <strong>no messages</strong>
         </div>
       );
     }
@@ -38,14 +38,15 @@ class MessagesList extends React.Component {
       <ListGroup>
         {messageList.map(message => (
           <ListGroupItem className="d-flex flex-column" key={message.id}>
-              <strong>
-                {message.author}
-                <small>{message.date}</small>
-              </strong>
+            <div className="d-flex justify-content-between">
+              <strong>{message.author}</strong>
+              <small>{message.date}</small>
+            </div>
+            <div>
               {message.text}
-            </ListGroupItem>
-        ))
-        }
+            </div>
+          </ListGroupItem>
+        ))}
       </ListGroup>
     );
   }

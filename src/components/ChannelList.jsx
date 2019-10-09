@@ -18,7 +18,7 @@ const actionCreators = {
 };
 
 export default @connect(mapStateToProps, actionCreators)
-class ChannelList extends React.Component {
+class ChannelsList extends React.Component {
   handleSwitch = id => (e) => {
     e.preventDefault();
     const { switchChannel, channelState, fetchMessages } = this.props;
@@ -38,11 +38,9 @@ class ChannelList extends React.Component {
         'list-group-item': true,
       });
       return (
-        <li className={classList} key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>
-          <a>
-            {channel.name}
-          </a>
-        </li>
+        <a className={classList} href={`#${channel.id}`} key={channel.id} onClick={this.handleSwitch(channel.id)}>
+          {channel.name}
+        </a>
       );
     });
   }
