@@ -17,17 +17,17 @@ const actionCreators = {
 
 export default @connect(mapStateToProps, actionCreators)
 class MessagesList extends React.Component {
-  // componentDidMount() {
-  //   const { currentChannelId, messages } = this.props;
-  //   const { fetchMessages } = this.props;
-  //   const messageList = messages[currentChannelId];
-  //   fetchMessages(currentChannelId, messageList);
-  // }
+  componentDidMount() {
+    const { currentChannelId, messages } = this.props;
+    const { fetchMessages } = this.props;
+    const messageList = messages[currentChannelId];
+    fetchMessages(currentChannelId, messageList);
+  }
 
   renderMessages() {
     const { currentChannelId, messages } = this.props;
     const messageList = messages[currentChannelId];
-    if (!messageList || messageList < 1) {
+    if (!messageList || messageList.length < 1) {
       return (
         <div>
           <strong>No messages</strong>

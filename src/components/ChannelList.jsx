@@ -38,13 +38,10 @@ class ChannelList extends React.Component {
         'list-group-item': true,
       });
       return (
-        <li
-          // href={`#${channel.id}`}
-          className={classList}
-          key={channel.id}
-          onClick={this.handleSwitch(channel.id)}
-        >
-          {channel.name}
+        <li className={classList} key={channel.id} id={channel.id} onClick={this.handleSwitch(channel.id)} removable={false ? channel.removable : undefined}>
+          <a>
+            {channel.name}
+          </a>
         </li>
       );
     });
