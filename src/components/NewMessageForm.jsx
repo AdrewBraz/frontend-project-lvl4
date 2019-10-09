@@ -23,8 +23,10 @@ class NewMessageForm extends React.Component {
     const { addMessage, reset, currentChannelId } = this.props;
     const { name } = this.context;
     const { text } = value;
+    const date = new Date();
+    const postDate = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
     try {
-      await addMessage(currentChannelId, { text, author: name });
+      await addMessage(currentChannelId, { text, author: name, date: postDate });
     } catch (e) {
       throw new SubmissionError({ _error: e.channel });
     }

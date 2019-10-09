@@ -29,7 +29,17 @@ class MessagesList extends React.Component {
     const messageList = messages[currentChannelId];
     return (
       <ListGroup>
-        {messageList ? messageList.map(message => <ListGroupItem key={message.id}>{message.text}</ListGroupItem>) : null
+        {messageList
+          ? messageList.map(message => (
+            <ListGroupItem key={message.id}>
+              <strong>
+                {message.author}
+                <small>{message.date}</small>
+              </strong>
+              {message.text}
+            </ListGroupItem>
+          ))
+          : null
         }
       </ListGroup>
     );

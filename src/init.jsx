@@ -2,9 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import gon from 'gon';
 import io from 'socket.io-client';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 import _ from 'lodash';
 import reducers from './reducers';
 import * as actions from './actions';
@@ -13,8 +14,7 @@ import App from './components/App';
 import getUserName from './getUserName';
 import User from './context';
 
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
+
 const user = {
   name: getUserName(),
 };
@@ -33,31 +33,28 @@ const initialState = {
 const store = createStore(
   reducers,
   initialState,
-  compose(
-    applyMiddleware(thunk),
-    devtoolMiddleware,
-  ),
+  // composeWithDevTools(applyMiddleware(thunk)),
 );
 
-const socketInit = (store) => {
+const socketInit = (socketStore) => {
   const port = process.env.PORT;
   const socket = io(port);
 
   socket.on('connect', () => {
     console.log('socket connected');
-    store.dispatch(actions.socketConnected());
+    socketStore.dispatch(actions.socketConnected());
   });
   socket.on('disconnect', () => {
     console.log('socket disconnected');
-    store.dispatch(actions.socketDisconnected());
+    socketStore.dispatch(actions.socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
     console.log('newChannel');
-    store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
+    socketStore.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
     console.log('newMessage');
-    store.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
+    socketStore.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
   });
 };
 
