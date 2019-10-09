@@ -30,10 +30,12 @@ const initialState = {
   },
 };
 
+const middleware = [thunk]
+
 const store = createStore(
   reducers,
   initialState,
-  composeWithDevTools(applyMiddleware([thunk])),
+  composeWithDevTools(applyMiddleware(...middleware)),
 );
 
 const socketInit = (socketStore) => {
