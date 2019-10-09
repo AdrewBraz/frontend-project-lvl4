@@ -38,14 +38,14 @@ class ChannelList extends React.Component {
         'list-group-item': true,
       });
       return (
-        <a
-          href={`#${channel.id}`}
+        <li
+          // href={`#${channel.id}`}
           className={classList}
           key={channel.id}
           onClick={this.handleSwitch(channel.id)}
         >
           {channel.name}
-        </a>
+        </li>
       );
     });
   }

@@ -17,29 +17,34 @@ const actionCreators = {
 
 export default @connect(mapStateToProps, actionCreators)
 class MessagesList extends React.Component {
-  componentDidMount() {
-    const { currentChannelId, messages } = this.props;
-    const { fetchMessages } = this.props;
-    const messageList = messages[currentChannelId];
-    fetchMessages(currentChannelId, messageList);
-  }
+  // componentDidMount() {
+  //   const { currentChannelId, messages } = this.props;
+  //   const { fetchMessages } = this.props;
+  //   const messageList = messages[currentChannelId];
+  //   fetchMessages(currentChannelId, messageList);
+  // }
 
   renderMessages() {
     const { currentChannelId, messages } = this.props;
     const messageList = messages[currentChannelId];
+    if (!messageList || messageList < 1) {
+      return (
+        <div>
+          <strong>No messages</strong>
+        </div>
+      );
+    }
     return (
       <ListGroup>
-        {messageList
-          ? messageList.map(message => (
-            <ListGroupItem key={message.id}>
+        {messageList.map(message => (
+          <ListGroupItem className="d-flex flex-column" key={message.id}>
               <strong>
                 {message.author}
                 <small>{message.date}</small>
               </strong>
               {message.text}
             </ListGroupItem>
-          ))
-          : null
+        ))
         }
       </ListGroup>
     );
