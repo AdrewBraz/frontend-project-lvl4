@@ -7,7 +7,7 @@ import User from '../context';
 
 
 const mapStateToProps = (state) => {
-  const { currentChannelId } = state.channelState;
+  const { currentChannelId } = state.chatState;
   const props = { currentChannelId };
   return props;
 };

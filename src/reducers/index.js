@@ -44,11 +44,25 @@ const channels = handleActions({
       allIds: [newChannel.id, ...allIds],
     };
   },
+  [actions.renameChannelSuccess](state, { payload }) {
+    // const { ByIds, allIds } = state;
+    console.log(payload);
+    return {
+      // ByIds: { ...ByIds, [newChannel.id]: newChannel },
+      // allIds: [newChannel.id, ...allIds],
+    };
+  },
 }, { ByIds: {}, allIds: [] });
 
-const channelState = handleActions({
+const chatState = handleActions({
   [actions.switchChannel](state, { payload: { id } }) {
     return { currentChannelId: id };
+  },
+  [actions.modalOpened](state, { payload: id }) {
+    return { ...state, channelEditId: id, modal: 'opened' };
+  },
+  [actions.modalClosed](state) {
+    return { ...state, channelEditId: null, modal: 'closed' };
   },
 }, { currentChannelId: null });
 
@@ -57,6 +71,6 @@ export default combineReducers({
   MeassagesFetchingState,
   messages,
   channels,
-  channelState,
+  chatState,
   form: formReducer,
 });

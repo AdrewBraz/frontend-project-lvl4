@@ -25,7 +25,7 @@ const initialState = {
     ByIds: _.keyBy(gon.channels, 'id'),
   },
   messages: {},
-  channelState: {
+  chatState: {
     currentChannelId: gon.currentChannelId,
   },
 };

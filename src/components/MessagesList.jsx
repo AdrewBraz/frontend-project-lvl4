@@ -5,8 +5,8 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import * as actions from '../actions';
 
 const mapStateToProps = (state) => {
-  const { messages, channelState } = state;
-  const { currentChannelId } = channelState;
+  const { messages, chatState } = state;
+  const { currentChannelId } = chatState;
   const props = { currentChannelId, messages };
   return props;
 };
