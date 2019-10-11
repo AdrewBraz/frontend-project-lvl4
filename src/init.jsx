@@ -27,6 +27,7 @@ const initialState = {
   messages: {},
   chatState: {
     currentChannelId: gon.currentChannelId,
+    modal: 'closed',
   },
 };
 

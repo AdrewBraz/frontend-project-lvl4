@@ -56,7 +56,7 @@ const channels = handleActions({
 
 const chatState = handleActions({
   [actions.switchChannel](state, { payload: { id } }) {
-    return { currentChannelId: id };
+    return { ...state, currentChannelId: id };
   },
   [actions.modalOpened](state, { payload: id }) {
     return { ...state, channelEditId: id, modal: 'opened' };
@@ -64,7 +64,7 @@ const chatState = handleActions({
   [actions.modalClosed](state) {
     return { ...state, channelEditId: null, modal: 'closed' };
   },
-}, { currentChannelId: null });
+}, { currentChannelId: null, modal: 'closed' });
 
 export default combineReducers({
   connectionState,
