@@ -59,6 +59,10 @@ const socketInit = (socketStore) => {
     console.log('newMessage');
     socketStore.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
   });
+  socket.on('renameChannel', ({ data: { attributes } }) => {
+    console.log('renameChannel');
+    socketStore.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
+  });
 };
 
 socketInit(store);

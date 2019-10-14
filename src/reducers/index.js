@@ -44,12 +44,12 @@ const channels = handleActions({
       allIds: [newChannel.id, ...allIds],
     };
   },
-  [actions.renameChannelSuccess](state, { payload }) {
-    // const { ByIds, allIds } = state;
-    console.log(payload);
+  [actions.renameChannelSuccess](state, { payload: { renamedChannel } }) {
+    const { id } = renamedChannel;
+    const { ByIds, allIds } = state;
     return {
-      // ByIds: { ...ByIds, [newChannel.id]: newChannel },
-      // allIds: [newChannel.id, ...allIds],
+      ByIds: { ...ByIds, [id]: renamedChannel },
+      allIds: [...allIds],
     };
   },
 }, { ByIds: {}, allIds: [] });

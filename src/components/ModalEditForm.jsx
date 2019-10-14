@@ -25,21 +25,20 @@ class ModalEditForm extends React.Component {
     modalClosed();
   }
 
-  handleRename = () => async (name) => {
-    const { renameChannel, reset, channelEditId } = this.props;
+  handleRename = async (name) => {
+    const { renameChannel, channelEditId } = this.props;
     try {
       await renameChannel(channelEditId, name);
     } catch (e) {
       throw new SubmissionError({ _error: e.channel });
     }
-    reset();
+    this.handleClose();
   };
 
   render() {
     const {
-      modal, submitting, pristine, error,
+      modal, handleSubmit, submitting, pristine, error,
     } = this.props;
-    console.log(modal);
     return (
       <div>
         <Modal show={modal === 'opened'} onHide={this.handleClose}>
@@ -47,24 +46,16 @@ class ModalEditForm extends React.Component {
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form className="form-inline">
+            <form onSubmit={handleSubmit(this.handleRename)} className="form-inline">
               <div className="input-group flex-row">
-                <Field placeholder="new channel" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
-                <div className="input-group-prepend">
-                  <input type="submit" disabled={pristine || submitting} className=" btn btn-primary btn-sm" value="Add" />
-                </div>
+                <Field placeholder="dd" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
                 {error && <div className="ml-3">{error}</div>}
               </div>
+              <Button variant="primary" type="submit" disabled={pristine || submitting}>
+                Save Changes
+              </Button>
             </form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
-            Close
-            </Button>
-            <Button variant="primary" onClick={this.handleClose}>
-            Save Changes
-            </Button>
-          </Modal.Footer>
         </Modal>
       </div>
     );

@@ -36,7 +36,7 @@ export const addChannel = name => async () => {
 
 export const renameChannel = (id, name) => async () => {
   const data = { attributes: name };
-  await axios.patch(routes.channelsPath(id), { data });
+  await axios.patch(routes.channelPath(id), { data });
 };
 
 export const fetchMessages = id => async (dispatch) => {
