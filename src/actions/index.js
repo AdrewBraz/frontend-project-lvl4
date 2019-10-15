@@ -13,8 +13,9 @@ export const removeChannelFailure = createAction('CHANNEL_REMOVE_FAILURE');
 export const socketConnected = createAction('SOCKET_CONNECTED');
 export const socketDisconnected = createAction('SOCKET_DISCONNECTED');
 
-export const modalOpened = createAction('MODAL_OPENED');
-export const modalClosed = createAction('MODAL_CLOSED');
+export const modalStateClose = createAction('MODAL_STATE_CLOSE');
+export const modalStateEdit = createAction('MODAL_STATE_EDIT');
+export const modalStateDelete = createAction('MODAL_STATE_DELETE');
 
 export const addMessageSuccess = createAction('ADD_MESSAGE_SUCCESS');
 export const addChannelSuccess = createAction('ADD_CHANNEL_SUCCESS');
@@ -37,6 +38,18 @@ export const addChannel = name => async () => {
 export const renameChannel = (id, name) => async () => {
   const data = { attributes: name };
   await axios.patch(routes.channelPath(id), { data });
+};
+
+export const removeChannel = id => async (dispatch) => {
+  dispatch(removeChannelRequest());
+  try {
+    await axios.delete(routes.channelPath(id));
+    console.log(id);
+    dispatch(removeChannelSuccess({ id }));
+  } catch (e) {
+    dispatch(removeChannelFailure());
+    throw e;
+  }
 };
 
 export const fetchMessages = id => async (dispatch) => {

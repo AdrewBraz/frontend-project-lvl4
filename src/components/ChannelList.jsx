@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 const actionCreators = {
   switchChannel: actions.switchChannel,
   fetchMessages: actions.fetchMessages,
-  modalOpened: actions.modalOpened,
+  modalEdit: actions.modalStateEdit,
 };
 
 export default @connect(mapStateToProps, actionCreators)
@@ -28,12 +28,12 @@ class ChannelsList extends React.Component {
     }
   }
 
-  handleModalOpen = (id) => {
-    const { modalOpened } = this.props;
-    modalOpened(id);
+  handleModalEdit = (id) => {
+    const { modalEdit } = this.props;
+    modalEdit(id);
   }
 
-  renderEditBtn = id => <button type="button" onClick={() => this.handleModalOpen(id)} className="btn btn-info">Edit</button>
+  renderEditBtn = id => <button type="button" onClick={() => this.handleModalEdit(id)} className="btn btn-info">Edit</button>
 
   renderChannels = () => {
     const { channelsList, chatState } = this.props;

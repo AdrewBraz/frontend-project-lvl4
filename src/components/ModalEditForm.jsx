@@ -14,15 +14,18 @@ const mapStateToProps = (state) => {
 
 const actionCreators = {
   renameChannel: actions.renameChannel,
-  modalClosed: actions.modalClosed,
+  modalDelete: actions.modalStateDelete,
+  modalClose: actions.modalStateClose,
+  modalEdit: actions.modalStateEdit,
+  removeChannel: actions.removeChannel,
 };
 
 export default @reduxForm({ form: 'editForm' })
 @connect(mapStateToProps, actionCreators)
 class ModalEditForm extends React.Component {
   handleClose = () => {
-    const { modalClosed } = this.props;
-    modalClosed();
+    const { modalClose } = this.props;
+    modalClose();
   }
 
   handleRename = async (name) => {
@@ -35,13 +38,33 @@ class ModalEditForm extends React.Component {
     this.handleClose();
   };
 
+  handleSwitchToEdit = () => {
+    const { modalEdit } = this.props;
+    modalEdit();
+  }
+
+  handleModalDelete = () => {
+    const { modalDelete } = this.props;
+    modalDelete();
+  }
+
+  handleDelete = async () => {
+    const { removeChannel, channelEditId } = this.props;
+    try {
+      await removeChannel(channelEditId);
+    } catch (e) {
+      throw new SubmissionError({ _error: e.channel });
+    }
+    this.handleClose();
+  }
+
   render() {
     const {
       modal, handleSubmit, submitting, pristine, error,
     } = this.props;
     return (
       <div>
-        <Modal show={modal === 'opened'} onHide={this.handleClose}>
+        <Modal show={modal === 'edit'} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
@@ -55,6 +78,23 @@ class ModalEditForm extends React.Component {
                 Save Changes
               </Button>
             </form>
+            <Button variant="primary" type="button" onClick={this.handleModalDelete}>
+              Delete channel
+            </Button>
+          </Modal.Body>
+        </Modal>
+        <Modal show={modal === 'delete'} onHide={this.handleSwitchToEdit}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Are you sure</p>
+            <Button variant="danger" type="button" onClick={this.handleDelete}>
+              Delete
+            </Button>
+            <Button variant="primary" type="button" onClick={this.handleSwitchToEdit}>
+              Back to Editing
+            </Button>
           </Modal.Body>
         </Modal>
       </div>
