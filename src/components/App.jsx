@@ -1,15 +1,17 @@
 import React from 'react';
+import { Row } from 'react-bootstrap';
+
 import SideBar from './SideBar';
 import Messages from './Messages';
 import ModalEditForm from './ModalEditForm';
 
 function App() {
   return (
-    <div className="d-flex">
+    <Row>
       <SideBar />
       <Messages />
       <ModalEditForm />
-    </div>
+    </Row>
   );
 }
 

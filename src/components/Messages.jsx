@@ -1,15 +1,15 @@
 import React from 'react';
-
+import { Col } from 'react-bootstrap';
 
 import MessagesList from './MessagesList';
 import NewMessageForm from './NewMessageForm';
 
 function Messages() {
   return (
-    <div className="d-flex overflow-auto flex-column h-100 col-8">
+    <Col sm={8} lg={9}>
       <MessagesList />
       <NewMessageForm />
-    </div>
+    </Col>
   );
 }
 

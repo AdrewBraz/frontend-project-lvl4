@@ -52,10 +52,10 @@ class ModalEditForm extends React.Component {
     const { removeChannel, channelEditId } = this.props;
     try {
       await removeChannel(channelEditId);
+      this.handleClose();
     } catch (e) {
       throw new SubmissionError({ _error: e.channel });
     }
-    this.handleClose();
   }
 
   render() {
@@ -66,17 +66,19 @@ class ModalEditForm extends React.Component {
       <div>
         <Modal show={modal === 'edit'} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Edit Channel</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={handleSubmit(this.handleRename)} className="form-inline">
-              <div className="input-group flex-row">
+          <Modal.Body className="d-flex flex-column">
+            <form onSubmit={handleSubmit(this.handleRename)} className="form-inline mb-3">
+              <div className="input-group flex-row w-100">
                 <Field placeholder="dd" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
+                <div className="input-group-prepend">
+                  <Button variant="primary" type="submit" disabled={pristine || submitting}>
+                    Save Changes
+                  </Button>
+                </div>
                 {error && <div className="ml-3">{error}</div>}
               </div>
-              <Button variant="primary" type="submit" disabled={pristine || submitting}>
-                Save Changes
-              </Button>
             </form>
             <Button variant="primary" type="button" onClick={this.handleModalDelete}>
               Delete channel
@@ -87,14 +89,16 @@ class ModalEditForm extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <p>Are you sure</p>
-            <Button variant="danger" type="button" onClick={this.handleDelete}>
-              Delete
-            </Button>
-            <Button variant="primary" type="button" onClick={this.handleSwitchToEdit}>
-              Back to Editing
-            </Button>
+          <Modal.Body className="d-flex flex-column align-items-center">
+            <p>Are you sure you want to delete this channel?</p>
+            <div className="d-flex justify-content-around">
+              <Button className="mr-3" variant="danger" type="button" onClick={this.handleDelete}>
+                Delete
+              </Button>
+              <Button className="ml-3" variant="primary" type="button" onClick={this.handleSwitchToEdit}>
+                Back to Editing
+              </Button>
+            </div>
           </Modal.Body>
         </Modal>
       </div>

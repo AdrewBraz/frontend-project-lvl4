@@ -28,12 +28,14 @@ class ChannelsList extends React.Component {
     }
   }
 
-  handleModalEdit = (id) => {
+  handleModalEdit = id => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const { modalEdit } = this.props;
     modalEdit(id);
   }
 
-  renderEditBtn = id => <button type="button" onClick={() => this.handleModalEdit(id)} className="btn btn-info">Edit</button>
+  renderEditBtn = id => <button type="button" onClick={this.handleModalEdit(id)} className="btn btn-sm float-right btn-info">Edit</button>
 
   renderChannels = () => {
     const { channelsList, chatState } = this.props;
@@ -42,10 +44,7 @@ class ChannelsList extends React.Component {
       const isActive = channel.id === currentChannelId;
       const classList = cn({
         active: isActive,
-        'list-groupt-item-action': true,
-        'list-group-item': true,
-        'justify-content-around': true,
-        'd-flex': true,
+        'list-group-item-action list-group-item': true,
       });
       return (
         <a className={classList} href={`#${channel.id}`} key={channel.id} onClick={this.handleSwitch(channel.id)}>

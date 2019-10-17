@@ -44,7 +44,6 @@ export const removeChannel = id => async (dispatch) => {
   dispatch(removeChannelRequest());
   try {
     await axios.delete(routes.channelPath(id));
-    console.log(id);
     dispatch(removeChannelSuccess({ id }));
   } catch (e) {
     dispatch(removeChannelFailure());

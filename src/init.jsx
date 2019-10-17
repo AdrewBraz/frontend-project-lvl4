@@ -64,7 +64,7 @@ const socketInit = (socketStore) => {
     socketStore.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
   });
   socket.on('removeChannel', () => {
-    console.log('renameChannel');
+    console.log('removeChannel');
     socketStore.dispatch(actions.removeChannelSuccess());
   });
 };

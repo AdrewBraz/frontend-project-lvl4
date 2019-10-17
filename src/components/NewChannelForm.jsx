@@ -34,7 +34,7 @@ class NewChannelForm extends React.Component {
       } = this.props;
       return (
         <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline">
-          <div className="input-group flex-row">
+          <div className="input-group flex-row w-100">
             <Field placeholder="new channel" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
             <div className="input-group-prepend">
               <input type="submit" disabled={pristine || submitting} className=" btn btn-primary btn-sm" value="Add" />

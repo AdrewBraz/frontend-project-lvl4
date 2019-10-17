@@ -42,11 +42,11 @@ class NewMessageForm extends React.Component {
     return (
     // BEGIN (write your solution here)
       <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline align-items-end">
-        <div className="input-group flex-row">
+        <div className="input-group flex-row w-100">
           <Field name="text" className="form-control" placeholder="new message" required disabled={submitting} component="input" type="text" />
-        </div>
-        <div className="input-group-prepend">
-          <input type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value="Add" />
+          <div className="input-group-prepend">
+            <input type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value="Add" />
+          </div>
         </div>
         {error && <div className="ml-3">{error}</div>}
       </form>
