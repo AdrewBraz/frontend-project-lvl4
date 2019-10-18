@@ -48,20 +48,22 @@ class ModalEditForm extends React.Component {
     modalDelete();
   }
 
-  handleDelete = async () => {
+  handleRemoveChannel = async () => {
     const { removeChannel, channelEditId } = this.props;
     try {
       await removeChannel(channelEditId);
-      this.handleClose();
     } catch (e) {
-      throw new SubmissionError({ _error: e.channel });
+      throw new Error(e);
     }
+    this.handleClose();
   }
 
   render() {
     const {
-      modal, handleSubmit, submitting, pristine, error,
+      modal, handleSubmit, submitting, pristine, error, channelEditId, ByIds,
     } = this.props;
+    const channel = ByIds[channelEditId];
+    const channelName = channel ? channel.name : null;
     return (
       <div>
         <Modal show={modal === 'edit'} onHide={this.handleClose}>
@@ -71,7 +73,7 @@ class ModalEditForm extends React.Component {
           <Modal.Body className="d-flex flex-column">
             <form onSubmit={handleSubmit(this.handleRename)} className="form-inline mb-3">
               <div className="input-group flex-row w-100">
-                <Field placeholder="dd" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
+                <Field placeholder={channelName} className="form-control" name="name" required disabled={submitting} component="input" type="text" />
                 <div className="input-group-prepend">
                   <Button variant="primary" type="submit" disabled={pristine || submitting}>
                     Save Changes
@@ -87,12 +89,12 @@ class ModalEditForm extends React.Component {
         </Modal>
         <Modal show={modal === 'delete'} onHide={this.handleSwitchToEdit}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Delete Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column align-items-center">
-            <p>Are you sure you want to delete this channel?</p>
+            <p className="pb-3 border-bottom border-dark">Are you sure you want to delete this channel?</p>
             <div className="d-flex justify-content-around">
-              <Button className="mr-3" variant="danger" type="button" onClick={this.handleDelete}>
+              <Button className="mr-3" variant="danger" type="button" onClick={this.handleRemoveChannel}>
                 Delete
               </Button>
               <Button className="ml-3" variant="primary" type="button" onClick={this.handleSwitchToEdit}>

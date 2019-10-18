@@ -35,7 +35,7 @@ class ChannelsList extends React.Component {
     modalEdit(id);
   }
 
-  renderEditBtn = id => <button type="button" onClick={this.handleModalEdit(id)} className="btn btn-sm float-right btn-info">Edit</button>
+  renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>
 
   renderChannels = () => {
     const { channelsList, chatState } = this.props;

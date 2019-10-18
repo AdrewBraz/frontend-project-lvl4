@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
-import { omit, without } from 'lodash';
+import { omitBy, without } from 'lodash';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
@@ -56,7 +56,7 @@ const channels = handleActions({
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { ByIds, allIds } = state;
     return {
-      ByIds: omit(ByIds, id),
+      ByIds: omitBy(ByIds, ch => ch.id === id),
       allIds: without(allIds, id),
     };
   },
@@ -66,7 +66,7 @@ const chatState = handleActions({
   [actions.switchChannel](state, { payload: { id } }) {
     return { ...state, currentChannelId: id };
   },
-  [actions.modalStateEdit](state, { payload: id }) {
+  [actions.modalStateEdit](state, { payload:{ id }}) {
     return { ...state, channelEditId: id, modal: 'edit' };
   },
   [actions.modalStateClose](state) {
@@ -74,6 +74,15 @@ const chatState = handleActions({
   },
   [actions.modalStateDelete](state) {
     return { ...state, modal: 'delete' };
+  },
+  [actions.removeChannelSuccess](state, { payload: { id } }) {
+    const { currentChannelId } = state;
+    const defaultChannelId = 1;
+    return {
+      ...state,
+      channelEditId: null,
+      currentChannelId: id === currentChannelId ? defaultChannelId : currentChannelId,
+    };
   },
 }, {});
 
