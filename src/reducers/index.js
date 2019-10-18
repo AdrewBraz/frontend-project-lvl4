@@ -66,7 +66,7 @@ const chatState = handleActions({
   [actions.switchChannel](state, { payload: { id } }) {
     return { ...state, currentChannelId: id };
   },
-  [actions.modalStateEdit](state, { payload:{ id }}) {
+  [actions.modalStateEdit](state, { payload: { id } }) {
     return { ...state, channelEditId: id, modal: 'edit' };
   },
   [actions.modalStateClose](state) {
