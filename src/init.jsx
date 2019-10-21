@@ -44,27 +44,21 @@ const socketInit = (socketStore) => {
   const socket = io(port);
 
   socket.on('connect', () => {
-    console.log('socket connected');
     socketStore.dispatch(actions.socketConnected());
   });
   socket.on('disconnect', () => {
-    console.log('socket disconnected');
     socketStore.dispatch(actions.socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
-    console.log('newChannel');
     socketStore.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
-    console.log('newMessage');
     socketStore.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
-    console.log('renameChannel');
     socketStore.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
   });
   socket.on('removeChannel', ({ data: { id } }) => {
-    console.log('removeChannel');
     socketStore.dispatch(actions.removeChannelSuccess(id));
   });
 };

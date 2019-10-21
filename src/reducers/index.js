@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { handleActions } from 'redux-actions';
+import { handleActions, combineActions } from 'redux-actions';
 import { omitBy, without } from 'lodash';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
@@ -140,7 +140,29 @@ const chatState = handleActions({
   },
 }, {});
 
+const appState = handleActions({
+  [combineActions(
+    actions.socketDisconnected,
+    actions.addChannelRequest,
+    actions.renameChannelRequest,
+    actions.removeChannelRequest,
+    actions.addMessageRequest,
+  )]() {
+    return 'processing';
+  },
+  [combineActions(
+    actions.socketConnected,
+    actions.addChannelSuccess,
+    actions.renameChannelSuccess,
+    actions.removeChannelSuccess,
+    actions.addMessageSuccess,
+  )]() {
+    return 'finished';
+  },
+}, 'finished');
+
 export default combineReducers({
+  appState,
   connectionState,
   ChannelsAddingState,
   ChannelsRemovingState,
