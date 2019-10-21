@@ -5,7 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
 
-const MeassagesFetchingState = handleActions({
+const MessagesFetchingState = handleActions({
   [actions.fetchMessagesRequest]() {
     return 'requested';
   },
@@ -15,7 +15,55 @@ const MeassagesFetchingState = handleActions({
   [actions.fetchMessagesSuccess]() {
     return 'finished';
   },
-}, 'none');
+}, null);
+
+const ChannelsAddingState = handleActions({
+  [actions.addChannelRequest]() {
+    return 'requested';
+  },
+  [actions.addChannelFailure]() {
+    return 'failed';
+  },
+  [actions.addChannelSuccess]() {
+    return 'finished';
+  },
+}, null);
+
+const ChannelsRemovingState = handleActions({
+  [actions.removeChannelRequest]() {
+    return 'requested';
+  },
+  [actions.removeChannelFailure]() {
+    return 'failed';
+  },
+  [actions.removeChannelSuccess]() {
+    return 'finished';
+  },
+}, null);
+
+const ChannelsRenamingState = handleActions({
+  [actions.renameChannelRequest]() {
+    return 'requested';
+  },
+  [actions.renameChannelFailure]() {
+    return 'failed';
+  },
+  [actions.renameChannelSuccess]() {
+    return 'finished';
+  },
+}, null);
+
+const MessagesAddingState = handleActions({
+  [actions.addMessageRequest]() {
+    return 'requested';
+  },
+  [actions.addMessageFailure]() {
+    return 'failed';
+  },
+  [actions.addMessageSuccess]() {
+    return 'finished';
+  },
+}, null);
 
 const connectionState = handleActions({
   [actions.socketConnected]() {
@@ -75,6 +123,12 @@ const chatState = handleActions({
   [actions.modalStateDelete](state) {
     return { ...state, modal: 'delete' };
   },
+  [actions.renameChannelSuccess](state) {
+    return {
+      ...state,
+      channelEditId: null,
+    };
+  },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { currentChannelId } = state;
     const defaultChannelId = 1;
@@ -88,7 +142,11 @@ const chatState = handleActions({
 
 export default combineReducers({
   connectionState,
-  MeassagesFetchingState,
+  ChannelsAddingState,
+  ChannelsRemovingState,
+  ChannelsRenamingState,
+  MessagesFetchingState,
+  MessagesAddingState,
   messages,
   channels,
   chatState,
