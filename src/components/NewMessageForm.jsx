@@ -40,7 +40,6 @@ class NewMessageForm extends React.Component {
       handleSubmit, submitting, pristine, error,
     } = this.props;
     return (
-    // BEGIN (write your solution here)
       <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline align-items-end">
         <div className="input-group flex-row w-100">
           <Field name="text" className="form-control" placeholder="new message" required disabled={submitting} component="input" type="text" />
@@ -50,7 +49,6 @@ class NewMessageForm extends React.Component {
         </div>
         {error && <div className="ml-3">{error}</div>}
       </form>
-    // END
     );
   }
 }

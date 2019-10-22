@@ -5,7 +5,7 @@ import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
 
-const MessagesFetchingState = handleActions({
+const messagesFetchingState = handleActions({
   [actions.fetchMessagesRequest]() {
     return 'requested';
   },
@@ -17,7 +17,7 @@ const MessagesFetchingState = handleActions({
   },
 }, null);
 
-const ChannelsAddingState = handleActions({
+const channelsAddingState = handleActions({
   [actions.addChannelRequest]() {
     return 'requested';
   },
@@ -29,7 +29,7 @@ const ChannelsAddingState = handleActions({
   },
 }, null);
 
-const ChannelsRemovingState = handleActions({
+const channelsRemovingState = handleActions({
   [actions.removeChannelRequest]() {
     return 'requested';
   },
@@ -41,7 +41,7 @@ const ChannelsRemovingState = handleActions({
   },
 }, null);
 
-const ChannelsRenamingState = handleActions({
+const channelsRenamingState = handleActions({
   [actions.renameChannelRequest]() {
     return 'requested';
   },
@@ -53,7 +53,7 @@ const ChannelsRenamingState = handleActions({
   },
 }, null);
 
-const MessagesAddingState = handleActions({
+const messagesAddingState = handleActions({
   [actions.addMessageRequest]() {
     return 'requested';
   },
@@ -164,11 +164,11 @@ const appState = handleActions({
 export default combineReducers({
   appState,
   connectionState,
-  ChannelsAddingState,
-  ChannelsRemovingState,
-  ChannelsRenamingState,
-  MessagesFetchingState,
-  MessagesAddingState,
+  channelsAddingState,
+  channelsRemovingState,
+  channelsRenamingState,
+  messagesFetchingState,
+  messagesAddingState,
   messages,
   channels,
   chatState,

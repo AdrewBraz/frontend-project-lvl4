@@ -29,8 +29,8 @@ class MessagesList extends React.Component {
     const messageList = messages[currentChannelId];
     if (!messageList || messageList.length < 1) {
       return (
-        <div>
-          <strong>no messages</strong>
+        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+          <strong className="display-2">no messages</strong>
         </div>
       );
     }
@@ -40,7 +40,7 @@ class MessagesList extends React.Component {
           <ListGroupItem className="d-flex flex-column" key={message.id}>
             <div className="d-flex justify-content-between">
               <strong>{message.author}</strong>
-              <small>{message.date}</small>
+              <span className="font-weight-light">{message.date}</span>
             </div>
             <div>
               {message.text}
@@ -53,7 +53,7 @@ class MessagesList extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '60vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
+      <div style={{ height: '80vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
         {this.renderMessages()}
       </div>
     );

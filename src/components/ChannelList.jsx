@@ -6,8 +6,8 @@ import * as actions from '../actions';
 
 const mapStateToProps = (state) => {
   const { channels, chatState } = state;
-  const channelsList = sortBy(channels.allIds.map(i => channels.ByIds[i]), 'id');
-  const props = { chatState, channels, channelsList };
+  const channelList = sortBy(channels.allIds.map(i => channels.ByIds[i]), 'id');
+  const props = { chatState, channels, channelList };
   return props;
 };
 
@@ -38,9 +38,9 @@ class ChannelsList extends React.Component {
   renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>
 
   renderChannels = () => {
-    const { channelsList, chatState } = this.props;
+    const { channelList, chatState } = this.props;
     const { currentChannelId } = chatState;
-    return channelsList.map((channel) => {
+    return channelList.map((channel) => {
       const isActive = channel.id === currentChannelId;
       const classList = cn({
         active: isActive,
