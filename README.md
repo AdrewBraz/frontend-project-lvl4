@@ -1,6 +1,6 @@
 # Hexlet-Slack
 
-### Hexlet Poject №4. Simple chat build React/Redux and WebSockets
+### Hexlet Poject №4. Simple chat build with React/Redux and WebSockets
 
 [Demo](https://hexlet-slack.herokuapp.com/)
 
