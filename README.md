@@ -1,5 +1,7 @@
 # Hexlet-Slack
 
+### Hexlet Poject №4. Simple chat build React/Redux and WebSockets
+
 [Demo](https://hexlet-slack.herokuapp.com/)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/0fbb550d698204afd5ec/maintainability)](https://codeclimate.com/github/AdrewBraz/frontend-project-lvl4/maintainability)
