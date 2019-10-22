@@ -27,7 +27,7 @@ export default () => {
   app.keys = ['some secret hurr'];
   app.use(session(app));
   app.use(bodyParser());
-  app.use(favicon(`${__dirname }./assets/chat.ico`));
+  app.use(favicon(`${__dirname}/assets/favicon.ico`));
   // app.use(serve(path.join(__dirname, '..', 'public')));
   if (isDevelopment) {
     koaWebpack({
