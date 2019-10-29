@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as actions from '../actions';
+
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { channels } = state;
@@ -11,12 +11,8 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  addChannel: actions.addChannel,
-};
-
 export default @reduxForm({ form: 'newChannelForm' })
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 class NewChannelForm extends React.Component {
     handleSubmit = async (name) => {
       const { addChannel, reset } = this.props;

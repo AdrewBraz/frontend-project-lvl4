@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
-import * as actions from '../actions';
+
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { chatState, channels } = state;
@@ -12,20 +12,12 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  renameChannel: actions.renameChannel,
-  modalDelete: actions.modalStateDelete,
-  modalClose: actions.modalStateClose,
-  modalEdit: actions.modalStateEdit,
-  removeChannel: actions.removeChannel,
-};
-
 export default @reduxForm({ form: 'editForm' })
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 class ModalEditForm extends React.Component {
   handleClose = () => {
-    const { modalClose } = this.props;
-    modalClose();
+    const { modalStateClose } = this.props;
+    modalStateClose();
   }
 
   handleRename = async (name) => {
@@ -39,13 +31,13 @@ class ModalEditForm extends React.Component {
   };
 
   handleSwitchToEdit = () => {
-    const { modalEdit } = this.props;
-    modalEdit();
+    const { modalStateEdit } = this.props;
+    modalStateEdit();
   }
 
   handleModalDelete = () => {
-    const { modalDelete } = this.props;
-    modalDelete();
+    const { modalStateDelete } = this.props;
+    modalStateDelete();
   }
 
   handleRemoveChannel = async () => {

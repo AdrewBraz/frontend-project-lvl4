@@ -5,7 +5,7 @@ function UserCard() {
   return (
     <div className="shadow p-3 mb-5 bg-white rounded">
       You are logged in as
-      <span><strong>{` ${useContext(User).name}`}</strong></span>
+      <span><strong>{` ${useContext(User).userName}`}</strong></span>
     </div>
   );
 }

@@ -14,9 +14,10 @@ import App from './components/App';
 import getUserName from './getUserName';
 import User from './context';
 
+const userName = getUserName();
 
 const user = {
-  name: getUserName(),
+  userName,
 };
 
 const initialState = {
@@ -39,33 +40,29 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(...middleware)),
 );
 
-const socketInit = (socketStore) => {
+export default () => {
   const port = process.env.PORT;
   const socket = io(port);
 
   socket.on('connect', () => {
-    socketStore.dispatch(actions.socketConnected());
+    store.dispatch(actions.socketConnected());
   });
   socket.on('disconnect', () => {
-    socketStore.dispatch(actions.socketDisconnected());
+    store.dispatch(actions.socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
-    socketStore.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
+    store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
-    socketStore.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
+    store.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
-    socketStore.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
+    store.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
   });
   socket.on('removeChannel', ({ data: { id } }) => {
-    socketStore.dispatch(actions.removeChannelSuccess(id));
+    store.dispatch(actions.removeChannelSuccess(id));
   });
-};
 
-socketInit(store);
-
-export default () => {
   render(
     <Provider store={store}>
       <User.Provider value={user}>

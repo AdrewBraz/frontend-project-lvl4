@@ -1,7 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Row, Spinner } from 'react-bootstrap';
 
+import connect from '../connect';
 import SideBar from './SideBar';
 import Messages from './Messages';
 import ModalEditForm from './ModalEditForm';
@@ -22,7 +22,7 @@ class App extends React.Component {
     </Spinner>
   )
 
-  renderApp = () => (
+  renderChat = () => (
     <Row>
       <SideBar />
       <Messages />
@@ -30,11 +30,18 @@ class App extends React.Component {
     </Row>
   )
 
-  render() {
+  renderApp = () => {
     const { appState } = this.props;
+    if (appState !== 'processing') {
+      return this.renderChat();
+    }
+    return this.renderSpinner();
+  }
+
+  render() {
     return (
       <div>
-        { appState === 'processing' ? this.renderSpinner() : this.renderApp()}
+        { this.renderApp() }
       </div>
     );
   }

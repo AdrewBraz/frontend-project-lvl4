@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as actions from '../actions';
+import { format } from 'date-fns';
 
+import connect from '../connect';
 import User from '../context';
 
 
@@ -12,23 +12,19 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  addMessage: actions.addMessage,
-};
 
 export default @reduxForm({ form: 'newChannelForm' })
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 class NewMessageForm extends React.Component {
   static contextType = User;
 
   handleSubmit = async (value) => {
     const { addMessage, reset, currentChannelId } = this.props;
-    const { name } = this.context;
+    const { userName } = this.context;
     const { text } = value;
-    const date = new Date();
-    const postDate = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+    const postDate = format(new Date(), 'd/M/yyyy kk:mm:ss-zzzz');
     try {
-      await addMessage(currentChannelId, { text, author: name, date: postDate });
+      await addMessage(currentChannelId, { text, author: userName, date: postDate });
     } catch (e) {
       throw new SubmissionError({ _error: e.channel });
     }

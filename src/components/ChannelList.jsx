@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { sortBy } from 'lodash';
 import cn from 'classnames';
-import * as actions from '../actions';
+
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { channels, chatState } = state;
@@ -11,13 +11,7 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  switchChannel: actions.switchChannel,
-  fetchMessages: actions.fetchMessages,
-  modalEdit: actions.modalStateEdit,
-};
-
-export default @connect(mapStateToProps, actionCreators)
+export default @connect(mapStateToProps)
 class ChannelsList extends React.Component {
   handleSwitch = id => (e) => {
     e.preventDefault();
@@ -31,8 +25,8 @@ class ChannelsList extends React.Component {
   handleModalEdit = id => (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const { modalEdit } = this.props;
-    modalEdit(id);
+    const { modalStateEdit } = this.props;
+    modalStateEdit(id);
   }
 
   renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>

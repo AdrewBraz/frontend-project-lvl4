@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import * as actions from '../actions';
+import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { messages, chatState } = state;
@@ -11,11 +10,8 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-const actionCreators = {
-  fetchMessages: actions.fetchMessages,
-};
 
-export default @connect(mapStateToProps, actionCreators)
+export default @connect(mapStateToProps)
 class MessagesList extends React.Component {
   componentDidMount() {
     const { currentChannelId, messages } = this.props;
