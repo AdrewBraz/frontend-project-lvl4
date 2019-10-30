@@ -1,3 +1,5 @@
+// @ts-check
+
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { format } from 'date-fns';

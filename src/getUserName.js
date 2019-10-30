@@ -1,3 +1,5 @@
+// @ts-check
+
 import { name } from 'faker';
 import Cookies from 'js-cookie';
 

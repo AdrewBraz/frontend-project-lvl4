@@ -1,3 +1,5 @@
+// @ts-check
+
 import { combineReducers } from 'redux';
 import { handleActions, combineActions } from 'redux-actions';
 import { omitBy, without } from 'lodash';
