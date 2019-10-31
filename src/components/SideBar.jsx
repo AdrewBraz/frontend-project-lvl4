@@ -8,7 +8,7 @@ import NewChannelForm from './NewChannelForm';
 
 function SideBar() {
   return (
-    <Col sm={4} lg={3}>
+    <Col className="mb-3" xs={12} md={4} lg={3}>
       <UserCard />
       <ChannelList />
       <NewChannelForm />

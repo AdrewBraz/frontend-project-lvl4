@@ -50,7 +50,7 @@ class MessagesList extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '80vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
+      <div style={{ height: '70vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
         {this.renderMessages()}
       </div>
     );

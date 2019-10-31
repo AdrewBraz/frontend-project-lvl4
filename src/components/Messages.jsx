@@ -8,7 +8,7 @@ import NewMessageForm from './NewMessageForm';
 
 function Messages() {
   return (
-    <Col sm={8} lg={9}>
+    <Col xs={12} md={8} lg={9}>
       <MessagesList />
       <NewMessageForm />
     </Col>
