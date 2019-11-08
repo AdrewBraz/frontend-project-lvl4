@@ -1,0 +1,14 @@
+{
+    "en": {
+      "application": {
+        "welcomeUser": "Welcome",
+        "newChannel": "New channel"
+      }
+    },
+    "ru": {
+      "application": {
+        "welcomeUser": "Здравствуйте",
+        "newChannel": "Новый канал"
+      }
+    }
+  }

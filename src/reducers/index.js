@@ -1,7 +1,8 @@
-// @ts-check
+// @ts-nocheck
 
 import { combineReducers } from 'redux';
 import { handleActions, combineActions } from 'redux-actions';
+import { i18nReducer } from 'react-redux-i18n';
 import { omitBy, without } from 'lodash';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
@@ -175,4 +176,5 @@ export default combineReducers({
   channels,
   chatState,
   form: formReducer,
+  i18: i18nReducer,
 });

@@ -6,10 +6,12 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import gon from 'gon';
 import io from 'socket.io-client';
+import { loadTranslations, setLocale } from 'react-redux-i18n';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import _ from 'lodash';
 import reducers from './reducers';
 import * as actions from './actions';
+import translations from './translations.json';
 
 import App from './components/App';
 import getUserName from './getUserName';
@@ -63,6 +65,9 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(actions.removeChannelSuccess(id));
   });
+
+  store.dispatch(loadTranslations(translations));
+  store.dispatch(setLocale('en'));
 
   render(
     <Provider store={store}>
