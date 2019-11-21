@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import gon from 'gon';
 import io from 'socket.io-client';
-import { loadTranslations, setLocale } from 'react-redux-i18n';
+import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import _ from 'lodash';
 import reducers from './reducers';
@@ -35,12 +35,11 @@ const initialState = {
   },
 };
 
-const middleware = [thunk];
 
 const store = createStore(
   reducers,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware)),
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export default () => {
@@ -65,7 +64,7 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(actions.removeChannelSuccess(id));
   });
-
+  syncTranslationWithStore(store);
   store.dispatch(loadTranslations(translations));
   store.dispatch(setLocale('en'));
 

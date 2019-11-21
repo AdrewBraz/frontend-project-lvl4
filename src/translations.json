@@ -7,7 +7,7 @@
         "newMessage": "New Message",
         "editBtn": "Edit",
         "saveBtn": "Save Changes",
-        "addBtn": "Add",
+        "add": "Add",
         "deleteQuestion": "Are you sure you want to delete this channel?",
         "backToEdit": "Back to Editing",
         "deleteBtn": "Delete"
@@ -21,10 +21,10 @@
         "newMessage": "Новое Сообщение",
         "editBtn": "Редактировать",
         "saveBtn": "Сохранить Изменения",
-        "addBtn": "Добавить",
+        "add": "Добавить",
         "deleteQuestion": "Вы уверены, что хотите удалить этот канал",
         "backToEdit": "Назад к Редактированию",
         "deleteBtn": "Удалить"
       }
     }
-  }
+}

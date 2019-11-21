@@ -1,6 +1,7 @@
 // @ts-check
 import React from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Translate } from 'react-redux-i18n';
 
 import connect from '../connect';
 
@@ -27,7 +28,7 @@ class MessagesList extends React.Component {
     if (!messageList || messageList.length < 1) {
       return (
         <div className="d-flex flex-column align-items-center justify-content-center h-100">
-          <strong className="display-2">no messages</strong>
+          <strong className="display-2"><Translate value="application.messages" /></strong>
         </div>
       );
     }

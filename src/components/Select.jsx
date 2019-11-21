@@ -6,7 +6,7 @@ import { setLocale } from 'react-redux-i18n';
 import { Dropdown } from 'react-bootstrap';
 
 const mapStateToProps = (state) => {
-  const { locale } = state.i18;
+  const { locale } = state.i18n;
   const props = { locale };
   return props;
 };

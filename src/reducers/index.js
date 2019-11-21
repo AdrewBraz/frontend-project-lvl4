@@ -176,5 +176,5 @@ export default combineReducers({
   channels,
   chatState,
   form: formReducer,
-  i18: i18nReducer,
+  i18n: i18nReducer,
 });

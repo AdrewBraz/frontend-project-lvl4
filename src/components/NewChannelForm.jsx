@@ -1,6 +1,7 @@
 // @ts-check
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { I18n } from 'react-redux-i18n';
 
 import connect from '../connect';
 
@@ -32,9 +33,9 @@ class NewChannelForm extends React.Component {
       return (
         <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline">
           <div className="input-group flex-row w-100">
-            <Field placeholder="new channel" className="form-control" name="name" required disabled={submitting} component="input" type="text" />
+            <Field placeholder={I18n.t('application.newChannel')} className="form-control" name="name" required disabled={submitting} component="input" type="text" />
             <div className="input-group-prepend">
-              <input type="submit" disabled={pristine || submitting} className=" btn btn-primary btn-sm" value="Add" />
+              <input type="submit" disabled={pristine || submitting} className=" btn btn-primary btn-sm" value={I18n.t('application.add')} />
             </div>
             {error && <div className="ml-3">{error}</div>}
           </div>
