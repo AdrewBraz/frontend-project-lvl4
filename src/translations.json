@@ -1,14 +1,30 @@
 {
     "en": {
       "application": {
-        "welcomeUser": "Welcome",
-        "newChannel": "New channel"
+        "logUser": "You are logged in as,",
+        "newChannel": "New Channel",
+        "messages": "No messages",
+        "newMessage": "New Message",
+        "editBtn": "Edit",
+        "saveBtn": "Save Changes",
+        "addBtn": "Add",
+        "deleteQuestion": "Are you sure you want to delete this channel?",
+        "backToEdit": "Back to Editing",
+        "deleteBtn": "Delete"
       }
     },
     "ru": {
       "application": {
-        "welcomeUser": "Здравствуйте",
-        "newChannel": "Новый канал"
+        "logUser": "Вы вошли как, ",
+        "newChannel": "Новый Канал",
+        "messages": "Нет сообщений",
+        "newMessage": "Новое Сообщение",
+        "editBtn": "Редактировать",
+        "saveBtn": "Сохранить Изменения",
+        "addBtn": "Добавить",
+        "deleteQuestion": "Вы уверены, что хотите удалить этот канал",
+        "backToEdit": "Назад к Редактированию",
+        "deleteBtn": "Удалить"
       }
     }
   }

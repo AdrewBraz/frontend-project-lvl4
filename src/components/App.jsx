@@ -1,12 +1,13 @@
 // @ts-check
 
 import React from 'react';
-import { Row, Spinner } from 'react-bootstrap';
+import { Row, Spinner, Navbar } from 'react-bootstrap';
 
 import connect from '../connect';
 import SideBar from './SideBar';
 import Messages from './Messages';
 import ModalEditForm from './ModalEditForm';
+import Select from './Select';
 
 const mapStateToProps = (state) => {
   const { appState } = state;
@@ -25,11 +26,24 @@ class App extends React.Component {
   )
 
   renderChat = () => (
-    <Row>
-      <SideBar />
-      <Messages />
-      <ModalEditForm />
-    </Row>
+    <>
+      <Row>
+        <Navbar expand="lg" bg="light" className="bg-faded w-100 justify-content-between">
+          <Navbar.Brand href="/">Chat</Navbar.Brand>
+          <Navbar>
+            <Select />
+          </Navbar>
+          <Navbar.Toggle data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span className="navbar-toggler-icon" />
+          </Navbar.Toggle>
+        </Navbar>
+      </Row>
+      <Row>
+        <SideBar />
+        <Messages />
+        <ModalEditForm />
+      </Row>
+    </>
   )
 
   renderApp = () => {

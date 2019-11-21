@@ -31,9 +31,10 @@ class ModalEditForm extends React.Component {
     this.handleClose();
   };
 
-  handleSwitchToEdit = () => {
-    const { modalStateEdit } = this.props;
-    modalStateEdit();
+  handleSwitchToEdit = (e) => {
+    e.preventDefault();
+    const { modalStateEdit, channelEditId } = this.props;
+    modalStateEdit({ id: channelEditId });
   }
 
   handleModalDelete = () => {

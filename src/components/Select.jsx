@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { setLocale } from 'react-redux-i18n';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 
 const mapStateToProps = (state) => {
   const { locale } = state.i18;
@@ -28,18 +28,17 @@ class Select extends React.Component {
     }
 
     render() {
-      const locale = this.props;
+      const { locale } = this.props;
       return (
-        <Navbar expand="lg">
-          <NavDropdown title="English" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#english" onClick={this.handleSwitchLanguage} data-language="en">
-              {'english'}
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#russian" onClick={this.handleSwitchLanguage} data-language="ru">
-              {'russian'}
-            </NavDropdown.Item>
-          </NavDropdown>
-        </Navbar>
+        <Dropdown>
+          <Dropdown.Toggle variant="info" id="dropdown-basic">
+            {locale}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item href="#english" onClick={this.handleSwitchLanguage} data-language="en">English</Dropdown.Item>
+            <Dropdown.Item href="#russian" onClick={this.handleSwitchLanguage} data-language="ru">Russian</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       );
     }
 }
