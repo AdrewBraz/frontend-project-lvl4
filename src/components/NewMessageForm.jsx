@@ -38,7 +38,7 @@ class NewMessageForm extends React.Component {
     const {
       handleSubmit, submitting, pristine, error,
     } = this.props;
-    const btn = I18n.t("application.add");
+    const btn = I18n.t('application.add');
     return (
       <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline align-items-end">
         <div className="input-group flex-row w-100">

@@ -3,11 +3,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import gon from 'gon';
 import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import _ from 'lodash';
 import reducers from './reducers';
 import * as actions from './actions';
@@ -36,11 +35,11 @@ const initialState = {
 };
 
 
-const store = createStore(
-  reducers,
-  initialState,
-  composeWithDevTools(applyMiddleware(thunk)),
-);
+const store = configureStore({
+  reducer: reducers,
+  preloadedState: initialState,
+  middleware: [thunk, ...getDefaultMiddleware()],
+});
 
 export default () => {
   const port = process.env.PORT;

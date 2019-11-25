@@ -1,17 +1,16 @@
 // @ts-check
-
 import React from 'react';
 import { sortBy } from 'lodash';
 import cn from 'classnames';
-
+import { Translate } from 'react-redux-i18n';
 import connect from '../connect';
 
-const mapStateToProps = (state) => {
-  const { channels, chatState } = state;
-  const channelList = sortBy(channels.allIds.map(i => channels.ByIds[i]), 'id');
-  const props = { chatState, channels, channelList };
-  return props;
-};
+
+const mapStateToProps = state => ({
+  chatState: state.chatState,
+  channels: state.channels,
+  channelList: sortBy(state.channels.allIds.map(i => state.channels.ByIds[i]), 'id'),
+});
 
 export default @connect(mapStateToProps)
 class ChannelsList extends React.Component {
@@ -31,7 +30,14 @@ class ChannelsList extends React.Component {
     modalStateEdit(id);
   }
 
-  renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>
+  renderEditBtn = (id) => {
+    const editBtn = <Translate value="application.editBtn" />;
+    return (
+      <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">
+        {editBtn}
+      </button>
+    );
+  }
 
   renderChannels = () => {
     const { channelList, chatState } = this.props;

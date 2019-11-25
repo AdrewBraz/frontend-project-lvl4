@@ -28,7 +28,7 @@ class App extends React.Component {
   renderChat = () => (
     <>
       <Row>
-        <Navbar expand="lg" bg="light" className="bg-faded w-100 justify-content-between">
+        <Navbar expand="lg" bg="light" className="bg-faded w-100 justify-content-between p-3">
           <Navbar.Brand href="/">Chat</Navbar.Brand>
           <Navbar>
             <Select />
