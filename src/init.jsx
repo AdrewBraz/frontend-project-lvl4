@@ -2,7 +2,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import gon from 'gon';
 import io from 'socket.io-client';
@@ -38,7 +37,6 @@ const initialState = {
 const store = configureStore({
   reducer: reducers,
   preloadedState: initialState,
-  middleware: [thunk, ...getDefaultMiddleware()],
 });
 
 export default () => {

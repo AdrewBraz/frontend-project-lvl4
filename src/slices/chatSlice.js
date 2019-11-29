@@ -1,7 +1,5 @@
 // @ts-check
 import { createSlice } from '@reduxjs/toolkit';
-import { removeChannelSuccess } from './channelsRemovingSlice';
-import { renameChannelSuccess } from './channelsRenamingSlice';
 
 const chatSlice = createSlice({
   name: 'chatState',
@@ -19,14 +17,13 @@ const chatSlice = createSlice({
     modalStateDelete(state) {
       return { ...state, modal: 'delete' };
     },
-    extraReducers: {
-      [renameChannelSuccess](state) {
+    renameChannelSuccess(state) {
         return {
           ...state,
           channelEditId: null,
         };
       },
-      [removeChannelSuccess](state, { payload: { id } }) {
+    removeChannelSuccess(state, { payload: { id } }) {
         const { currentChannelId } = state;
         const defaultChannelId = 1;
         return {
@@ -36,7 +33,6 @@ const chatSlice = createSlice({
         };
       },
     },
-  },
 });
 
 export const {
