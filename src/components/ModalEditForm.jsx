@@ -2,7 +2,6 @@
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
-import { I18n } from 'react-redux-i18n';
 
 import connect from '../connect';
 

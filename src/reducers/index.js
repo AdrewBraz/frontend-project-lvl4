@@ -1,14 +1,15 @@
-// @ts-nocheck
+/* eslint-disable no-param-reassign */
+// @ts-check
 
 import { combineReducers } from 'redux';
-import { handleActions, combineActions } from 'redux-actions';
+import { createReducer } from '@reduxjs/toolkit';
 import { i18nReducer } from 'react-redux-i18n';
 import { omitBy, without } from 'lodash';
 import { reducer as formReducer } from 'redux-form';
 import * as actions from '../actions';
 
 
-const messagesFetchingState = handleActions({
+const messagesFetchingState = createReducer(null, {
   [actions.fetchMessagesRequest]() {
     return 'requested';
   },
@@ -18,9 +19,9 @@ const messagesFetchingState = handleActions({
   [actions.fetchMessagesSuccess]() {
     return 'finished';
   },
-}, null);
+});
 
-const channelsAddingState = handleActions({
+const channelsAddingState = createReducer(null, {
   [actions.addChannelRequest]() {
     return 'requested';
   },
@@ -30,9 +31,9 @@ const channelsAddingState = handleActions({
   [actions.addChannelSuccess]() {
     return 'finished';
   },
-}, null);
+});
 
-const channelsRemovingState = handleActions({
+const channelsRemovingState = createReducer(null, {
   [actions.removeChannelRequest]() {
     return 'requested';
   },
@@ -42,9 +43,9 @@ const channelsRemovingState = handleActions({
   [actions.removeChannelSuccess]() {
     return 'finished';
   },
-}, null);
+});
 
-const channelsRenamingState = handleActions({
+const channelsRenamingState = createReducer(null, {
   [actions.renameChannelRequest]() {
     return 'requested';
   },
@@ -54,9 +55,9 @@ const channelsRenamingState = handleActions({
   [actions.renameChannelSuccess]() {
     return 'finished';
   },
-}, null);
+});
 
-const messagesAddingState = handleActions({
+const messagesAddingState = createReducer(null, {
   [actions.addMessageRequest]() {
     return 'requested';
   },
@@ -66,43 +67,38 @@ const messagesAddingState = handleActions({
   [actions.addMessageSuccess]() {
     return 'finished';
   },
-}, null);
+});
 
-const connectionState = handleActions({
+const connectionState = createReducer(null, {
   [actions.socketConnected]() {
     return 'connected';
   },
   [actions.socketDisconnected]() {
     return 'disconnected';
   },
-}, null);
+});
 
-const messages = handleActions({
+const messages = createReducer({}, {
   [actions.fetchMessagesSuccess](state, { payload: { id, channelMessages } }) {
-    return { ...state, [id]: channelMessages };
+    state[id] = channelMessages;
   },
   [actions.addMessageSuccess](state, { payload: { newMessage } }) {
     const { channelId } = newMessage;
     const messageList = state[channelId] ? [...state[channelId], newMessage] : [newMessage];
-    return { ...state, [channelId]: messageList };
+    state[channelId] = messageList;
   },
-}, {});
+});
 
-const channels = handleActions({
+const channels = createReducer({}, {
   [actions.addChannelSuccess](state, { payload: { newChannel } }) {
     const { ByIds, allIds } = state;
-    return {
-      ByIds: { ...ByIds, [newChannel.id]: newChannel },
-      allIds: [...allIds, newChannel.id],
-    };
+    ByIds[newChannel.id] = newChannel;
+    allIds.push(newChannel.id);
   },
   [actions.renameChannelSuccess](state, { payload: { renamedChannel } }) {
     const { id } = renamedChannel;
-    const { ByIds, allIds } = state;
-    return {
-      ByIds: { ...ByIds, [id]: renamedChannel },
-      allIds: [...allIds],
-    };
+    const { ByIds } = state;
+    ByIds[id] = renamedChannel;
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { ByIds, allIds } = state;
@@ -111,58 +107,46 @@ const channels = handleActions({
       allIds: without(allIds, id),
     };
   },
-}, {});
+});
 
-const chatState = handleActions({
+const chatState = createReducer({}, {
   [actions.switchChannel](state, { payload: { id } }) {
-    return { ...state, currentChannelId: id };
+    state.currentChannelId = id;
   },
   [actions.modalStateEdit](state, { payload }) {
-    return { ...state, channelEditId: payload.id, modal: 'edit' };
+    state.channelEditId = payload.id;
+    state.modal = 'edit';
   },
   [actions.modalStateClose](state) {
-    return { ...state, channelEditId: null, modal: 'close' };
+    state.channelEditId = null;
+    state.modal = 'close';
   },
   [actions.modalStateDelete](state) {
-    return { ...state, modal: 'delete' };
+    state.modal = 'delete';
   },
   [actions.renameChannelSuccess](state) {
-    return {
-      ...state,
-      channelEditId: null,
-    };
+    state.channelEditId = null;
   },
   [actions.removeChannelSuccess](state, { payload: { id } }) {
     const { currentChannelId } = state;
     const defaultChannelId = 1;
-    return {
-      ...state,
-      channelEditId: null,
-      currentChannelId: id === currentChannelId ? defaultChannelId : currentChannelId,
-    };
+    state.channelEditId = null;
+    state.currentChannelId = id === currentChannelId ? defaultChannelId : currentChannelId;
   },
-}, {});
+});
 
-const appState = handleActions({
-  [combineActions(
-    actions.socketDisconnected,
-    actions.addChannelRequest,
-    actions.renameChannelRequest,
-    actions.removeChannelRequest,
-    actions.addMessageRequest,
-  )]() {
-    return 'processing';
-  },
-  [combineActions(
-    actions.socketConnected,
-    actions.addChannelSuccess,
-    actions.renameChannelSuccess,
-    actions.removeChannelSuccess,
-    actions.addMessageSuccess,
-  )]() {
-    return 'finished';
-  },
-}, 'finished');
+const appState = createReducer('finished', {
+  [actions.socketDisconnected]() { return 'processing'; },
+  [actions.addChannelRequest]() { return 'processing'; },
+  [actions.addMessageRequest]() { return 'processing'; },
+  [actions.renameChannelRequest]() { return 'processing'; },
+  [actions.removeChannelRequest]() { return 'processing'; },
+  [actions.socketConnected]() { return 'finished'; },
+  [actions.addChannelSuccess]() { return 'finished'; },
+  [actions.addMessageSuccess]() { return 'finished'; },
+  [actions.removeChannelSuccess]() { return 'finished'; },
+  [actions.renameChannelSuccess]() { return 'finished'; },
+});
 
 export default combineReducers({
   appState,

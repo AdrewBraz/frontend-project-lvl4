@@ -1,7 +1,7 @@
 // @ts-check
 
 import axios from 'axios';
-import { createAction } from 'redux-actions';
+import { createAction } from '@reduxjs/toolkit';
 import routes from '../routes';
 
 export const fetchMessagesRequest = createAction('FETCH_MESSAGES_REQUEST');
