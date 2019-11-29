@@ -10,9 +10,7 @@
         "add": "Add",
         "deleteQuestion": "Are you sure you want to delete this channel?",
         "backToEdit": "Back to Editing",
-        "deleteBtn": "Delete",
-        "deleteChannel": "Delete Channel",
-        "editChannel": "Edit Channel"
+        "deleteBtn": "Delete"
       }
     },
     "ru": {
@@ -26,9 +24,7 @@
         "add": "Добавить",
         "deleteQuestion": "Вы уверены, что хотите удалить этот канал",
         "backToEdit": "Назад к Редактированию",
-        "deleteBtn": "Удалить",
-        "deleteChannel": "Удалить Канал",
-        "editChannel": "Редактировать Канал"
+        "deleteBtn": "Удалить"
       }
     }
 }

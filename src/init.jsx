@@ -2,7 +2,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import gon from 'gon';
 import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';

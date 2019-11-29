@@ -2,7 +2,7 @@
 import React from 'react';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { Modal, Button } from 'react-bootstrap';
-import { Translate } from 'react-redux-i18n';
+import { I18n } from 'react-redux-i18n';
 
 import connect from '../connect';
 
@@ -32,7 +32,8 @@ class ModalEditForm extends React.Component {
     this.handleClose();
   };
 
-  handleSwitchToEdit = () => {
+  handleSwitchToEdit = (e) => {
+    e.preventDefault();
     const { modalStateEdit, channelEditId } = this.props;
     modalStateEdit({ id: channelEditId });
   }
@@ -62,9 +63,7 @@ class ModalEditForm extends React.Component {
       <div>
         <Modal show={modal === 'edit'} onHide={this.handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>
-              <Translate value="application.editChannel" />
-            </Modal.Title>
+            <Modal.Title>Edit Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column">
             <form onSubmit={handleSubmit(this.handleRename)} className="form-inline mb-3">
@@ -72,31 +71,29 @@ class ModalEditForm extends React.Component {
                 <Field placeholder={channelName} className="form-control" name="name" required disabled={submitting} component="input" type="text" />
                 <div className="input-group-prepend">
                   <Button variant="primary" type="submit" disabled={pristine || submitting}>
-                    <Translate value="application.saveBtn" />
+                    Save Changes
                   </Button>
                 </div>
                 {error && <div className="ml-3">{error}</div>}
               </div>
             </form>
             <Button variant="primary" type="button" onClick={this.handleModalDelete}>
-              <Translate value="application.deleteChannel" />
+              Delete channel
             </Button>
           </Modal.Body>
         </Modal>
         <Modal show={modal === 'delete'} onHide={this.handleSwitchToEdit}>
           <Modal.Header closeButton>
-            <Modal.Title><Translate value="application.deleteChannel" /></Modal.Title>
+            <Modal.Title>Delete Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column align-items-center">
-            <p className="pb-3 border-bottom border-dark">
-              <Translate value="application.deleteQuestion" />
-            </p>
+            <p className="pb-3 border-bottom border-dark">Are you sure you want to delete this channel?</p>
             <div className="d-flex justify-content-around">
               <Button className="mr-3" variant="danger" type="button" onClick={this.handleRemoveChannel}>
-                <Translate value="application.deleteBtn" />
+                Delete
               </Button>
               <Button className="ml-3" variant="primary" type="button" onClick={this.handleSwitchToEdit}>
-                <Translate value="application.backToEdit" />
+                Back to Editing
               </Button>
             </div>
           </Modal.Body>
