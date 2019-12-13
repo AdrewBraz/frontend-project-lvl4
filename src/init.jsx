@@ -8,12 +8,14 @@ import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
 import _ from 'lodash';
 import reducers from './reducers';
-import * as actions from './actions';
 import translations from './translations.json';
 
 import App from './components/App';
 import getUserName from './getUserName';
 import User from './context';
+import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
+import { renameChannelSuccess, removeChannelSuccess, addChannelSuccess } from './reducers/channelsSlice';
+import { addMessageSuccess } from './reducers/messagesSlice';
 
 const userName = getUserName();
 
@@ -44,22 +46,22 @@ export default () => {
   const socket = io(port);
 
   socket.on('connect', () => {
-    store.dispatch(actions.socketConnected());
+    store.dispatch(socketConnected());
   });
   socket.on('disconnect', () => {
-    store.dispatch(actions.socketDisconnected());
+    store.dispatch(socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
-    store.dispatch(actions.addChannelSuccess({ newChannel: attributes }));
+    store.dispatch(addChannelSuccess({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
-    store.dispatch(actions.addMessageSuccess({ newMessage: attributes }));
+    store.dispatch(addMessageSuccess({ newMessage: attributes }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
-    store.dispatch(actions.renameChannelSuccess({ renamedChannel: attributes }));
+    store.dispatch(renameChannelSuccess({ renamedChannel: attributes }));
   });
   socket.on('removeChannel', ({ data: { id } }) => {
-    store.dispatch(actions.removeChannelSuccess(id));
+    store.dispatch(removeChannelSuccess(id));
   });
   syncTranslationWithStore(store);
   store.dispatch(loadTranslations(translations));

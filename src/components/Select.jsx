@@ -1,7 +1,7 @@
 // @ts-check
 import { connect } from 'react-redux';
 import React from 'react';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from '@reduxjs/toolkit';
 import { setLocale } from 'react-redux-i18n';
 import { Dropdown } from 'react-bootstrap';
 

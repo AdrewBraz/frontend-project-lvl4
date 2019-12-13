@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Row, Spinner, Navbar } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-import connect from '../connect';
 import SideBar from './SideBar';
 import Messages from './Messages';
 import ModalEditForm from './ModalEditForm';

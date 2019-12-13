@@ -1,5 +1,4 @@
 // @ts-check
-
 import React from 'react';
 import { sortBy } from 'lodash';
 import cn from 'classnames';
