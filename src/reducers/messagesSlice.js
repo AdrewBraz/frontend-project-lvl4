@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // @ts-check
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -26,6 +27,7 @@ export const fetchMessages = id => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
     const { data } = await axios.get(routes.channelMessagesPath(id));
+    console.log(data, id)
     dispatch(fetchMessagesSuccess({ id, channelMessages: data.map(ch => ch.attributes) }));
   } catch (e) {
     dispatch(fetchMessagesFailure());
