@@ -1,19 +1,22 @@
 // @ts-check
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Formik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
+import { I18n } from 'react-redux-i18n';
 
+import axios from 'axios';
+import routes from '../routes';
 import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { chatState, channels } = state;
-  const { channelEditId, modal } = chatState;
+  const { modal, channelEditId } = chatState;
   const { ByIds } = channels;
   const props = { channelEditId, modal, ByIds };
   return props;
 };
 
-export default @reduxForm({ form: 'editForm' })
+export default
 @connect(mapStateToProps)
 class ModalEditForm extends React.Component {
   handleClose = () => {
@@ -21,18 +24,20 @@ class ModalEditForm extends React.Component {
     modalStateClose();
   }
 
-  handleRename = async (name) => {
-    const { renameChannel, channelEditId } = this.props;
+  handleRename = async (name, { resetForm, setSubmitting }) => {
+    const { channelEditId } = this.props;
     try {
-      await renameChannel(channelEditId, name);
+      const data = { attributes: name };
+      await axios.patch(routes.channelPath(channelEditId), { data });
+      resetForm();
+      setSubmitting(false);
     } catch (e) {
-      throw new SubmissionError({ _error: e.channel });
+      throw new Error('Something went wrong');
     }
     this.handleClose();
   };
 
-  handleSwitchToEdit = (e) => {
-    e.preventDefault();
+  handleSwitchToEdit = () => {
     const { modalStateEdit, channelEditId } = this.props;
     modalStateEdit({ id: channelEditId });
   }
@@ -43,21 +48,69 @@ class ModalEditForm extends React.Component {
   }
 
   handleRemoveChannel = async () => {
-    const { removeChannel, channelEditId } = this.props;
+    const { channelEditId } = this.props;
     try {
-      await removeChannel(channelEditId);
+      await await axios.delete(routes.channelPath(channelEditId));
     } catch (e) {
       throw new Error(e);
     }
     this.handleClose();
   }
 
+  renderForm = () => {
+    const { channelEditId, ByIds } = this.props;
+    const channel = ByIds.find(ch => ch.id === channelEditId);
+    const channelName = channel ? channel.name : '';
+    return (
+      <Formik
+        initialValues={{ name: '' }}
+        onSubmit={this.handleRename}
+        validate={(values) => {
+          const errors = {};
+          if (values.name.length === 0) {
+            errors.name = 'Empty field';
+          }
+          return errors;
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <form className="form-inline mb-3" onSubmit={handleSubmit}>
+            <div className="input-group flex-row w-100">
+              <input
+                type="text"
+                name="name"
+                placeholder={channelName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.name}
+                className="form-control"
+              />
+              <div className="input-group-prepend">
+                <input
+                  type="submit"
+                  disabled={isSubmitting}
+                  className=" btn btn-primary btn-sm"
+                  value={I18n.t('application.add')}
+                />
+              </div>
+            </div>
+            {errors.name && touched.name}
+          </form>
+        )}
+      </Formik>
+    );
+  }
+
   render() {
-    const {
-      modal, handleSubmit, submitting, pristine, error, channelEditId, ByIds,
-    } = this.props;
-    const channel = ByIds[channelEditId];
-    const channelName = channel ? channel.name : null;
+    const { modal } = this.props;
     return (
       <div>
         <Modal show={modal === 'edit'} onHide={this.handleClose}>
@@ -65,17 +118,7 @@ class ModalEditForm extends React.Component {
             <Modal.Title>Edit Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column">
-            <form onSubmit={handleSubmit(this.handleRename)} className="form-inline mb-3">
-              <div className="input-group flex-row w-100">
-                <Field placeholder={channelName} className="form-control" name="name" required disabled={submitting} component="input" type="text" />
-                <div className="input-group-prepend">
-                  <Button variant="primary" type="submit" disabled={pristine || submitting}>
-                    Save Changes
-                  </Button>
-                </div>
-                {error && <div className="ml-3">{error}</div>}
-              </div>
-            </form>
+            {this.renderForm()}
             <Button variant="primary" type="button" onClick={this.handleModalDelete}>
               Delete channel
             </Button>

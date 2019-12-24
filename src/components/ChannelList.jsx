@@ -7,7 +7,7 @@ import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { channels, chatState } = state;
-  const channelList = sortBy(channels.allIds.map(i => channels.ByIds[i]), 'id');
+  const channelList = sortBy(channels.ByIds);
   const props = { chatState, channels, channelList };
   return props;
 };
@@ -16,8 +16,8 @@ export default @connect(mapStateToProps)
 class ChannelsList extends React.Component {
   handleSwitch = id => (e) => {
     e.preventDefault();
-    const { switchChannel, chatState, fetchMessages } = this.props;
-    if (chatState.currentChannelId !== id) {
+    const { switchChannel, channels, fetchMessages } = this.props;
+    if (channels.currentChannelId !== id) {
       switchChannel({ id });
       fetchMessages(id);
     }
@@ -33,8 +33,8 @@ class ChannelsList extends React.Component {
   renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>
 
   renderChannels = () => {
-    const { channelList, chatState } = this.props;
-    const { currentChannelId } = chatState;
+    const { channelList, channels } = this.props;
+    const { currentChannelId } = channels;
     return channelList.map((channel) => {
       const isActive = channel.id === currentChannelId;
       const classList = cn({

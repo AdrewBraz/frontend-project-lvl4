@@ -26,8 +26,7 @@ const messagesSlice = createSlice({
 export const fetchMessages = id => async (dispatch) => {
   dispatch(fetchMessagesRequest());
   try {
-    const { data } = await axios.get(routes.channelMessagesPath(id));
-    console.log(data, id)
+    const { data: { data } } = await axios.get(routes.channelMessagesPath(id));
     dispatch(fetchMessagesSuccess({ id, channelMessages: data.map(ch => ch.attributes) }));
   } catch (e) {
     dispatch(fetchMessagesFailure());

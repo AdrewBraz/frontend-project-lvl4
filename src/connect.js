@@ -2,9 +2,11 @@
 
 import { connect } from 'react-redux';
 import {
-  switchChannel, modalStateEdit, modalStateDelete, modalStateClose,
+  modalStateEdit, modalStateDelete, modalStateClose,
 } from './reducers/chatSlice';
-import { addChannel, renameChannel, removeChannel } from './reducers/channelsSlice';
+import {
+  switchChannel, renameChannel, removeChannel, addChannelToStore,
+} from './reducers/channelsSlice';
 import { fetchMessages, addMessage } from './reducers/messagesSlice';
 
 const actionCreators = {
@@ -12,7 +14,7 @@ const actionCreators = {
   modalStateEdit,
   modalStateDelete,
   modalStateClose,
-  addChannel,
+  addChannelToStore,
   renameChannel,
   removeChannel,
   fetchMessages,

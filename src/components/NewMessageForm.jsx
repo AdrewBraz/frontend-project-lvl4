@@ -1,6 +1,5 @@
 // @ts-check
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { format } from 'date-fns';
 import { I18n } from 'react-redux-i18n';
 
@@ -15,7 +14,7 @@ const mapStateToProps = (state) => {
 };
 
 
-export default @reduxForm({ form: 'newChannelForm' })
+export default
 @connect(mapStateToProps)
 class NewMessageForm extends React.Component {
   static contextType = User;
@@ -28,25 +27,24 @@ class NewMessageForm extends React.Component {
     try {
       await addMessage(currentChannelId, { text, author: userName, date: postDate });
     } catch (e) {
-      throw new SubmissionError({ _error: e.channel });
+      // throw new SubmissionError({ _error: e.channel });
     }
     reset();
   }
 
   render() {
-    const {
-      handleSubmit, submitting, pristine, error,
-    } = this.props;
-    const btn = I18n.t('application.add');
+    // const btn = I18n.t('application.add');
     return (
-      <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline align-items-end">
-        <div className="input-group flex-row w-100">
-          <Field name="text" className="form-control" placeholder={I18n.t('application.newMessage')} required disabled={submitting} component="input" type="text" />
+      <form className="form-inline align-items-end">
+        {/* <div className="input-group flex-row w-100">
+          <Field name="text" className="form-control"
+          placeholder={I18n.t('application.newMessage')}
+          required disabled={submitting} component="input" type="text" />
           <div className="input-group-prepend">
-            <input type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value={btn} />
+            <input type="submit" disabled={pristine || submitting}
+            className="btn btn-primary btn-sm" value={btn} />
           </div>
-        </div>
-        {error && <div className="ml-3">{error}</div>}
+        </div> */}
       </form>
     );
   }

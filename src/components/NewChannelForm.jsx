@@ -1,7 +1,10 @@
 // @ts-check
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Formik } from 'formik';
 import { I18n } from 'react-redux-i18n';
+import axios from 'axios';
+import routes from '../routes';
+
 
 import connect from '../connect';
 
@@ -13,33 +16,66 @@ const mapStateToProps = (state) => {
   return props;
 };
 
-export default @reduxForm({ form: 'newChannelForm' })
+export default
 @connect(mapStateToProps)
 class NewChannelForm extends React.Component {
-    handleSubmit = async (name) => {
-      const { addChannel, reset } = this.props;
+    handleSubmitForm = async (name, { resetForm, setSubmitting }) => {
       try {
-        await addChannel(name);
+        const data = { attributes: name };
+        await axios.post(routes.channelsPath(), { data });
+        resetForm();
+        setSubmitting(false);
       } catch (e) {
-        throw new SubmissionError({ _error: e.channel });
+        throw new Error('Something went wrong');
       }
-      reset();
     }
 
     render() {
-      const {
-        handleSubmit, submitting, pristine, error,
-      } = this.props;
       return (
-        <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline">
-          <div className="input-group flex-row w-100">
-            <Field placeholder={I18n.t('application.newChannel')} className="form-control" name="name" required disabled={submitting} component="input" type="text" />
-            <div className="input-group-prepend">
-              <input type="submit" disabled={pristine || submitting} className=" btn btn-primary btn-sm" value={I18n.t('application.add')} />
-            </div>
-            {error && <div className="ml-3">{error}</div>}
-          </div>
-        </form>
+        <Formik
+          initialValues={{ name: '' }}
+          onSubmit={this.handleSubmitForm}
+          validate={(values) => {
+            const errors = {};
+            if (values.name.length === 0) {
+              errors.name = 'Empty field';
+            }
+            return errors;
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          }) => (
+            <form className="form-inline" onSubmit={handleSubmit}>
+              <div className="input-group flex-row w-100">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={I18n.t('application.newChannel')}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  className="form-control"
+                />
+                <div className="input-group-prepend">
+                  <input
+                    type="submit"
+                    disabled={isSubmitting}
+                    className=" btn btn-primary btn-sm"
+                    value={I18n.t('application.add')}
+                  />
+                </div>
+              </div>
+              {errors.name && touched.name}
+            </form>
+          )}
+        </Formik>
       );
     }
 }

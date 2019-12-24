@@ -6,7 +6,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import gon from 'gon';
 import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
-import _ from 'lodash';
 import reducers from './reducers';
 import translations from './translations.json';
 
@@ -14,7 +13,7 @@ import App from './components/App';
 import getUserName from './getUserName';
 import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
-import { renameChannelSuccess, removeChannelSuccess, addChannelSuccess } from './reducers/channelsSlice';
+import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessageSuccess } from './reducers/messagesSlice';
 
 const userName = getUserName();
@@ -26,11 +25,12 @@ const user = {
 const initialState = {
   channels: {
     allIds: gon.channels.map(channel => channel.id),
-    ByIds: _.keyBy(gon.channels, 'id'),
+    ByIds: gon.channels,
+    currentChannelId: 1,
   },
   messages: {},
   chatState: {
-    currentChannelId: gon.currentChannelId,
+    currentChannelId: 1,
     modal: 'closed',
   },
 };
@@ -52,16 +52,16 @@ export default () => {
     store.dispatch(socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
-    store.dispatch(addChannelSuccess({ newChannel: attributes }));
+    store.dispatch(addChannelToStore({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
     store.dispatch(addMessageSuccess({ newMessage: attributes }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
-    store.dispatch(renameChannelSuccess({ renamedChannel: attributes }));
+    store.dispatch(renameChannel({ renamedChannel: attributes }));
   });
   socket.on('removeChannel', ({ data: { id } }) => {
-    store.dispatch(removeChannelSuccess(id));
+    store.dispatch(removeChannel({ id }));
   });
   syncTranslationWithStore(store);
   store.dispatch(loadTranslations(translations));
