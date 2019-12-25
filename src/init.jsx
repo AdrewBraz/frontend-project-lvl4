@@ -14,7 +14,7 @@ import getUserName from './getUserName';
 import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
-import { addMessageSuccess } from './reducers/messagesSlice';
+import { addMessage } from './reducers/messagesSlice';
 
 const userName = getUserName();
 
@@ -55,7 +55,7 @@ export default () => {
     store.dispatch(addChannelToStore({ newChannel: attributes }));
   });
   socket.on('newMessage', ({ data: { attributes } }) => {
-    store.dispatch(addMessageSuccess({ newMessage: attributes }));
+    store.dispatch(addMessage({ newMessage: attributes }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
     store.dispatch(renameChannel({ renamedChannel: attributes }));

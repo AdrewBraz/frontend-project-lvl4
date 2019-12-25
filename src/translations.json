@@ -2,12 +2,12 @@
     "en": {
       "application": {
         "logUser": "You are logged in as,",
-        "newChannel": "New Channel",
+        "channelName": "Channel Name",
         "messages": "No messages",
         "newMessage": "New Message",
         "editBtn": "Edit",
         "saveBtn": "Save Changes",
-        "add": "Add",
+        "addBtn": "Add",
         "deleteQuestion": "Are you sure you want to delete this channel?",
         "backToEdit": "Back to Editing",
         "deleteBtn": "Delete"
@@ -16,12 +16,12 @@
     "ru": {
       "application": {
         "logUser": "Вы вошли как, ",
-        "newChannel": "Новый Канал",
+        "channelName": "Название Канала",
         "messages": "Нет сообщений",
         "newMessage": "Новое Сообщение",
         "editBtn": "Редактировать",
         "saveBtn": "Сохранить Изменения",
-        "add": "Добавить",
+        "addBtn": "Добавить",
         "deleteQuestion": "Вы уверены, что хотите удалить этот канал",
         "backToEdit": "Назад к Редактированию",
         "deleteBtn": "Удалить"

@@ -1,12 +1,12 @@
 // @ts-check
 import React from 'react';
-import { Formik } from 'formik';
 import { Modal, Button } from 'react-bootstrap';
 import { I18n } from 'react-redux-i18n';
-
 import axios from 'axios';
+
 import routes from '../routes';
 import connect from '../connect';
+import Form from './Form';
 
 const mapStateToProps = (state) => {
   const { chatState, channels } = state;
@@ -57,60 +57,12 @@ class ModalEditForm extends React.Component {
     this.handleClose();
   }
 
-  renderForm = () => {
-    const { channelEditId, ByIds } = this.props;
-    const channel = ByIds.find(ch => ch.id === channelEditId);
-    const channelName = channel ? channel.name : '';
-    return (
-      <Formik
-        initialValues={{ name: '' }}
-        onSubmit={this.handleRename}
-        validate={(values) => {
-          const errors = {};
-          if (values.name.length === 0) {
-            errors.name = 'Empty field';
-          }
-          return errors;
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-        }) => (
-          <form className="form-inline mb-3" onSubmit={handleSubmit}>
-            <div className="input-group flex-row w-100">
-              <input
-                type="text"
-                name="name"
-                placeholder={channelName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.name}
-                className="form-control"
-              />
-              <div className="input-group-prepend">
-                <input
-                  type="submit"
-                  disabled={isSubmitting}
-                  className=" btn btn-primary btn-sm"
-                  value={I18n.t('application.add')}
-                />
-              </div>
-            </div>
-            {errors.name && touched.name}
-          </form>
-        )}
-      </Formik>
-    );
-  }
-
   render() {
     const { modal } = this.props;
+    const translations = {
+      btn: 'editBtn',
+      placeholder: 'channelName',
+    };
     return (
       <div>
         <Modal show={modal === 'edit'} onHide={this.handleClose}>
@@ -118,9 +70,9 @@ class ModalEditForm extends React.Component {
             <Modal.Title>Edit Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column">
-            {this.renderForm()}
+            <Form name="name" submitForm={this.handleRename} translation={translations} />
             <Button variant="primary" type="button" onClick={this.handleModalDelete}>
-              Delete channel
+              {I18n.t('application.deleteBtn')}
             </Button>
           </Modal.Body>
         </Modal>
@@ -129,13 +81,15 @@ class ModalEditForm extends React.Component {
             <Modal.Title>Delete Channel</Modal.Title>
           </Modal.Header>
           <Modal.Body className="d-flex flex-column align-items-center">
-            <p className="pb-3 border-bottom border-dark">Are you sure you want to delete this channel?</p>
+            <p className="pb-3 border-bottom border-dark">
+              {I18n.t('application.deleteQuestion')}
+            </p>
             <div className="d-flex justify-content-around">
               <Button className="mr-3" variant="danger" type="button" onClick={this.handleRemoveChannel}>
-                Delete
+                {I18n.t('application.deleteBtn')}
               </Button>
               <Button className="ml-3" variant="primary" type="button" onClick={this.handleSwitchToEdit}>
-                Back to Editing
+                {I18n.t('application.backToEdit')}
               </Button>
             </div>
           </Modal.Body>

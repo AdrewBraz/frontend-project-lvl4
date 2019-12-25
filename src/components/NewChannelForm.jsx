@@ -1,11 +1,9 @@
 // @ts-check
 import React from 'react';
-import { Formik } from 'formik';
-import { I18n } from 'react-redux-i18n';
 import axios from 'axios';
 import routes from '../routes';
 
-
+import Form from './Form';
 import connect from '../connect';
 
 const mapStateToProps = (state) => {
@@ -31,51 +29,12 @@ class NewChannelForm extends React.Component {
     }
 
     render() {
+      const translations = {
+        btn: 'addBtn',
+        placeholder: 'channelName',
+      };
       return (
-        <Formik
-          initialValues={{ name: '' }}
-          onSubmit={this.handleSubmitForm}
-          validate={(values) => {
-            const errors = {};
-            if (values.name.length === 0) {
-              errors.name = 'Empty field';
-            }
-            return errors;
-          }}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-          }) => (
-            <form className="form-inline" onSubmit={handleSubmit}>
-              <div className="input-group flex-row w-100">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder={I18n.t('application.newChannel')}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                  className="form-control"
-                />
-                <div className="input-group-prepend">
-                  <input
-                    type="submit"
-                    disabled={isSubmitting}
-                    className=" btn btn-primary btn-sm"
-                    value={I18n.t('application.add')}
-                  />
-                </div>
-              </div>
-              {errors.name && touched.name}
-            </form>
-          )}
-        </Formik>
+        <Form name="name" submitForm={this.handleSubmitForm} translation={translations} />
       );
     }
 }

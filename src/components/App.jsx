@@ -10,8 +10,8 @@ import ModalEditForm from './ModalEditForm';
 import Select from './Select';
 
 const mapStateToProps = (state) => {
-  const { appState } = state;
-  const props = { appState };
+  const { connectionState } = state;
+  const props = { connectionState };
   return props;
 };
 
@@ -47,8 +47,8 @@ class App extends React.Component {
   )
 
   renderApp = () => {
-    const { appState } = this.props;
-    if (appState !== 'processing') {
+    const { connectionState } = this.props;
+    if (connectionState !== 'disconnected') {
       return this.renderChat();
     }
     return this.renderSpinner();

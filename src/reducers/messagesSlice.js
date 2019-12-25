@@ -1,24 +1,29 @@
 /* eslint-disable no-param-reassign */
 // @ts-check
+
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { addMessageFailure, addMessageRequest, addMessageSuccess } from './messagesAddingSlice';
 import { fetchMessagesSuccess, fetchMessagesRequest, fetchMessagesFailure } from './messagesFetchingSlice';
+import { removeChannel } from './channelsSlice';
 import routes from '../routes';
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {},
-  reducers: {},
+  reducers: {
+    addMessage(state, { payload: { newMessage } }) {
+      const { channelId } = newMessage;
+      const channel = state[channelId];
+      channel.push(newMessage);
+    },
+  },
   extraReducers: {
     [fetchMessagesSuccess](state, { payload: { id, channelMessages } }) {
       state[id] = channelMessages;
     },
-    [addMessageSuccess](state, { payload: { newMessage } }) {
-      const { channelId } = newMessage;
-      const messageList = state[channelId] ? [...state[channelId], newMessage] : [newMessage];
-      state[channelId] = messageList;
+    [removeChannel](state, { payload: { id } }) {
+      delete state[id];
     },
   },
 });
@@ -34,16 +39,5 @@ export const fetchMessages = id => async (dispatch) => {
   }
 };
 
-export const addMessage = (id, message) => async (dispatch) => {
-  dispatch(addMessageRequest());
-  try {
-    const data = { attributes: message };
-    await axios.post(routes.channelMessagesPath(id), { data });
-  } catch (e) {
-    dispatch(addMessageFailure());
-    throw e;
-  }
-};
-
-export { addMessageSuccess };
+export const { addMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;

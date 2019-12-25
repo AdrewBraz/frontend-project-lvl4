@@ -6,8 +6,8 @@ import { Translate } from 'react-redux-i18n';
 import connect from '../connect';
 
 const mapStateToProps = (state) => {
-  const { messages, chatState } = state;
-  const { currentChannelId } = chatState;
+  const { messages, channels } = state;
+  const { currentChannelId } = channels;
   const props = { currentChannelId, messages };
   return props;
 };
