@@ -2,6 +2,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { I18n } from 'react-redux-i18n';
+import Spinner from './Spinner';
 
 const Form = ({ name, submitForm, translation }) => (
   <Formik
@@ -28,12 +29,9 @@ const Form = ({ name, submitForm, translation }) => (
         <div className="input-group flex-row w-100">
           <input type="text" name={`${name}`} placeholder={I18n.t(`application.${translation.placeholder}`)} onChange={handleChange} onBlur={handleBlur} value={values[name]} className="form-control" />
           <div className="input-group-prepend">
-            <input
-              type="submit"
-              disabled={isSubmitting}
-              className=" btn btn-primary btn-sm"
-              value={I18n.t(`application.${translation.btn}`)}
-            />
+            <button type="submit" disabled={isSubmitting} className=" btn btn-primary btn-sm">
+              {isSubmitting ? <Spinner /> : I18n.t(`application.${translation.btn}`)}
+            </button>
           </div>
         </div>
         {errors[name] && touched[name]}

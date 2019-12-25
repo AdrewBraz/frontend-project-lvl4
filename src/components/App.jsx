@@ -1,13 +1,14 @@
 // @ts-check
 
 import React from 'react';
-import { Row, Spinner, Navbar } from 'react-bootstrap';
+import { Row, Navbar } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import SideBar from './SideBar';
 import Messages from './Messages';
 import ModalEditForm from './ModalEditForm';
 import Select from './Select';
+import Spinner from './Spinner';
 
 const mapStateToProps = (state) => {
   const { connectionState } = state;
@@ -17,14 +18,6 @@ const mapStateToProps = (state) => {
 
 export default @connect(mapStateToProps)
 class App extends React.Component {
-  renderSpinner = () => (
-    <Spinner bsPrefix="d-flex align-items-center justify-content-center fixed-top h-100 w-100">
-      <div className="spinner-border p-4 text-info" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    </Spinner>
-  )
-
   renderChat = () => (
     <>
       <Row>
@@ -46,18 +39,11 @@ class App extends React.Component {
     </>
   )
 
-  renderApp = () => {
-    const { connectionState } = this.props;
-    if (connectionState !== 'disconnected') {
-      return this.renderChat();
-    }
-    return this.renderSpinner();
-  }
-
   render() {
+    const { connectionState } = this.props;
     return (
       <div>
-        { this.renderApp() }
+        { connectionState === 'disconnected' ? <Spinner /> : this.renderChat() }
       </div>
     );
   }
