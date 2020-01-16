@@ -10,7 +10,7 @@ import routes from '../routes';
 
 const messagesSlice = createSlice({
   name: 'messages',
-  initialState: {},
+  initialState: [],
   reducers: {
     addMessage(state, { payload: { newMessage } }) {
       const { channelId } = newMessage;
