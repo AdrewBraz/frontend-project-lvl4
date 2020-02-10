@@ -2,7 +2,8 @@
 import React from 'react';
 import { sortBy } from 'lodash';
 import cn from 'classnames';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import connect from '../connect';
 
 const mapStateToProps = (state) => {
@@ -14,13 +15,10 @@ const mapStateToProps = (state) => {
 
 export default @connect(mapStateToProps)
 class ChannelsList extends React.Component {
-  handleSwitch = id => (e) => {
+  handleSwitch = id => async (e) => {
     e.preventDefault();
-    const { switchChannel, channels, fetchMessages } = this.props;
-    if (channels.currentChannelId !== id) {
-      switchChannel({ id });
-      fetchMessages(id);
-    }
+    const { switchChannel } = this.props;
+    await switchChannel({ id });
   }
 
   handleModalEdit = id => (e) => {
@@ -30,7 +28,11 @@ class ChannelsList extends React.Component {
     modalStateEdit(id);
   }
 
-  renderEditBtn = id => <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">Edit</button>
+  renderEditBtn = id => (
+    <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">
+      <FontAwesomeIcon icon={faEdit} />
+    </button>
+  )
 
   renderChannels = () => {
     const { channelList, channels } = this.props;

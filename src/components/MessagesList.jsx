@@ -8,23 +8,16 @@ import connect from '../connect';
 const mapStateToProps = (state) => {
   const { messages, channels } = state;
   const { currentChannelId } = channels;
-  const props = { currentChannelId, messages };
+  const messageList = messages.filter(ch => ch.channelId === currentChannelId);
+  const props = { messageList };
   return props;
 };
 
 
 export default @connect(mapStateToProps)
 class MessagesList extends React.Component {
-  componentDidMount() {
-    const { currentChannelId, messages } = this.props;
-    const { fetchMessages } = this.props;
-    const messageList = messages[currentChannelId];
-    fetchMessages(currentChannelId, messageList);
-  }
-
   renderMessages() {
-    const { currentChannelId, messages } = this.props;
-    const messageList = messages[currentChannelId];
+    const { messageList } = this.props;
     if (!messageList || messageList.length < 1) {
       return (
         <div className="d-flex flex-column align-items-center justify-content-center h-100">

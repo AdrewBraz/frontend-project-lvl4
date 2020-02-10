@@ -14,7 +14,7 @@ import getUserName from './getUserName';
 import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
-import { addMessage } from './reducers/messagesSlice';
+import { addMessage, fetchMessages } from './reducers/messagesSlice';
 
 const userName = getUserName();
 
@@ -28,7 +28,6 @@ const initialState = {
     ByIds: gon.channels,
     currentChannelId: 1,
   },
-  messages: {},
   chatState: {
     currentChannelId: 1,
     modal: 'closed',
@@ -41,7 +40,7 @@ const store = configureStore({
   preloadedState: initialState,
 });
 
-export default () => {
+export default (data) => {
   const port = process.env.PORT;
   const socket = io(port);
 
@@ -64,9 +63,9 @@ export default () => {
     store.dispatch(removeChannel({ id }));
   });
   syncTranslationWithStore(store);
+  store.dispatch(fetchMessages(data));
   store.dispatch(loadTranslations(translations));
   store.dispatch(setLocale('en'));
-
   render(
     <Provider store={store}>
       <User.Provider value={user}>
