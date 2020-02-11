@@ -8,6 +8,7 @@ const channelsSlice = createSlice({
   initialState: {},
   reducers: {
     addChannelToStore(state, { payload: { newChannel } }) {
+      console.log(newChannel)
       const { ByIds, allIds } = state;
       ByIds.push(newChannel);
       allIds.push(newChannel.id);
@@ -22,11 +23,12 @@ const channelsSlice = createSlice({
       ByIds[renameChannelId] = renamedChannel;
     },
     removeChannel(state, { payload: { id } }) {
+      console.log(id)
       const { ByIds, allIds } = state;
       return {
         currentChannelId: 1,
         ByIds: ByIds.filter(ch => ch.id !== id),
-        allIds: allIds.filter(ch => ch.id !== id),
+        allIds: allIds.filter(ch => ch !== id),
       };
     },
   },

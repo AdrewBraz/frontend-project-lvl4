@@ -18,6 +18,7 @@ class ChannelsList extends React.Component {
   handleSwitch = id => async (e) => {
     e.preventDefault();
     const { switchChannel } = this.props;
+    console.log(id)
     await switchChannel({ id });
   }
 

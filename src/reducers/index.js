@@ -6,14 +6,12 @@ import { i18nReducer } from 'react-redux-i18n';
 
 
 import channels from './channelsSlice';
-import messagesFetchingState from './messagesFetchingSlice';
 import messages from './messagesSlice';
 import chatState from './chatSlice';
 import connectionState from './connectionSlice';
 
 export default combineReducers({
   connectionState,
-  messagesFetchingState,
   messages,
   channels,
   chatState,

@@ -18,7 +18,7 @@ const messagesSlice = createSlice({
   },
   extraReducers: {
     [removeChannel](state, { payload: { id } }) {
-      state.filter(ch => ch.channelId !== id);
+      return state.filter(ch => ch.channelId !== id);
     },
   },
 });

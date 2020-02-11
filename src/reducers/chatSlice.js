@@ -6,9 +6,6 @@ const chatSlice = createSlice({
   name: 'chatState',
   initialState: {},
   reducers: {
-    switchChannel(state, { payload: { id } }) {
-      state.currentChannelId = id;
-    },
     modalStateEdit(state, { payload }) {
       state.channelEditId = payload.id;
       state.modal = 'edit';
@@ -24,7 +21,6 @@ const chatSlice = createSlice({
 });
 
 export const {
-  switchChannel,
   modalStateClose,
   modalStateDelete,
   modalStateEdit,

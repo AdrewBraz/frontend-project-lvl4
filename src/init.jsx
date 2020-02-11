@@ -29,7 +29,6 @@ const initialState = {
     currentChannelId: 1,
   },
   chatState: {
-    currentChannelId: 1,
     modal: 'closed',
   },
 };
