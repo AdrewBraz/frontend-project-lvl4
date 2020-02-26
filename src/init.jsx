@@ -4,33 +4,40 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import gon from 'gon';
+import { name } from 'faker';
+import Cookies from 'js-cookie';
 import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
 import reducers from './reducers';
-import translations from './translations.json';
+import enTranslations from './features/enTranslations.json';
+import ruTranslations from './features/ruTranslations.json';
+
 
 import App from './components/App';
-import getUserName from './getUserName';
 import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage, fetchMessages } from './reducers/messagesSlice';
 
-const userName = getUserName();
+let userName = Cookies.get('name');
+if (!userName) {
+  userName = name.findName();
+}
+Cookies.set('name', userName);
 
 const user = {
   userName,
 };
 
+const { channels, messages } = gon;
+
 const initialState = {
-  channels: {
-    allIds: gon.channels.map(channel => channel.id),
-    ByIds: gon.channels,
-    currentChannelId: 1,
-  },
+  channels,
   chatState: {
     modal: 'closed',
+    currentChannelId: 1,
   },
+  messages,
 };
 
 
@@ -63,7 +70,10 @@ export default (data) => {
   });
   syncTranslationWithStore(store);
   store.dispatch(fetchMessages(data));
-  store.dispatch(loadTranslations(translations));
+  store.dispatch(loadTranslations({
+    en: enTranslations,
+    ru: ruTranslations,
+  }));
   store.dispatch(setLocale('en'));
   render(
     <Provider store={store}>

@@ -2,10 +2,10 @@
 
 import { connect } from 'react-redux';
 import {
-  modalStateEdit, modalStateDelete, modalStateClose,
+  modalStateEdit, modalStateDelete, modalStateClose, switchChannel,
 } from './reducers/chatSlice';
 import {
-  switchChannel, renameChannel, removeChannel, addChannelToStore,
+  renameChannel, removeChannel, addChannelToStore,
 } from './reducers/channelsSlice';
 import { fetchMessages, addMessage } from './reducers/messagesSlice';
 

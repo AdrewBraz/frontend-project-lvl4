@@ -11,7 +11,7 @@ import Form from './Form';
 
 
 const mapStateToProps = (state) => {
-  const { currentChannelId } = state.channels;
+  const { currentChannelId } = state.chatState;
   const props = { currentChannelId };
   return props;
 };
@@ -43,17 +43,6 @@ class NewMessageForm extends React.Component {
       placeholder: 'newMessage',
     };
     return (
-      // <form className="form-inline align-items-end">
-      //   {/* <div className="input-group flex-row w-100">
-      //     <Field name="text" className="form-control"
-      //     placeholder={I18n.t('application.newMessage')}
-      //     required disabled={submitting} component="input" type="text" />
-      //     <div className="input-group-prepend">
-      //       <input type="submit" disabled={pristine || submitting}
-      //       className="btn btn-primary btn-sm" value={btn} />
-      //     </div>
-      //   </div> */}
-      // </form>
       <Form name="text" submitForm={this.handleSubmit} translation={translations} />
     );
   }

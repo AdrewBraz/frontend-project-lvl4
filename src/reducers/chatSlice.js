@@ -2,6 +2,8 @@
 // @ts-check
 import { createSlice } from '@reduxjs/toolkit';
 
+import { removeChannel } from './channelsSlice';
+
 const chatSlice = createSlice({
   name: 'chatState',
   initialState: {},
@@ -17,6 +19,14 @@ const chatSlice = createSlice({
     modalStateDelete(state) {
       state.modal = 'delete';
     },
+    switchChannel(state, { payload: { id } }) {
+      state.currentChannelId = id;
+    },
+  },
+  extraReducers: {
+    [removeChannel](state) {
+      state.currentChannelId = 1;
+    },
   },
 });
 
@@ -24,6 +34,7 @@ export const {
   modalStateClose,
   modalStateDelete,
   modalStateEdit,
+  switchChannel,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

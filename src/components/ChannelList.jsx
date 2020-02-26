@@ -8,7 +8,7 @@ import connect from '../connect';
 
 const mapStateToProps = (state) => {
   const { channels, chatState } = state;
-  const channelList = sortBy(channels.ByIds);
+  const channelList = sortBy(channels);
   const props = { chatState, channels, channelList };
   return props;
 };
@@ -35,8 +35,8 @@ class ChannelsList extends React.Component {
   )
 
   renderChannels = () => {
-    const { channelList, channels } = this.props;
-    const { currentChannelId } = channels;
+    const { channelList, chatState } = this.props;
+    const { currentChannelId } = chatState;
     return channelList.map((channel) => {
       const isActive = channel.id === currentChannelId;
       const classList = cn({
