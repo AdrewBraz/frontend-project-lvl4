@@ -10,14 +10,14 @@ const chatSlice = createSlice({
   reducers: {
     modalStateEdit(state, { payload }) {
       state.channelEditId = payload.id;
-      state.modal = 'edit';
+      state.modal = 'renaming';
     },
     modalStateClose(state) {
       state.channelEditId = null;
-      state.modal = 'close';
+      state.modal = null;
     },
     modalStateDelete(state) {
-      state.modal = 'delete';
+      state.modal = 'removing';
     },
     switchChannel(state, { payload: { id } }) {
       state.currentChannelId = id;
