@@ -8,13 +8,16 @@ const chatSlice = createSlice({
   name: 'chatState',
   initialState: {},
   reducers: {
+    modalStateAdd(state) {
+      state.modal = 'adding';
+    },
     modalStateEdit(state, { payload }) {
       state.channelEditId = payload.id;
       state.modal = 'renaming';
     },
     modalStateClose(state) {
       state.channelEditId = null;
-      state.modal = null;
+      state.modal = 'closed';
     },
     modalStateDelete(state) {
       state.modal = 'removing';
@@ -34,6 +37,7 @@ export const {
   modalStateClose,
   modalStateDelete,
   modalStateEdit,
+  modalStateAdd,
   switchChannel,
 } = chatSlice.actions;
 

@@ -2,42 +2,54 @@
 
 import React from 'react';
 import { Row, Navbar } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import connect from '../connect';
 
 import SideBar from './SideBar';
 import Messages from './Messages';
-import ModalEditForm from './ModalEditForm';
 import Select from './Select';
 import Spinner from './Spinner';
+import getModal from './modals/index';
 
 const mapStateToProps = (state) => {
-  const { connectionState } = state;
-  const props = { connectionState };
+  const { connectionState, chatState } = state;
+  const { modal } = chatState;
+  const props = { connectionState, modal };
   return props;
 };
 
 export default @connect(mapStateToProps)
 class App extends React.Component {
-  renderChat = () => (
-    <>
-      <Row>
-        <Navbar expand="lg" bg="light" className="bg-faded w-100 justify-content-between">
-          <Navbar.Brand href="/">Chat</Navbar.Brand>
-          <Navbar>
-            <Select />
+  renderModal = (modal) => {
+    if (modal === 'closed') {
+      return null;
+    }
+    const Compontnet = getModal(modal);
+    return <Compontnet {...this.props} />;
+  }
+
+  renderChat = () => {
+    const { modal } = this.props;
+    return (
+      <>
+        <Row>
+          <Navbar expand="lg" bg="light" className="bg-faded w-100 justify-content-between">
+            <Navbar.Brand href="/">Chat</Navbar.Brand>
+            <Navbar>
+              <Select />
+            </Navbar>
+            <Navbar.Toggle data-toggle="collapse" data-target="#navbarSupportedContent">
+              <span className="navbar-toggler-icon" />
+            </Navbar.Toggle>
           </Navbar>
-          <Navbar.Toggle data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span className="navbar-toggler-icon" />
-          </Navbar.Toggle>
-        </Navbar>
-      </Row>
-      <Row>
-        <SideBar />
-        <Messages />
-        <ModalEditForm />
-      </Row>
-    </>
-  )
+        </Row>
+        <Row>
+          <SideBar />
+          <Messages />
+          {this.renderModal(modal)}
+        </Row>
+      </>
+    );
+  }
 
   render() {
     const { connectionState } = this.props;
