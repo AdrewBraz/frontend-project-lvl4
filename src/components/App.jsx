@@ -12,8 +12,8 @@ import getModal from './modals/index';
 
 const mapStateToProps = (state) => {
   const { connectionState, chatState } = state;
-  const { modal } = chatState;
-  const props = { connectionState, modal };
+  const { modal, channelEditId } = chatState;
+  const props = { connectionState, modal, channelEditId };
   return props;
 };
 

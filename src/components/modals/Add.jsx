@@ -8,15 +8,6 @@ import { I18n } from 'react-redux-i18n';
 import routes from '../../routes';
 import Spinner from '../Spinner';
 
-// const mapStateToProps = (state) => {
-//   const { channels, chatState } = state;
-//   const { modal } = chatState;
-//   const props = {
-//     channels,
-//     modal,
-//   };
-//   return props;
-// };
 
 const generateOnSubmit = ({ modalStateClose }) => async (values) => {
   const { name } = values;
@@ -43,7 +34,7 @@ const validate = (values) => {
 
 export default (props) => {
   const { modal, modalStateClose } = props;
-  const f = useFormik({
+  const form = useFormik({
     onSubmit: generateOnSubmit(props),
     validate,
     initialValues: { name: '' },
@@ -54,16 +45,16 @@ export default (props) => {
         <Modal.Title>Add</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form className="form-inline mb-3" onSubmit={f.handleSubmit}>
+        <form className="form-inline mb-3" onSubmit={form.handleSubmit}>
           <div className="input-group flex-row w-100">
-            <input type="text" name="name" placeholder={I18n.t(`application.${translations.placeholder}`)} onChange={f.handleChange} onBlur={f.handleBlur} value={f.values.name} className="form-control" />
+            <input type="text" name="name" placeholder={I18n.t(`application.${translations.placeholder}`)} onChange={form.handleChange} onBlur={form.handleBlur} value={form.values.name} className="form-control" />
             <div className="input-group-prepend">
-              <button type="submit" className=" btn btn-primary btn-sm">
-                {f.isSubmitting ? <Spinner /> : I18n.t(`application.${translations.btn}`)}
+              <button type="submit" disabled={form.isValidating} className=" btn btn-primary btn-sm">
+                {form.isSubmitting ? <Spinner /> : I18n.t(`application.${translations.btn}`)}
               </button>
             </div>
           </div>
-          {f.errors.name && f.touched.name}
+          {form.errors.name && form.touched.name}
         </form>
       </Modal.Body>
     </Modal>
