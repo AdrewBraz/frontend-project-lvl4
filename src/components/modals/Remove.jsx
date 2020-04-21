@@ -27,7 +27,7 @@ const RemoveModal = (props) => {
   return (
     <Modal show={modal === 'removing'} onHide={handleSwitchToEdit}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete Channel</Modal.Title>
+        <Modal.Title>{I18n.t('application.deleteChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <p className="pb-3 border-bottom border-dark">

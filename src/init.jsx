@@ -9,8 +9,8 @@ import Cookies from 'js-cookie';
 import io from 'socket.io-client';
 import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
 import reducers from './reducers';
-import enTranslations from './features/enTranslations.json';
-import ruTranslations from './features/ruTranslations.json';
+import enTranslations from './locals/enTranslations.json';
+import ruTranslations from './locals/ruTranslations.json';
 
 
 import App from './components/App';

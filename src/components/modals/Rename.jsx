@@ -20,7 +20,7 @@ const generateOnSubmit = ({ modalStateClose, channelEditId }) => async (values) 
   modalStateClose();
 };
 
-export default (props) => {
+const RenameModal = (props) => {
   const { modal, modalStateDelete, modalStateClose } = props;
 
   const translations = {
@@ -42,14 +42,10 @@ export default (props) => {
     initialValues: { name: '' },
   });
 
-  const handleSwitchToRemove = () => {
-    modalStateDelete();
-  };
-
   return (
     <Modal show={modal === 'renaming'} onHide={modalStateClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit Channel</Modal.Title>
+        <Modal.Title>{I18n.t('application.editChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex flex-column">
         <form className="form-inline mb-3" onSubmit={form.handleSubmit}>
@@ -63,10 +59,12 @@ export default (props) => {
           </div>
           {form.errors.name && form.touched.name}
         </form>
-        <Button variant="danger" type="button" onClick={handleSwitchToRemove}>
+        <Button variant="danger" type="button" onClick={() => modalStateDelete()}>
           {I18n.t('application.deleteBtn')}
         </Button>
       </Modal.Body>
     </Modal>
   );
 };
+
+export default RenameModal;

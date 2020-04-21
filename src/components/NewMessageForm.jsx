@@ -19,8 +19,6 @@ const mapStateToProps = (state) => {
 export default
 @connect(mapStateToProps)
 class NewMessageForm extends React.Component {
-  static contextType = User;
-
   handleSubmit = async (value, { setSubmitting, resetForm }) => {
     const { currentChannelId } = this.props;
     const { userName } = this.context;
@@ -36,6 +34,8 @@ class NewMessageForm extends React.Component {
       throw new Error(e);
     }
   }
+
+  static contextType = User;
 
   render() {
     const translations = {

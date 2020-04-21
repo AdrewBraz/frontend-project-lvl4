@@ -20,20 +20,22 @@ const generateOnSubmit = ({ modalStateClose }) => async (values) => {
   modalStateClose();
 };
 
-const translations = {
-  btn: 'addBtn',
-  placeholder: 'channelName',
-};
-const validate = (values) => {
-  const errors = {};
-  if (values.name.length === 0) {
-    errors.name = 'Empty field';
-  }
-  return errors;
-};
-
-export default (props) => {
+const AddModal = (props) => {
   const { modal, modalStateClose } = props;
+
+  const translations = {
+    btn: 'addBtn',
+    placeholder: 'channelName',
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (values.name.length === 0) {
+      errors.name = 'Empty field';
+    }
+    return errors;
+  };
+
   const form = useFormik({
     onSubmit: generateOnSubmit(props),
     validate,
@@ -60,3 +62,5 @@ export default (props) => {
     </Modal>
   );
 };
+
+export default AddModal;
