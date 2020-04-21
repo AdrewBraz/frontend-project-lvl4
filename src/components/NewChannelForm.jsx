@@ -6,16 +6,8 @@ import { Translate } from 'react-redux-i18n';
 
 import connect from '../connect';
 
-const mapStateToProps = (state) => {
-  const { channels } = state;
-  const props = {
-    channels,
-  };
-  return props;
-};
-
 export default
-@connect(mapStateToProps)
+@connect()
 class NewChannelForm extends React.Component {
     handleClick = () => {
       const { modalStateAdd } = this.props;

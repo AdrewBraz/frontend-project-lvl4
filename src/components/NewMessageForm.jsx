@@ -2,12 +2,13 @@
 import React from 'react';
 import { format } from 'date-fns';
 import axios from 'axios';
-
+import { I18n } from 'react-redux-i18n';
+import { Formik } from 'formik';
 
 import connect from '../connect';
 import User from '../context';
 import routes from '../routes';
-import Form from './Form';
+import Spinner from './Spinner';
 
 
 const mapStateToProps = (state) => {
@@ -15,10 +16,11 @@ const mapStateToProps = (state) => {
   const props = { currentChannelId };
   return props;
 };
-
 export default
 @connect(mapStateToProps)
 class NewMessageForm extends React.Component {
+  static contextType = User;
+
   handleSubmit = async (value, { setSubmitting, resetForm }) => {
     const { currentChannelId } = this.props;
     const { userName } = this.context;
@@ -35,15 +37,45 @@ class NewMessageForm extends React.Component {
     }
   }
 
-  static contextType = User;
-
   render() {
     const translations = {
       btn: 'addBtn',
       placeholder: 'newMessage',
     };
     return (
-      <Form name="text" submitForm={this.handleSubmit} translation={translations} />
+      <Formik
+        initialValues={{ message: '' }}
+        onSubmit={this.handleSubmit}
+        validate={(values) => {
+          const errors = {};
+          if (values.message.length === 0) {
+            errors.message = 'Empty field';
+          }
+          return errors;
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+        }) => (
+          <form className="form-inline mb-3" onSubmit={handleSubmit}>
+            <div className="input-group flex-row w-100">
+              <input type="text" name="message" placeholder={I18n.t(`application.${translations.placeholder}`)} onChange={handleChange} onBlur={handleBlur} value={values.message} className="form-control" />
+              <div className="input-group-prepend">
+                <button type="submit" disabled={isSubmitting} className=" btn btn-primary btn-sm">
+                  {isSubmitting ? <Spinner /> : I18n.t(`application.${translations.btn}`)}
+                </button>
+              </div>
+            </div>
+            {errors.message && touched.message}
+          </form>
+        )}
+      </Formik>
     );
   }
 }
