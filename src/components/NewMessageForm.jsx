@@ -1,14 +1,12 @@
 // @ts-check
 import React from 'react';
-import { format } from 'date-fns';
 import axios from 'axios';
-import { I18n } from 'react-redux-i18n';
 import { Formik } from 'formik';
+import { Spinner } from 'react-bootstrap';
 
 import connect from '../connect';
 import User from '../context';
 import routes from '../routes';
-import Spinner from './Spinner';
 
 
 const mapStateToProps = (state) => {
@@ -21,27 +19,17 @@ export default
 class NewMessageForm extends React.Component {
   handleSubmit = async (value, { setSubmitting, resetForm }) => {
     const { currentChannelId } = this.props;
-    const { userName } = this.context;
-    const { text } = value;
-    const postDate = format(new Date(), 'd/M/yyyy kk:mm:ss-zzzz');
+    const userName = this.context;
+    const text = value.message;
+    const postDate = new Date();
     const message = { text, author: userName, date: postDate };
-    try {
-      const data = { attributes: message };
-      await axios.post(routes.channelMessagesPath(currentChannelId), { data });
-      resetForm();
-      setSubmitting(false);
-    } catch (e) {
-      throw new Error(e);
-    }
+    const data = { attributes: message };
+    await axios.post(routes.channelMessagesPath(currentChannelId), { data });
+    resetForm();
+    setSubmitting(false);
   }
 
-  static contextType = User;
-
   render() {
-    const translations = {
-      btn: 'addBtn',
-      placeholder: 'newMessage',
-    };
     return (
       <Formik
         initialValues={{ message: '' }}
@@ -65,10 +53,10 @@ class NewMessageForm extends React.Component {
         }) => (
           <form className="form-inline mb-3" onSubmit={handleSubmit}>
             <div className="input-group flex-row w-100">
-              <input type="text" name="message" placeholder={I18n.t(`application.${translations.placeholder}`)} onChange={handleChange} onBlur={handleBlur} value={values.message} className="form-control" />
+              <input type="text" name="message" placeholder="message" onChange={handleChange} onBlur={handleBlur} value={values.message} className="form-control" />
               <div className="input-group-prepend">
                 <button type="submit" disabled={isSubmitting} className=" btn btn-primary btn-sm">
-                  {isSubmitting ? <Spinner /> : I18n.t(`application.${translations.btn}`)}
+                  {isSubmitting ? <Spinner animation="border" /> : 'add'}
                 </button>
               </div>
             </div>
@@ -79,3 +67,5 @@ class NewMessageForm extends React.Component {
     );
   }
 }
+
+NewMessageForm.contextType = User;

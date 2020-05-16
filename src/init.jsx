@@ -7,27 +7,20 @@ import gon from 'gon';
 import { name } from 'faker';
 import Cookies from 'js-cookie';
 import io from 'socket.io-client';
-import { loadTranslations, setLocale, syncTranslationWithStore } from 'react-redux-i18n';
-import reducers from './reducers';
-import enTranslations from './locals/enTranslations.json';
-import ruTranslations from './locals/ruTranslations.json';
-
 
 import App from './components/App';
+import './i18n';
+import reducers from './reducers';
 import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
-import { addMessage, fetchMessages } from './reducers/messagesSlice';
+import { addMessage } from './reducers/messagesSlice';
 
 let userName = Cookies.get('name');
 if (!userName) {
   userName = name.findName();
 }
 Cookies.set('name', userName);
-
-const user = {
-  userName,
-};
 
 const { channels, messages } = gon;
 
@@ -40,13 +33,12 @@ const initialState = {
   messages,
 };
 
-
 const store = configureStore({
   reducer: reducers,
   preloadedState: initialState,
 });
 
-export default (data) => {
+export default () => {
   const port = process.env.PORT;
   const socket = io(port);
 
@@ -68,16 +60,9 @@ export default (data) => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
-  syncTranslationWithStore(store);
-  store.dispatch(fetchMessages(data));
-  store.dispatch(loadTranslations({
-    en: enTranslations,
-    ru: ruTranslations,
-  }));
-  store.dispatch(setLocale('en'));
   render(
     <Provider store={store}>
-      <User.Provider value={user}>
+      <User.Provider value={userName}>
         <App />
       </User.Provider>
     </Provider>,

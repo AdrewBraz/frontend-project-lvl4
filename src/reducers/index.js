@@ -2,8 +2,6 @@
 // @ts-check
 
 import { combineReducers } from '@reduxjs/toolkit';
-import { i18nReducer } from 'react-redux-i18n';
-
 
 import channels from './channelsSlice';
 import messages from './messagesSlice';
@@ -15,5 +13,4 @@ export default combineReducers({
   messages,
   channels,
   chatState,
-  i18n: i18nReducer,
 });

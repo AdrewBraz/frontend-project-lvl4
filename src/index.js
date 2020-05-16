@@ -1,6 +1,4 @@
 // @ts-check
-
-import gon from 'gon';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -11,4 +9,4 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-init(gon);
+init();

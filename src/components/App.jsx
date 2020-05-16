@@ -1,14 +1,14 @@
 // @ts-check
 
 import React from 'react';
-import { Row, Navbar } from 'react-bootstrap';
+import { Row, Navbar, Spinner } from 'react-bootstrap';
+import getModal from './modals/index';
 import connect from '../connect';
 
 import SideBar from './SideBar';
 import Messages from './Messages';
 import Select from './Select';
-import Spinner from './Spinner';
-import getModal from './modals/index';
+
 
 const mapStateToProps = (state) => {
   const { connectionState, chatState } = state;
@@ -24,7 +24,7 @@ class App extends React.Component {
       return null;
     }
     const Compontnet = getModal(modal);
-    return <Compontnet {...this.props} />;
+    return <Compontnet />;
   }
 
   renderChat = () => {
@@ -51,11 +51,19 @@ class App extends React.Component {
     );
   }
 
+  renderSpinner = () => (
+    <Spinner animation="border" bsPrefix="d-flex align-items-center justify-content-center fixed-top h-100 w-100">
+      <div className="spinner-border p-4 text-info" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    </Spinner>
+  );
+
   render() {
     const { connectionState } = this.props;
     return (
       <div>
-        { connectionState === 'disconnected' ? <Spinner /> : this.renderChat() }
+        { connectionState === 'disconnected' ? this.renderSpinner() : this.renderChat() }
       </div>
     );
   }

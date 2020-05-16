@@ -1,7 +1,7 @@
 // @ts-check
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Translate } from 'react-redux-i18n';
+import { Translation } from 'react-i18next';
 
 
 import connect from '../connect';
@@ -18,7 +18,9 @@ class NewChannelForm extends React.Component {
       return (
         <div>
           <Button className="d-block w-100" variant="info" onClick={this.handleClick}>
-            <Translate value="application.addChannel" />
+            <Translation>
+              {(t) => t('addChannel')}
+            </Translation>
           </Button>
         </div>
       );

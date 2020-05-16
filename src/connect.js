@@ -22,4 +22,6 @@ const actionCreators = {
   addMessage,
 };
 
-export default mapStateToProps => Component => connect(mapStateToProps, actionCreators)(Component);
+export default (mapStateToProps) => (Component) => (
+  connect(mapStateToProps, actionCreators)(Component)
+);

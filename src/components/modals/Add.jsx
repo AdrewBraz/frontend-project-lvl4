@@ -2,11 +2,10 @@
 import React from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { Modal } from 'react-bootstrap';
-import { I18n } from 'react-redux-i18n';
+import { Modal, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import routes from '../../routes';
-import Spinner from '../Spinner';
 
 
 const generateOnSubmit = ({ modalStateClose }) => async (values) => {
@@ -22,12 +21,7 @@ const generateOnSubmit = ({ modalStateClose }) => async (values) => {
 
 const AddModal = (props) => {
   const { modal, modalStateClose } = props;
-
-  const translations = {
-    btn: 'addBtn',
-    placeholder: 'channelName',
-  };
-
+  const { t } = useTranslation();
   const validate = (values) => {
     const errors = {};
     if (values.name.length === 0) {
@@ -49,10 +43,10 @@ const AddModal = (props) => {
       <Modal.Body>
         <form className="form-inline mb-3" onSubmit={form.handleSubmit}>
           <div className="input-group flex-row w-100">
-            <input type="text" name="name" placeholder={I18n.t(`application.${translations.placeholder}`)} onChange={form.handleChange} onBlur={form.handleBlur} value={form.values.name} className="form-control" />
+            <input type="text" name="name" placeholder={`${t('channelName')}`} onChange={form.handleChange} onBlur={form.handleBlur} value={form.values.name} className="form-control" />
             <div className="input-group-prepend">
               <button type="submit" disabled={form.isValidating} className=" btn btn-primary btn-sm">
-                {form.isSubmitting ? <Spinner /> : I18n.t(`application.${translations.btn}`)}
+                {form.isSubmitting ? <Spinner animation="border" /> : t('addChannel')}
               </button>
             </div>
           </div>

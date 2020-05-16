@@ -1,8 +1,9 @@
 // @ts-check
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { I18n } from 'react-redux-i18n';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+
 
 import routes from '../../routes';
 
@@ -10,6 +11,8 @@ const RemoveModal = (props) => {
   const {
     modal, modalStateEdit, modalStateClose, channelEditId,
   } = props;
+
+  const { t } = useTranslation();
 
   const handleRemoveChannel = async () => {
     try {
@@ -27,18 +30,18 @@ const RemoveModal = (props) => {
   return (
     <Modal show={modal === 'removing'} onHide={handleSwitchToEdit}>
       <Modal.Header closeButton>
-        <Modal.Title>{I18n.t('application.deleteChannel')}</Modal.Title>
+        <Modal.Title>{t('deleteChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <p className="pb-3 border-bottom border-dark">
-          {I18n.t('application.deleteQuestion')}
+          {t('deleteQuestion')}
         </p>
         <div className="d-flex justify-content-around">
           <Button className="mr-3" variant="danger" type="button" onClick={handleRemoveChannel}>
-            {I18n.t('application.deleteBtn')}
+            {t('deleteBtn')}
           </Button>
           <Button className="ml-3" variant="primary" type="button" onClick={handleSwitchToEdit}>
-            {I18n.t('application.backToEdit')}
+            {t('backToEdit')}
           </Button>
         </div>
       </Modal.Body>

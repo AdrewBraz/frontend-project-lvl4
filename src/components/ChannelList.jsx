@@ -15,20 +15,20 @@ const mapStateToProps = (state) => {
 
 export default @connect(mapStateToProps)
 class ChannelsList extends React.Component {
-  handleSwitch = id => async (e) => {
+  handleSwitch = (id) => async (e) => {
     e.preventDefault();
     const { switchChannel } = this.props;
     await switchChannel({ id });
   }
 
-  handleModalEdit = id => (e) => {
+  handleModalEdit = (id) => (e) => {
     e.preventDefault();
     e.stopPropagation();
     const { modalStateEdit } = this.props;
     modalStateEdit(id);
   }
 
-  renderEditBtn = id => (
+  renderEditBtn = (id) => (
     <button type="button" onClick={this.handleModalEdit({ id })} className="btn btn-sm float-right btn-info">
       <FontAwesomeIcon icon={faEdit} />
     </button>
