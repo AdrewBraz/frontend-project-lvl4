@@ -16,29 +16,26 @@ import { socketConnected, socketDisconnected } from './reducers/connectionSlice'
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage } from './reducers/messagesSlice';
 
-let userName = Cookies.get('name');
-if (!userName) {
-  userName = name.findName();
-}
-Cookies.set('name', userName);
-
-const { channels, messages } = gon;
-
-const initialState = {
-  channels,
-  chatState: {
-    modal: 'closed',
-    currentChannelId: 1,
-  },
-  messages,
-};
-
-const store = configureStore({
-  reducer: reducers,
-  preloadedState: initialState,
-});
-
 export default () => {
+  const userName = name.findName();
+  Cookies.set('name', userName);
+
+  const { channels, messages } = gon;
+
+  const initialState = {
+    channels,
+    chatState: {
+      modal: 'closed',
+      currentChannelId: 1,
+    },
+    messages,
+  };
+
+  const store = configureStore({
+    reducer: reducers,
+    preloadedState: initialState,
+  });
+
   const port = process.env.PORT;
   const socket = io(port);
 

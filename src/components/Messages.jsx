@@ -1,6 +1,8 @@
 // @ts-check
 import React from 'react';
 import { ListGroup, ListGroupItem, Col } from 'react-bootstrap';
+import { Translation } from 'react-i18next';
+
 import NewMessageForm from './NewMessageForm';
 
 
@@ -10,7 +12,7 @@ const mapStateToProps = (state) => {
   const { messages, chatState } = state;
   const { currentChannelId } = chatState;
   const messageList = messages.filter((ch) => ch.channelId === currentChannelId);
-  const props = { messageList };
+  const props = { messageList, currentChannelId };
   return props;
 };
 
@@ -22,7 +24,11 @@ class Messages extends React.Component {
     if (!messageList || messageList.length < 1) {
       return (
         <div className="d-flex flex-column align-items-center justify-content-center h-100">
-          <strong className="display-2">stromg</strong>
+          <strong className="display-2">
+            <Translation>
+              {(t) => t('messages')}
+            </Translation>
+          </strong>
         </div>
       );
     }
@@ -44,12 +50,13 @@ class Messages extends React.Component {
   }
 
   render() {
+    const { currentChannelId } = this.props;
     return (
       <Col xs={12} md={8} lg={9}>
         <div style={{ height: '70vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
           {this.renderMessages()}
         </div>
-        <NewMessageForm />
+        <NewMessageForm currentChannelId={currentChannelId} />
       </Col>
     );
   }

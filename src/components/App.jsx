@@ -1,5 +1,4 @@
 // @ts-check
-
 import React from 'react';
 import { Row, Navbar, Spinner } from 'react-bootstrap';
 import getModal from './modals/index';
@@ -24,7 +23,8 @@ class App extends React.Component {
       return null;
     }
     const Compontnet = getModal(modal);
-    return <Compontnet />;
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <Compontnet {...this.props} />;
   }
 
   renderChat = () => {

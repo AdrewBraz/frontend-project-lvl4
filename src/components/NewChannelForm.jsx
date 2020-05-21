@@ -6,8 +6,7 @@ import { Translation } from 'react-i18next';
 
 import connect from '../connect';
 
-export default
-@connect()
+export default @connect()
 class NewChannelForm extends React.Component {
     handleClick = () => {
       const { modalStateAdd } = this.props;
