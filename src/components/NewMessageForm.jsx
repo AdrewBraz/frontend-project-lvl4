@@ -1,9 +1,11 @@
 // @ts-check
-import React, { useContext } from 'react';
+
+import React, { useContext, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { messageSchema } from '../validationSchemas';
 
 import User from '../context';
 import routes from '../routes';
@@ -19,21 +21,20 @@ const generateOnSubmit = ({ currentChannelId }, userName) => async (values, { re
 
 const NewMessageForm = (props) => {
   const { t } = useTranslation();
-  const validate = (values) => {
-    const errors = {};
-    if (values.message.length === 0) {
-      errors.message = 'Empty field';
-    }
-    return errors;
-  };
-
+  const inputRef = useRef();
+  const { modal } = props;
   const userName = useContext(User);
-
 
   const form = useFormik({
     onSubmit: generateOnSubmit(props, userName),
-    validate,
+    validationSchema: messageSchema,
     initialValues: { message: '' },
+  });
+
+  useEffect(() => {
+    if (inputRef && modal === 'closed') {
+      inputRef.current.focus();
+    }
   });
 
   return (
@@ -43,6 +44,7 @@ const NewMessageForm = (props) => {
           <input
             type="text"
             name="message"
+            ref={inputRef}
             placeholder={`${t('newMessage')}`}
             onChange={form.handleChange}
             onBlur={form.handleBlur}
@@ -50,13 +52,15 @@ const NewMessageForm = (props) => {
             className="form-control"
           />
           <div className="input-group-prepend">
-            <button type="submit" disabled={form.isValidating} className=" btn btn-primary btn-sm">
+            <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
               {form.isSubmitting ? <Spinner animation="border" /> : t('addBtn')}
             </button>
           </div>
         </div>
-        {form.errors.message && form.touched.message}
       </form>
+      {form.touched.message && form.errors.message ? (
+        <Alert variant="danger">{form.errors.message}</Alert>
+      ) : null}
     </div>
   );
 };
