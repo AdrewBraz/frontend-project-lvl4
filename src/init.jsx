@@ -3,8 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import gon from 'gon';
-import { name } from 'faker';
+import { faker } from '@faker-js/faker';
 import Cookies from 'js-cookie';
 import io from 'socket.io-client';
 
@@ -17,18 +16,17 @@ import { renameChannel, removeChannel, addChannelToStore } from './reducers/chan
 import { addMessage } from './reducers/messagesSlice';
 
 export default () => {
-  const userName = name.findName();
+  const userName = faker.internet.userName();
   Cookies.set('name', userName);
 
-  const { channels, messages } = gon;
 
   const initialState = {
-    channels,
+    channels: [],
     chatState: {
       modal: 'closed',
-      currentChannelId: 1,
+      currentChannelId: '64d4b0faf22e59a3b037df3a',
     },
-    messages,
+    messages: [],
   };
 
   const store = configureStore({

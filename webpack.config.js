@@ -1,9 +1,19 @@
 // @ts-check
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack')
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
+
+const plugins = [ new MiniCssExtractPlugin(), new webpack.ProvidePlugin({
+  process: 'process/browser',
+}),];
+
+
+if(isDevelopment){
+  plugins.push(new webpack.HotModuleReplacementPlugin())
+}
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -20,9 +30,7 @@ module.exports = {
     path: `${__dirname}/dist/public`,
     publicPath: '/assets/',
   },
-  plugins: [
-    new MiniCssExtractPlugin(),
-  ],
+  plugins,
   module: {
     rules: [
       {
@@ -34,12 +42,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              reloadAll: true,
-              sourceMap: isDevelopment,
-              hmr: isDevelopment,
-            },
+            loader: MiniCssExtractPlugin.loader,  
           },
           { loader: 'css-loader', options: { importLoaders: 1, sourceMap: isDevelopment } },
           { loader: 'postcss-loader', options: { sourceMap: isDevelopment } },
@@ -50,11 +53,6 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              reloadAll: true,
-              sourceMap: isDevelopment,
-              hmr: isDevelopment,
-            },
           },
           { loader: 'css-loader', options: { importLoaders: 1, sourceMap: isDevelopment } },
           { loader: 'postcss-loader', options: { sourceMap: isDevelopment } },
