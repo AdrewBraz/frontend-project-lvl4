@@ -5,14 +5,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const channelsSlice = createSlice({
   name: 'channels',
-  initialState: {},
+  initialState: [],
   reducers: {
     addChannelToStore(state, { payload: { newChannel } }) {
       state.push(newChannel);
     },
     renameChannel(state, { payload: { renamedChannel } }) {
       const { id } = renamedChannel;
-      const renameChannelId = state.findIndex((ch) => ch.id === id);
+      const renameChannelId = state.findIndex((i) => i.id === id);
       state[renameChannelId] = renamedChannel;
     },
     removeChannel(state, { payload: { id } }) {

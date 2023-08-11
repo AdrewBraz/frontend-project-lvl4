@@ -1,15 +1,14 @@
 // @ts-check
 
-import { connect } from 'react-redux';
 import {
   modalStateEdit, modalStateAdd, modalStateDelete, modalStateClose, switchChannel,
-} from './reducers/chatSlice';
+} from '../reducers/chatSlice';
 import {
   renameChannel, removeChannel, addChannelToStore,
-} from './reducers/channelsSlice';
-import { fetchMessages, addMessage } from './reducers/messagesSlice';
+} from '../reducers/channelsSlice';
+import { fetchMessages, addMessage } from '../reducers/messagesSlice';
 
-const actionCreators = {
+const actions = {
   switchChannel,
   modalStateEdit,
   modalStateDelete,
@@ -22,6 +21,4 @@ const actionCreators = {
   addMessage,
 };
 
-export default (mapStateToProps) => (Component) => (
-  connect(mapStateToProps, actionCreators)(Component)
-);
+export default actions;

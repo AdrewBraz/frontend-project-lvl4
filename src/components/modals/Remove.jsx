@@ -3,16 +3,15 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
-
+import actions from '../../actions';
 import routes from '../../routes';
 
 const RemoveModal = (props) => {
-  const {
-    modal, modalStateEdit, modalStateClose, channelEditId,
-  } = props;
-
+  const { modal, channelEditId } = props;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const handleRemoveChannel = async () => {
     try {
@@ -20,11 +19,11 @@ const RemoveModal = (props) => {
     } catch (e) {
       throw new Error(e);
     }
-    modalStateClose();
+    dispatch(actions.modalStateClose());
   };
 
   const handleSwitchToEdit = () => {
-    modalStateEdit({ id: channelEditId });
+    dispatch(actions.modalStateEdit({ id: channelEditId }));
   };
 
   return (
