@@ -25,6 +25,12 @@ const chatSlice = createSlice({
     switchChannel(state, { payload: { id } }) {
       state.currentChannelId = id;
     },
+    createUser(state, { payload: { chat, user, refreshToken } }) {
+      console.log(refreshToken)
+      state.currentChannelId = chat.id
+      state.token = refreshToken,
+      state.userName = user.userName
+    }
   },
   extraReducers: {
     [removeChannel](state) {
@@ -39,6 +45,7 @@ export const {
   modalStateEdit,
   modalStateAdd,
   switchChannel,
+  createUser
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

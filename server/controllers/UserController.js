@@ -3,7 +3,8 @@ import UserService from "../services/UserService";
 class UserController {
     async registration(req, reply){
       try{
-        const { userName, password } = req.body
+        const { userName, password } = req.body.data.attributes
+        console.log(userName, password)
         const { user, chat, accessToken, refreshToken } = await UserService.registration(userName, password)
         return { user, chat, accessToken, refreshToken }
       } catch(e){

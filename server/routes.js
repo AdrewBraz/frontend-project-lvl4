@@ -87,11 +87,11 @@ export default (app, io, defaultState = {}) => {
     .post('/api/v1/channels/:channelId/messages', async (_req, reply) => {
       const data = await MessageController.postMessage(_req, reply)
     })
-    .post('/registration', async (_req, reply) => {
+    .post('/login', async (_req, reply) => {
       const {refreshToken, accessToken, chat, user} = await UserController.registration(_req, reply)
-      state.currentChannelId = chat.id
-      state.groups.push(chat.groupName)
+      const data = { refreshToken, accessToken, chat, user}
+      reply.send({ data})
       reply.setCookie('refreshToken', refreshToken, {httpOnly: true})
-      reply.redirect('/', {state})
+      io.emit('login', {data});
     })
 };
