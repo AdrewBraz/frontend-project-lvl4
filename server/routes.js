@@ -88,8 +88,8 @@ export default (app, io, defaultState = {}) => {
       const data = await MessageController.postMessage(_req, reply)
     })
     .post('/login', async (_req, reply) => {
-      const {refreshToken, accessToken, chat, user} = await UserController.registration(_req, reply)
-      const data = { refreshToken, accessToken, chat, user}
+      const {refreshToken, accessToken, chat, user, chatList} = await UserController.registration(_req, reply)
+      const data = { refreshToken, accessToken, chat, user, chatList}
       reply.send({ data})
       reply.setCookie('refreshToken', refreshToken, {httpOnly: true})
       io.emit('login', {data});

@@ -58,8 +58,8 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
-  socket.on('login', ({ data:  {user, refreshToken, chat}}) => {
-    store.dispatch(createUser({ user, refreshToken, chat }));
+  socket.on('login', ({ data:  {user, refreshToken, chat, chatList}}) => {
+    store.dispatch(createUser({ user, refreshToken, chat , chatList}));
   });
   render(
     <Provider store={store}>

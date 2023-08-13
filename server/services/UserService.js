@@ -17,13 +17,15 @@ class UserService {
     const userDto = new UserDto(newUser)
     const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
     const chat = await GroupService.addUserToDefaultGroups(userDto.id)
+    const chatList = await GroupService.findAvailabelChats(userDto.id)
     const chatDto = new GroupDto(chat)
     await TokenService.saveToken(userDto.id, refreshToken)
     return {
       accessToken,
       refreshToken,
       user: userDto,
-      chat: chatDto
+      chat: chatDto,
+      chatList
     }
   }
 }

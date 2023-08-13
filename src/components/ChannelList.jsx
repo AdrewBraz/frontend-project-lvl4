@@ -38,7 +38,7 @@ const ChannelsList = () => {
     });
     return (
       <a className={classList} href={`#${channel.id}`} key={channel.id} onClick={handleSwitch(channel.id)}>
-        {channel.name}
+        {channel.groupName}
         {channel.removable ? renderEditBtn(channel.id) : null}
       </a>
     );

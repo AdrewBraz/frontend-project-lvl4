@@ -3,6 +3,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { removeChannel } from './channelsSlice';
+import { createUser } from './chatSlice'
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -17,7 +18,7 @@ const messagesSlice = createSlice({
     },
   },
   extraReducers: {
-    [removeChannel](state, { payload: { id } }) {
+    [removeChannel](state, { payload: { id } }) { 
       return state.filter((message) => message.channelId !== id);
     },
   },

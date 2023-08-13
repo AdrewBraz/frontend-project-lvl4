@@ -6,7 +6,7 @@ class GroupService {
     if(user){
         console.log("User already in the chat")
     }
-    const generalChat = await Groups.findOneAndUpdate({groupName: 'General'}, {$set: {$push: {participants: userId}}}, {returnOriginal: false})
+    const generalChat = await Groups.findOneAndUpdate({groupName: 'General'},{$push: {participants: userId}}, {returnOriginal: false})
     return generalChat
   }
   async createChat(groupName, userId){
@@ -17,6 +17,13 @@ class GroupService {
     console.log(userId)
     const newChat = await Groups.create({groupName, participants: [userId]})
     return newChat
+  }
+
+  async findAvailabelChats(userId){
+    const chatList = await Groups.find({ participants: userId})
+    const result = chatList.map(item => ({id: item.id, groupName: item.groupName}))
+    console.log(result)
+    return result
   }
 }
 

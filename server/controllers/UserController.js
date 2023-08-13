@@ -5,8 +5,9 @@ class UserController {
       try{
         const { userName, password } = req.body.data.attributes
         console.log(userName, password)
-        const { user, chat, accessToken, refreshToken } = await UserService.registration(userName, password)
-        return { user, chat, accessToken, refreshToken }
+        const { user, chat, accessToken, refreshToken, chatList } = await UserService.registration(userName, password)
+        console.log(chatList)
+        return { user, chat, accessToken, refreshToken, chatList }
       } catch(e){
         throw new Error(e)
       }

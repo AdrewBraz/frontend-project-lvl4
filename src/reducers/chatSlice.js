@@ -26,7 +26,6 @@ const chatSlice = createSlice({
       state.currentChannelId = id;
     },
     createUser(state, { payload: { chat, user, refreshToken } }) {
-      console.log(refreshToken)
       state.currentChannelId = chat.id
       state.token = refreshToken,
       state.userName = user.userName

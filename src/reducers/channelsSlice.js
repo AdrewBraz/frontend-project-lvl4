@@ -2,6 +2,9 @@
 // @ts-check
 
 import { createSlice } from '@reduxjs/toolkit';
+import { createUser, modalStateClose } from './chatSlice';
+
+
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -16,9 +19,17 @@ const channelsSlice = createSlice({
       state[renameChannelId] = renamedChannel;
     },
     removeChannel(state, { payload: { id } }) {
+      console.log(id)
       return state.filter((ch) => ch.id !== id);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(createUser, (state, action) => {
+      console.log(action.payload.chatList, state)
+      state = action.payload.chatList
+      return state
+    })
+  }
 });
 
 export const {
