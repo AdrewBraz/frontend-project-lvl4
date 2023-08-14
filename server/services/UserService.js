@@ -3,6 +3,7 @@ import Users from '../models/user_model'
 import bcrypt from 'bcrypt'
 import TokenService from './TokenService';
 import GroupService from './GroupService';
+import MessageService from './MessageService';
 import UserDto from '../dtos/userDto';
 import GroupDto from '../dtos/GroupDto'
 
@@ -19,13 +20,15 @@ class UserService {
     const chat = await GroupService.addUserToDefaultGroups(userDto.id)
     const chatList = await GroupService.findAvailabelChats(userDto.id)
     const chatDto = new GroupDto(chat)
+    const messageList = await MessageService.getChatMessages(chatDto.id)
     await TokenService.saveToken(userDto.id, refreshToken)
     return {
       accessToken,
       refreshToken,
       user: userDto,
       chat: chatDto,
-      chatList
+      chatList,
+      messageList
     }
   }
 }

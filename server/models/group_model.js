@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 const GroupSchema = new Schema({
     groupName: {type: String, required: true},
+    removable: { type: Boolean},
     participants: { type: Array}
 })
 

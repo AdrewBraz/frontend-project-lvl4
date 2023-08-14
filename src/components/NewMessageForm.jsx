@@ -6,14 +6,16 @@ import { useFormik } from 'formik';
 import { Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { messageSchema } from '../validationSchemas';
+import { useSelector } from 'react-redux/es/exports';
 
 import User from '../context';
 import routes from '../routes';
 
-const generateOnSubmit = ({ currentChannelId }, userName) => async (values, { resetForm }) => {
+const generateOnSubmit = ({ currentChannelId }, {userId, userName}) => async (values, { resetForm }) => {
+  console.log(userId)
   const text = values.message;
   const postDate = new Date();
-  const message = { text, author: userName, date: postDate };
+  const message = { text, author: {id: userId, userName: userName}, date: postDate };
   const data = { attributes: message };
   await axios.post(routes.channelMessagesPath(currentChannelId), { data });
   resetForm();
@@ -23,10 +25,11 @@ const NewMessageForm = (props) => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const { modal } = props;
-  const userName = useContext(User);
+  const userName = useSelector(state => state.chatState.userName);
+  const userId = useSelector(state => state.chatState.userId);
 
   const form = useFormik({
-    onSubmit: generateOnSubmit(props, userName),
+    onSubmit: generateOnSubmit(props, {userId, userName}),
     validationSchema: messageSchema,
     initialValues: { message: '' },
   });

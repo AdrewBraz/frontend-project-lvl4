@@ -49,8 +49,8 @@ export default () => {
   socket.on('newChannel', ({ data: { attributes } }) => {
     store.dispatch(addChannelToStore({ newChannel: attributes }));
   });
-  socket.on('newMessage', ({ data: { attributes } }) => {
-    store.dispatch(addMessage({ newMessage: attributes }));
+  socket.on('message', ({data: { newMessage}}) => {
+    store.dispatch(addMessage({ newMessage }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
     store.dispatch(renameChannel({ renamedChannel: attributes }));
@@ -58,8 +58,8 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
-  socket.on('login', ({ data:  {user, refreshToken, chat, chatList}}) => {
-    store.dispatch(createUser({ user, refreshToken, chat , chatList}));
+  socket.on('login', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
+    store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
   });
   render(
     <Provider store={store}>

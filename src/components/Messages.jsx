@@ -10,7 +10,7 @@ const Messages = () => {
   const currentChannelId = useSelector((state) => state.chatState.currentChannelId);
   const modal = useSelector((state) => state.chatState.modal);
   const messageList = useSelector((state) => {
-    const messages = state.messages.filter((i) => i.channelId === currentChannelId);
+    const messages = state.messages.filter((i) => i.groupId === currentChannelId);
     return messages;
   });
 
@@ -34,10 +34,10 @@ const Messages = () => {
     return (
       <ListGroup>
         {messageList.map((message) => (
-          <ListGroupItem className="d-flex flex-column" key={message.id}>
+          <ListGroupItem className="d-flex flex-column" key={message._id}>
             <div className="d-flex justify-content-between">
-              <strong>{message.author}</strong>
-              <span className="font-weight-light">{message.date}</span>
+              <strong>{message.author.userName}</strong>
+              <span className="font-weight-light">{message.timestamp}</span>
             </div>
             <div>
               {message.text}

@@ -29,6 +29,7 @@ const chatSlice = createSlice({
       state.currentChannelId = chat.id
       state.token = refreshToken,
       state.userName = user.userName
+      state.userId = user.id
     }
   },
   extraReducers: {
