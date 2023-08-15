@@ -22,8 +22,8 @@ const chatSlice = createSlice({
     modalStateDelete(state) {
       state.modal = 'removing';
     },
-    switchChannel(state, { payload: { id } }) {
-      state.currentChannelId = id;
+    switchChat(state, { payload: { chat } }) {
+      state.currentChannelId = chat.id;
     },
     createUser(state, { payload: { chat, user, refreshToken } }) {
       state.currentChannelId = chat.id
@@ -44,7 +44,7 @@ export const {
   modalStateDelete,
   modalStateEdit,
   modalStateAdd,
-  switchChannel,
+  switchChat,
   createUser
 } = chatSlice.actions;
 

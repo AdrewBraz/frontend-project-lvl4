@@ -15,6 +15,7 @@ const RemoveModal = (props) => {
 
   const handleRemoveChannel = async () => {
     try {
+      console.log(channelEditId)
       await axios.delete(routes.channelPath(channelEditId));
     } catch (e) {
       throw new Error(e);

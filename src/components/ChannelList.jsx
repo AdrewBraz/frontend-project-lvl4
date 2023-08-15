@@ -5,8 +5,9 @@ import { sortBy } from 'lodash';
 import cn from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
-
+import axios from 'axios';
 import actions from '../actions';
+import routes from '../routes';
 
 const ChannelsList = () => {
   const channelList = useSelector((state) => sortBy(state.channels));
@@ -15,7 +16,7 @@ const ChannelsList = () => {
 
   const handleSwitch = (id) => async (e) => {
     e.preventDefault();
-    await dispatch(actions.switchChannel({ id }));
+    await axios.get(routes.channelPath(id));
   };
 
   const handleModalEdit = (id) => (e) => {

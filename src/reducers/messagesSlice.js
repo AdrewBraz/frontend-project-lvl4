@@ -3,7 +3,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { removeChannel } from './channelsSlice';
-import { createUser } from './chatSlice'
+import { createUser, switchChat } from './chatSlice'
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -19,10 +19,15 @@ const messagesSlice = createSlice({
   },
   extraReducers: {
     [createUser](state, { payload: { messageList } }) { 
-      console.log(messageList)
       state = messageList
       return state
     },
+    [switchChat]( state, { payload: { messageList}}){
+      state = messageList
+      console.log(state)
+      return state
+    }
+
   },
 });
 

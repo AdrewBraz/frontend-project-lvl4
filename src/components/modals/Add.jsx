@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { Modal, Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux/es/exports';
 
 import routes from '../../routes';
 import actions from '../../actions';
@@ -14,13 +15,14 @@ import { channelSchema } from '../../validationSchemas';
 const AddModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const userId = useSelector(state => state.chatState.userId)
   const { modal } = props;
   const inputRef = useRef();
 
   const generateOnSubmit = () => async (values) => {
     const { name } = values;
     try {
-      const data = { attributes: { name } };
+      const data = { attributes: { groupName: name, userId, removable: true } };
       await axios.post(routes.channelsPath(), { data });
     } catch (e) {
       throw new Error('Something went wrong');

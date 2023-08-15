@@ -14,7 +14,7 @@ import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage } from './reducers/messagesSlice';
-import { createUser } from './reducers/chatSlice'
+import { createUser, switchChat } from './reducers/chatSlice'
 
 export default () => {
   // const userName = faker.internet.userName();
@@ -60,6 +60,10 @@ export default () => {
   });
   socket.on('login', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
     store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
+  });
+  socket.on('switchChat', ({data: {attributes}} ) => {
+    const { chat, messageList} = attributes
+    store.dispatch(switchChat( { chat , messageList }));
   });
   render(
     <Provider store={store}>

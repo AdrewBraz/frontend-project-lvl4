@@ -19,6 +19,8 @@ const Messages = () => {
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
   });
 
+
+
   const renderMessages = () => {
     if (!messageList || messageList.length < 1) {
       return (
