@@ -12,6 +12,11 @@ class MessageService {
     const data = await Messages.find({groupId})
     return data
   }
+
+  async deleteMessages(groupId){
+    const data = await Messages.deleteMany({groupId})
+    return data
+  }
 }
 
 export default new MessageService()

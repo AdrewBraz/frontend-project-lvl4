@@ -14,6 +14,10 @@ class MessageController {
         throw new Error(e)
       }
     }
+
+    async deleteMessages({data}){
+      await MessageService.deleteMessages(data.id)
+    }
 }
 
 export default new MessageController();
