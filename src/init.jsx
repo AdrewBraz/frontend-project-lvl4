@@ -58,6 +58,9 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
+  socket.on('registration', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
+    store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
+  });
   socket.on('login', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
     store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
   });

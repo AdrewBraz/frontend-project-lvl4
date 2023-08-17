@@ -21,7 +21,7 @@ const RenameModal = (props) => {
   const generateOnSubmit = ({ channelEditId }) => async (values) => {
     const { name } = values;
     try {
-      const data = { attributes: { name } };
+      const data = { attributes: { groupName: name } };
       await axios.patch(routes.channelPath(channelEditId), { data });
     } catch (e) {
       throw new Error('Something went wrong');

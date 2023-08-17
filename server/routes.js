@@ -68,8 +68,12 @@ export default (app, io, defaultState = {}) => {
       const newMessage = await MessageController.postMessage(_req, reply)
       io.emit('message', {data: {newMessage}})
     })
-    .post('/login', async (_req, reply) => {
+    .post('/registration', async (_req, reply) => {
       const data  = await UserController.registration(_req, reply)
+      io.emit('registration', {data});
+    })
+    .post('/login', async (_req, reply) => {
+      const data  = await UserController.login(_req, reply)
       io.emit('login', {data});
     })
 };

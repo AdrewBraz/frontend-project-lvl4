@@ -13,4 +13,14 @@ const messageSchema = Yup.object().shape({
     .required(),
 });
 
-export { messageSchema, channelSchema };
+const userSchema = Yup.object().shape({
+  userName: Yup.string()
+    .min(3, 'UserName is too short!')
+    .max(25, 'UserName is too Long!')
+    .required(),
+  password: Yup.string()
+  .min(4, 'Your password should have more than 4 symblols!')
+  .required(),
+});
+
+export { messageSchema, channelSchema, userSchema };

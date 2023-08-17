@@ -1,46 +1,48 @@
-import React from "react";
 // @ts-check
-import axios from 'axios';
-import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import { Spinner, Alert, NavItem, Nav, Tab} from 'react-bootstrap';
 
-import routes from '../routes';
-import actions from '../actions';
+import SignInForm from "./SignInForm";
 
 const Login = () => {
-    const dispatch = useDispatch();
+    const cardStyle = {
+      marginTop: "-100px",
+      background: "hsla(0, 0%, 100%, 0.8)",
+      backdropFilter: "blur(30px)"
+    }
 
-    const generateOnSubmit = () => async (values) => {
-        const { userName, password } = values;
-        try {
-          const data = { attributes: { userName, password } };
-          await axios.post(routes.login(), { data });
-        } catch (e) {
-          throw new Error('Something went wrong');
-        }
-        dispatch(actions.modalStateClose());
-      };
-
-    const form = useFormik({
-        onSubmit: generateOnSubmit(),
-        initialValues: { userName: '', password: '' },
-        validateOnBlur: false,
-      });
+    const backgroundStyle = {
+      backgroundImage: "url('https://mdbootstrap.com/img/new/textures/full/171.jpg')",
+      height: "300px"
+    }
 
     return (
-        <>
-        <form className="form-inline mb-3" onSubmit={form.handleSubmit}>
-          <div className="input-group flex-row w-50">
-            <input type="text" name="userName" placeholder='Your user Name' onChange={form.handleChange} onBlur={form.handleBlur} value={form.values.userName} className="form-control" />
-            <input type="password" name="password" placeholder='Your password' onChange={form.handleChange} onBlur={form.handleBlur} value={form.values.password} className="form-control" />
-            <div className="input-group-prepend">
-              <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
-                Login
-              </button>
+          <section className="text-center">
+            <div className="p-5 bg-image" style={backgroundStyle}></div>
+
+            <div className="card mx-4 mx-md-5 shadow-5-strong" style={cardStyle}>
+              <div className="card-body py-5 px-md-5">
+                <Tab.Container defaultActiveKey="login">
+                  <div className="nav nav-pills nav-justified mb-3">
+                    <NavItem >
+                      <Nav.Link eventKey="login">Login</Nav.Link>
+                    </NavItem>
+                    <NavItem >
+                      <Nav.Link eventKey="registration">Register</Nav.Link>
+                    </NavItem>
+                  </div>
+                <Tab.Content>
+                  <Tab.Pane eventKey="login">
+                    <SignInForm path='login'/>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="registration">
+                    <SignInForm path='registration'/>
+                  </Tab.Pane>
+                </Tab.Content>
+              </Tab.Container>
+              </div>
             </div>
-          </div>
-        </form>
-        </>
+          </section>
     )
 }
 

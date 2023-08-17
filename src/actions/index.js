@@ -1,7 +1,7 @@
 // @ts-check
 
 import {
-  modalStateEdit, modalStateAdd, modalStateDelete, modalStateClose, switchChat, createUser
+  modalStateEdit, modalStateAdd, modalStateDelete, modalStateClose, switchChat, createUser, loginUser
 } from '../reducers/chatSlice';
 import {
   renameChannel, removeChannel, addChannelToStore,
@@ -19,7 +19,8 @@ const actions = {
   removeChannel,
   fetchMessages,
   addMessage,
-  createUser
+  createUser,
+  loginUser
 };
 
 export default actions;

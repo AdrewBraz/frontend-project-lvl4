@@ -30,6 +30,12 @@ const chatSlice = createSlice({
       state.token = refreshToken,
       state.userName = user.userName
       state.userId = user.id
+    },
+    loginUser(state, { payload: { chat, user, refreshToken } }) {
+      state.currentChannelId = chat.id
+      state.token = refreshToken,
+      state.userName = user.userName
+      state.userId = user.id
     }
   },
   extraReducers: {
@@ -45,7 +51,8 @@ export const {
   modalStateEdit,
   modalStateAdd,
   switchChat,
-  createUser
+  createUser,
+  loginUser
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

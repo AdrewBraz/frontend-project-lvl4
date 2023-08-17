@@ -14,6 +14,19 @@ class UserController {
         throw new Error(e)
       }
     }
+
+    async login(req, reply){
+      try{
+        const { userName, password } = req.body.data.attributes
+        const { user, chat, accessToken, refreshToken, chatList, messageList } = await UserService.login(userName, password)
+        const data = { user, chat, accessToken, refreshToken, chatList, messageList}
+        reply.send(data)
+        reply.setCookie('refreshToken', refreshToken, {httpOnly: true})
+        return data
+      } catch(e){
+        throw new Error(e)
+      }
+    }
 }
 
 export default new UserController();
