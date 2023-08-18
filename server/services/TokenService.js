@@ -18,6 +18,11 @@ class TokenService{
         console.log(newToken)
         return newToken
     }
+
+    async removeToken(refreshToken){
+        const token = Tokens.deleteOne({refreshToken})
+        return token
+    }
     
 }
 

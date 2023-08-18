@@ -58,6 +58,11 @@ class UserService {
       messageList
     }
   }
+
+  async logout( refreshToken ){
+    const data = await TokenService.removeToken(refreshToken)
+    return data
+  }
 }
 
 export default new UserService()

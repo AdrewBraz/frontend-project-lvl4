@@ -27,13 +27,13 @@ const chatSlice = createSlice({
     },
     createUser(state, { payload: { chat, user, refreshToken } }) {
       state.currentChannelId = chat.id
-      state.token = refreshToken,
+      state.token = true,
       state.userName = user.userName
       state.userId = user.id
     },
     loginUser(state, { payload: { chat, user, refreshToken } }) {
       state.currentChannelId = chat.id
-      state.token = refreshToken,
+      state.isAuth = true,
       state.userName = user.userName
       state.userId = user.id
     }

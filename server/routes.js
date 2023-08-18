@@ -76,4 +76,8 @@ export default (app, io, defaultState = {}) => {
       const data  = await UserController.login(_req, reply)
       io.emit('login', {data});
     })
+    .post('/logout', async (_req, reply) => {
+      const data  = await UserController.logout(_req, reply)
+      io.emit('login', {data});
+    })
 };
