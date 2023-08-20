@@ -58,15 +58,19 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
-  socket.on('registration', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
-    store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
+  socket.on('registration', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
+    store.dispatch(createUser({ user, refreshToken, accessToken, chat, chatList, messageList}));
   });
-  socket.on('login', ({ data:  {user, refreshToken, chat, chatList, messageList}}) => {
-    store.dispatch(createUser({ user, refreshToken, chat , chatList, messageList}));
+  socket.on('login', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
+    store.dispatch(createUser({ user, refreshToken, accessToken, chat , chatList, messageList}));
   });
   socket.on('switchChat', ({data: {attributes}} ) => {
     const { chat, messageList} = attributes
     store.dispatch(switchChat( { chat , messageList }));
+  });
+  socket.on('getChats', ({data}) => {
+    console.log(data)
+    // store.dispatch(switchChat( { chat , messageList }));
   });
   render(
     <Provider store={store}>

@@ -4,9 +4,11 @@ import MessageService from './MessageService'
 
 class GroupService {
   async addUserToDefaultGroups(userId){
-    const user = await Groups.findOne({groupName: 'General', participants: userId})
+    const user = await Groups.findOne({groupName: 'General', participants: {$in: [userId]}})
     if(user){
         console.log("User already in the chat")
+        const generalChat = await Groups.findOne({ groupName: 'General'})
+        return generalChat
     }
     const generalChat = await Groups.findOneAndUpdate({groupName: 'General'},{$push: {participants: userId}}, {returnOriginal: false})
     return generalChat
@@ -48,6 +50,11 @@ class GroupService {
     const chat = await Groups.findOneAndUpdate({_id: groupId}, { $set: { groupName }}, { new: true})
     const chatDto = new GrouprDto(chat);
     return chatDto
+  }
+
+  async getAllChats(){
+    const chats = await Groups.find({})
+    return chats
   }
 }
 

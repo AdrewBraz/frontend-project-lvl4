@@ -80,4 +80,12 @@ export default (app, io, defaultState = {}) => {
       const data  = await UserController.logout(_req, reply)
       io.emit('login', {data});
     })
+    .post('/refresh', async (_req, reply) => {
+      const data  = await UserController.refresh(_req, reply)
+      io.emit('refresh', {data});
+    })
+    .get('/chats', async (_req, reply) => {
+      const data  = await GroupController.getChats(_req, reply)
+      io.emit('getChats', {data});
+    })
 };

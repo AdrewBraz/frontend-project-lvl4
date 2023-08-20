@@ -1,7 +1,7 @@
 // @ts-check
 
 import React, { useContext, useEffect, useRef } from 'react';
-import axios from 'axios';
+import axios from '../http';
 import { useFormik } from 'formik';
 import { Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

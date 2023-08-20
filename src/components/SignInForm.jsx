@@ -1,6 +1,6 @@
 import React from "react";
 // @ts-check
-import axios from 'axios';
+import axios from '../http';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { Spinner, Alert } from 'react-bootstrap';
@@ -26,7 +26,8 @@ const SignInForm = (props) => {
         const { userName, password } = values;
         try {
           const data = { attributes: { userName, password } };
-          await axios.post(routes.signIn(props.path), { data });
+          const {data: {accessToken}} = await axios.post(routes.signIn(props.path), { data });
+          localStorage.setItem('token', accessToken)
         } catch (e) {
             console.log(e)
           throw new Error('Something went wrong');

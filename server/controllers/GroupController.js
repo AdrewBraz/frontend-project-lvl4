@@ -62,6 +62,12 @@ class GroupController {
       reply.send(chat)
       return chat
     }
+
+    async getChats(req, reply){
+      const data = await GroupService.getAllChats()
+      reply.send(data)
+      return data
+    }
 }
 
 export default new GroupController();

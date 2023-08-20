@@ -42,7 +42,6 @@ class UserService {
       throw new Error('Wrong password')
     }
     const userDto = new UserDto(user)
-    console.log(user)
     const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
     const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
     const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
@@ -62,6 +61,21 @@ class UserService {
   async logout( refreshToken ){
     const data = await TokenService.removeToken(refreshToken)
     return data
+  }
+
+  async refreshUserToken(refreshToken) {
+    if(!refreshToken){
+      throw new Error('User is unauthorized')
+    }
+    const userData = TokenService.validateRefreshToken(refreshToken)
+    const token = await TokenService.findToken(refreshToken)
+    if(!userData || token){
+      throw new Error('User is unauthorized')
+    }
+    const user =  await Users.findById(userData.id)
+    const userDto = new UserDto(user)
+    const data = TokenService.createTokens({...userDto})
+    return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto}
   }
 }
 

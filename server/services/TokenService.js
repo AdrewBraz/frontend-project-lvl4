@@ -23,6 +23,27 @@ class TokenService{
         const token = Tokens.deleteOne({refreshToken})
         return token
     }
+
+    async validateAccessToken(token){
+        try{
+            const userData = jwt.verify(token, 'SomeFrase')
+        } catch(e){
+            throw new Error('invalid token')
+        }
+    }
+
+    async validateRefreshToken(token){
+        try{
+            const userData = jwt.verify(token, 'SomeFrase')
+        } catch(e){
+            throw new Error('invalid token')
+        }
+    }
+
+    async findToken(refreshToken){
+        const token = Tokens.findOne({refreshToken})
+        return token
+    }
     
 }
 
