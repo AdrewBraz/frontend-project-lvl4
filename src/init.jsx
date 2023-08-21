@@ -15,6 +15,7 @@ import { socketConnected, socketDisconnected } from './reducers/connectionSlice'
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage } from './reducers/messagesSlice';
 import { createUser, switchChat } from './reducers/chatSlice'
+import { getChats } from './reducers/allChatsSlice';
 
 export default () => {
   // const userName = faker.internet.userName();
@@ -30,6 +31,7 @@ export default () => {
       token: ''
     },
     messages: [],
+    allChats: []
   };
 
   const store = configureStore({
@@ -68,9 +70,9 @@ export default () => {
     const { chat, messageList} = attributes
     store.dispatch(switchChat( { chat , messageList }));
   });
-  socket.on('getChats', ({data}) => {
-    console.log(data)
-    // store.dispatch(switchChat( { chat , messageList }));
+  socket.on('getChats', ({chats}) => {
+    console.log(chats)
+    store.dispatch(getChats(chats));
   });
   render(
     <Provider store={store}>

@@ -86,6 +86,6 @@ export default (app, io, defaultState = {}) => {
     })
     .get('/chats', async (_req, reply) => {
       const data  = await GroupController.getChats(_req, reply)
-      io.emit('getChats', {data});
+      io.emit('getChats', {chats: data});
     })
 };

@@ -7,6 +7,7 @@ import {
   renameChannel, removeChannel, addChannelToStore,
 } from '../reducers/channelsSlice';
 import { fetchMessages, addMessage } from '../reducers/messagesSlice';
+import { getChats } from '../reducers/allChatsSlice';
 
 const actions = {
   switchChat,
@@ -21,7 +22,8 @@ const actions = {
   fetchMessages,
   addMessage,
   createUser,
-  loginUser
+  loginUser,
+  getChats
 };
 
 export default actions;

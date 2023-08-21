@@ -25,12 +25,10 @@ const channelsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createUser, (state, action) => {
-      console.log(action.payload.chatList, state)
       state = action.payload.chatList
       return state
     }),
     builder.addCase(loginUser, (state, action) => {
-      console.log(action.payload.chatList, state)
       state = action.payload.chatList
       return state
     })
