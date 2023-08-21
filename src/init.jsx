@@ -27,6 +27,7 @@ export default () => {
     chatState: {
       modal: 'closed',
       userName: '',
+      userId: '',
       currentChannelId: '64d4b0faf22e59a3b037df3a',
       token: ''
     },
@@ -71,8 +72,10 @@ export default () => {
     store.dispatch(switchChat( { chat , messageList }));
   });
   socket.on('getChats', ({chats}) => {
-    console.log(chats)
     store.dispatch(getChats(chats));
+  });
+  socket.on('subscribe', ({ data: { attributes } }) => {
+    store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
   });
   render(
     <Provider store={store}>

@@ -56,6 +56,13 @@ class GroupService {
     const chats = await Groups.find({})
     return chats
   }
+
+  async subscribe(groupId, userId){
+    //check if user in the chat
+    const chat = await Groups.findOneAndUpdate({ _id: groupId },{$push: {participants: userId}}, {returnOriginal: false})
+    const chatDto = new GrouprDto(chat);
+    return { chat: chatDto}
+  }
 }
 
 export default new GroupService()

@@ -68,6 +68,21 @@ class GroupController {
       reply.send(data)
       return data
     }
+
+    async subscribeToChannel(req, reply){
+      const {userId, groupId } = req.body;
+      const { chat } = await GroupService.subscribe(groupId, userId)
+      const resources = {
+        type: 'channels',
+        id: groupId,
+        attributes: {chat},
+      };
+      const response = {
+        data: resources,
+      };
+      reply.send(response)
+      return response
+    }
 }
 
 export default new GroupController();

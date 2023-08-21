@@ -35,7 +35,6 @@ export default (app, io, defaultState = {}) => {
     .delete('/api/v1/channels/:id', async (req, reply) => {
       const data = await GroupController.deleteChatById(req, reply)
       await MessageController.deleteMessages(data)
-      console.log(data)
       reply.send('Messages has been deleted')
       io.emit('removeChannel', data);
     })
@@ -87,5 +86,9 @@ export default (app, io, defaultState = {}) => {
     .get('/chats', async (_req, reply) => {
       const data  = await GroupController.getChats(_req, reply)
       io.emit('getChats', {chats: data});
+    })
+    .post('/subscribe', async (_req, reply) => {
+      const data  = await GroupController.subscribeToChannel(_req, reply)
+      io.emit('subscribe', data);
     })
 };

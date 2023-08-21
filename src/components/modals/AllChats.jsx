@@ -1,7 +1,7 @@
 // @ts-check
 import React, { useRef, useEffect } from 'react';
-import axios from 'axios';
-import { Modal, Spinner, Alert, Badge } from 'react-bootstrap';
+import axios from '../../http';
+import { Modal, Spinner, Alert, Badge, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux/es/exports';
@@ -15,30 +15,39 @@ import actions from '../../actions';
 const AllChats = (props) => {
   const dispatch = useDispatch();
   const currentChannel = useSelector((state) => state.chatState.currentChannelId);
+  const userId = useSelector(state => state.chatState.userId);
   const allChats = useSelector((state) => state.allChats);
   const { modal } = props;
 
-  const subscribe = (id) => async (e) => {
+  const subscribe = (groupId, userId) => async (e) => {
     e.preventDefault()
     try {
-      console.log(id)
+      await axios.post('/subscribe', {groupId, userId})
     } catch (e) {
       throw new Error('Something went wrong');
     }
     dispatch(actions.modalStateClose());
   };
 
+  const renderSubscribeBtn = (groupId, userId) => {
+    return (
+      <Button className="ml-3" variant="primary" type="button" onClick={subscribe(groupId, userId)}>Subscribe</Button>
+    )
+  }
+
   const renderChannels = () => (allChats.map((channel) => {
     const isActive = channel.id === currentChannel;
+    const isSubscriber = channel.participants.includes(userId)
     const classList = cn({
       active: isActive,
       'list-group-item-action list-group-item': true,
     });
     console.log(channel)
     return (
-      <a className={classList} href={`#${channel._id}`} key={channel._id} onClick={subscribe(channel._id)}>
+      <a className={classList} href={`#${channel._id}`} key={channel._id}>
         {channel.groupName}
         <Badge bg="primary">Participants {channel.participants.length}</Badge>
+        { isSubscriber ? null : renderSubscribeBtn(channel._id, userId)}
       </a>
     )
   }))
