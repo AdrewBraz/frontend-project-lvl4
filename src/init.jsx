@@ -73,12 +73,12 @@ export default () => {
   socket.on('getChats', ({chats}) => {
     store.dispatch(getChats(chats));
   });
-  socket.on('subscribe', ({ data: { attributes } }) => {
-    store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
-  });
-  socket.on('unsubscribe', ({ data: { attributes } }) => {
-    store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
-  });
+  // socket.on('subscribe', ({ data: { attributes } }) => {
+  //   store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
+  // });
+  // socket.on('unsubscribe', ({ data: { attributes } }) => {
+  //   store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
+  // });
   render(
     <Provider store={store}>
         <Router />

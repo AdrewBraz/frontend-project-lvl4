@@ -17,7 +17,9 @@ const ChannelsList = () => {
 
   const handleSwitch = (id) => async (e) => {
     e.preventDefault();
-    await axios.get(routes.channelPath(id));
+    const {data: {attributes } } = await axios.get(routes.channelPath(id));
+    const { chat, messageList} = attributes
+    dispatch(actions.switchChat({ chat, messageList }))
   };
 
   const handleModalEdit = (id) => (e) => {

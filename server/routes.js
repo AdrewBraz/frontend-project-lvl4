@@ -25,8 +25,7 @@ export default (app, io, defaultState = {}) => {
       reply.view('index.pug');
     })
     .get('/api/v1/channels/:id', async (_req, reply) => {
-      const data = await GroupController.getChat(_req, reply)
-      io.emit('switchChat', data)
+      await GroupController.getChat(_req, reply)
     })
     .post('/api/v1/channels', async (req, reply) => {
       const data = await GroupController.postChat(req)
@@ -86,11 +85,9 @@ export default (app, io, defaultState = {}) => {
       io.emit('getChats', {chats: data});
     })
     .post('/subscribe', async (_req, reply) => {
-      const data  = await GroupController.subscribeToChannel(_req, reply)
-      io.emit('subscribe', data);
+      await GroupController.subscribeToChannel(_req, reply)
     })
     .post('/unsubscribe', async (_req, reply) => {
-      const data  = await GroupController.unsubscribeToChannel(_req, reply)
-      io.emit('subscribe', data);
+      await GroupController.unsubscribeToChannel(_req, reply)
     })
 };
