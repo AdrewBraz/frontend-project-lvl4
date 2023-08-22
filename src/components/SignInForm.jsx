@@ -26,7 +26,8 @@ const SignInForm = (props) => {
         const { userName, password } = values;
         try {
           const data = { attributes: { userName, password } };
-          const {data: {accessToken}} = await axios.post(routes.signIn(props.path), { data });
+          const {data: {user, refreshToken, accessToken, chat, chatList, messageList}} = await axios.post(routes.signIn(props.path), { data });
+          dispatch(actions.loginUser({ user, refreshToken, accessToken, chat, chatList, messageList}))
           localStorage.setItem('token', accessToken)
         } catch (e) {
             console.log(e)

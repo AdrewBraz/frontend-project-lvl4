@@ -8,7 +8,6 @@ class UserController {
         const data = { user, chat, accessToken, refreshToken, chatList, messageList}
         reply.send(data)
         reply.setCookie('refreshToken', refreshToken, { maxAge: 15*24*60*60*1000, httpOnly: true})
-        return data
       } catch(e){
         console.log(e)
         throw new Error(e)
@@ -22,7 +21,6 @@ class UserController {
         const data = { user, chat, accessToken, refreshToken, chatList, messageList}
         reply.send(data)
         reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
-        return data
       } catch(e){
         throw new Error(e)
       }

@@ -12,12 +12,12 @@
   import { useSelector } from 'react-redux/es/exports';
 
   const Router = () => {
-    const token = useSelector((state) => state.chatState.token)
+    const isAuth = useSelector((state) => state.chatState.isAuth)
 
     return (
         <BrowserRouter>
           <Routes>
-          <Route path='/' element={token ? <App /> : <Login />} ></Route>
+          <Route path='/' element={isAuth ? <App /> : <Login />} ></Route>
           </Routes>
         </BrowserRouter>
     )

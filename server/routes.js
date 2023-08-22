@@ -68,16 +68,14 @@ export default (app, io, defaultState = {}) => {
       io.emit('message', {data: {newMessage}})
     })
     .post('/registration', async (_req, reply) => {
-      const data  = await UserController.registration(_req, reply)
-      io.emit('registration', {data});
+      await UserController.registration(_req, reply)
     })
     .post('/login', async (_req, reply) => {
-      const data  = await UserController.login(_req, reply)
-      io.emit('login', {data});
+      await UserController.login(_req, reply)
+      
     })
     .post('/logout', async (_req, reply) => {
-      const data  = await UserController.logout(_req, reply)
-      io.emit('login', {data});
+      await UserController.logout(_req, reply)
     })
     .post('/refresh', async (_req, reply) => {
       const data  = await UserController.refresh(_req, reply)
@@ -89,6 +87,10 @@ export default (app, io, defaultState = {}) => {
     })
     .post('/subscribe', async (_req, reply) => {
       const data  = await GroupController.subscribeToChannel(_req, reply)
+      io.emit('subscribe', data);
+    })
+    .post('/unsubscribe', async (_req, reply) => {
+      const data  = await GroupController.unsubscribeToChannel(_req, reply)
       io.emit('subscribe', data);
     })
 };

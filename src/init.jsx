@@ -14,7 +14,7 @@ import User from './context';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage } from './reducers/messagesSlice';
-import { createUser, switchChat } from './reducers/chatSlice'
+import { switchChat } from './reducers/chatSlice'
 import { getChats } from './reducers/allChatsSlice';
 
 export default () => {
@@ -27,9 +27,8 @@ export default () => {
     chatState: {
       modal: 'closed',
       userName: '',
-      userId: '',
       currentChannelId: '64d4b0faf22e59a3b037df3a',
-      token: ''
+      isAuth: false
     },
     messages: [],
     allChats: []
@@ -61,12 +60,12 @@ export default () => {
   socket.on('removeChannel', ({ data: { id } }) => {
     store.dispatch(removeChannel({ id }));
   });
-  socket.on('registration', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
-    store.dispatch(createUser({ user, refreshToken, accessToken, chat, chatList, messageList}));
-  });
-  socket.on('login', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
-    store.dispatch(createUser({ user, refreshToken, accessToken, chat , chatList, messageList}));
-  });
+  // socket.on('registration', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
+  //   store.dispatch(createUser({ user, refreshToken, accessToken, chat, chatList, messageList}));
+  // });
+  // socket.on('login', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
+  //   store.dispatch(createUser({ user, refreshToken, accessToken, chat , chatList, messageList}));
+  // });
   socket.on('switchChat', ({data: {attributes}} ) => {
     const { chat, messageList} = attributes
     store.dispatch(switchChat( { chat , messageList }));
@@ -75,6 +74,9 @@ export default () => {
     store.dispatch(getChats(chats));
   });
   socket.on('subscribe', ({ data: { attributes } }) => {
+    store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
+  });
+  socket.on('unsubscribe', ({ data: { attributes } }) => {
     store.dispatch(addChannelToStore({ newChannel: attributes.chat }));
   });
   render(

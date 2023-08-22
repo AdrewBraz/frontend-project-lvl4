@@ -83,6 +83,21 @@ class GroupController {
       reply.send(response)
       return response
     }
+
+    async unsubscribeToChannel(req, reply){
+      const {userId, groupId } = req.body;
+      const { chat } = await GroupService.unSubscribe(groupId, userId)
+      const resources = {
+        type: 'channels',
+        id: groupId,
+        attributes: {chat},
+      };
+      const response = {
+        data: resources,
+      };
+      reply.send(response)
+      return response
+    }
 }
 
 export default new GroupController();

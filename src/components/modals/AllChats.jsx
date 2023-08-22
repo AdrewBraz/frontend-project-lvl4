@@ -19,27 +19,25 @@ const AllChats = (props) => {
   const allChats = useSelector((state) => state.allChats);
   const { modal } = props;
 
-  const subscribe = (groupId, userId) => async (e) => {
+  const handleSubscription = (groupId, userId, path) => async (e) => {
     e.preventDefault()
     try {
-      await axios.post('/subscribe', {groupId, userId})
+      const {data: { attributes }} = await axios.post(path, {groupId, userId})
     } catch (e) {
       throw new Error('Something went wrong');
     }
     dispatch(actions.modalStateClose());
   };
 
-  const renderSubscribeBtn = (groupId, userId) => {
+  const renderSubscribeBtn = (groupId, userId, path) => {
     return (
-      <Button className="ml-3" variant="primary" type="button" onClick={subscribe(groupId, userId)}>Subscribe</Button>
+      <Button className="ml-3" variant="primary" type="button" onClick={handleSubscription(groupId, userId, path)}>{path === '/subscribe'? 'Subscribe' : 'Unsubscribe'}</Button>
     )
   }
 
   const renderChannels = () => (allChats.map((channel) => {
-    const isActive = channel.id === currentChannel;
     const isSubscriber = channel.participants.includes(userId)
     const classList = cn({
-      active: isActive,
       'list-group-item-action list-group-item': true,
     });
     console.log(channel)
@@ -47,7 +45,7 @@ const AllChats = (props) => {
       <a className={classList} href={`#${channel._id}`} key={channel._id}>
         {channel.groupName}
         <Badge bg="primary">Participants {channel.participants.length}</Badge>
-        { isSubscriber ? null : renderSubscribeBtn(channel._id, userId)}
+        { isSubscriber ? renderSubscribeBtn(channel._id, userId, '/unsubscribe') : renderSubscribeBtn(channel._id, userId, '/subscribe')}
       </a>
     )
   }))

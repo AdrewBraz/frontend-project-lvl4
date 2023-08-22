@@ -28,12 +28,6 @@ const chatSlice = createSlice({
     switchChat(state, { payload: { chat } }) {
       state.currentChannelId = chat.id;
     },
-    createUser(state, { payload: { chat, user, refreshToken } }) {
-      state.currentChannelId = chat.id
-      state.token = true,
-      state.userName = user.userName
-      state.userId = user.id
-    },
     loginUser(state, { payload: { chat, user, refreshToken } }) {
       state.currentChannelId = chat.id
       state.isAuth = true,
@@ -55,7 +49,6 @@ export const {
   modalStateSubscribe,
   modalStateAdd,
   switchChat,
-  createUser,
   loginUser
 } = chatSlice.actions;
 

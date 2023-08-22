@@ -2,7 +2,7 @@
 // @ts-check
 
 import { createSlice } from '@reduxjs/toolkit';
-import { createUser, loginUser, modalStateClose } from './chatSlice';
+import { loginUser, modalStateClose } from './chatSlice';
 
 
 
@@ -24,10 +24,6 @@ const channelsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(createUser, (state, action) => {
-      state = action.payload.chatList
-      return state
-    }),
     builder.addCase(loginUser, (state, action) => {
       state = action.payload.chatList
       return state
