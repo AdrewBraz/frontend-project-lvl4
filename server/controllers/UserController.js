@@ -6,8 +6,8 @@ class UserController {
         const { userName, password } = req.body.data.attributes
         const { user, chat, accessToken, refreshToken, chatList, messageList } = await UserService.registration(userName, password)
         const data = { user, chat, accessToken, refreshToken, chatList, messageList}
-        reply.send(data)
         reply.setCookie('refreshToken', refreshToken, { maxAge: 15*24*60*60*1000, httpOnly: true})
+        reply.send(data)
       } catch(e){
         console.log(e)
         throw new Error(e)
@@ -19,8 +19,8 @@ class UserController {
         const { userName, password } = req.body.data.attributes
         const { user, chat, accessToken, refreshToken, chatList, messageList } = await UserService.login(userName, password)
         const data = { user, chat, accessToken, refreshToken, chatList, messageList}
-        reply.send(data)
         reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
+        reply.send(data)
       } catch(e){
         throw new Error(e)
       }
@@ -34,11 +34,12 @@ class UserController {
     }
 
     async refresh(req, reply){
+      console.log('check request')
       const { refreshToken } = req.cookies
-      const data = await UserService.refreshUserToken(refreshToken)
-      reply.send(data)
+      const data = await UserService.refreshUserToken(refreshToken, reply)
       reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
-      return data
+      console.log(data)
+      reply.send(data)
     }
 }
 

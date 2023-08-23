@@ -6,16 +6,18 @@ import { configureStore } from '@reduxjs/toolkit';
 // import { faker } from '@faker-js/faker';
 // import Cookies from 'js-cookie';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import Router from './Router';
 import './i18n';
 import reducers from './reducers';
-import User from './context';
+import { useEffect } from 'react';
 import { socketConnected, socketDisconnected } from './reducers/connectionSlice';
 import { renameChannel, removeChannel, addChannelToStore } from './reducers/channelsSlice';
 import { addMessage } from './reducers/messagesSlice';
 import { switchChat } from './reducers/chatSlice'
 import { getChats } from './reducers/allChatsSlice';
+import { async } from 'regenerator-runtime';
 
 export default () => {
   // const userName = faker.internet.userName();

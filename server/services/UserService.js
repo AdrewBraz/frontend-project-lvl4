@@ -6,6 +6,7 @@ import GroupService from './GroupService';
 import MessageService from './MessageService';
 import UserDto from '../dtos/userDto';
 import GroupDto from '../dtos/GroupDto'
+import ApiError from '../exceptions/api-errors';
 
 class UserService {
   async registration(userName, password){
@@ -64,13 +65,14 @@ class UserService {
   }
 
   async refreshUserToken(refreshToken) {
+    console.log(refreshToken)
     if(!refreshToken){
-      throw new Error('User is unauthorized')
+      throw new ApiError.UnauthorizedError()
     }
-    const userData = TokenService.validateRefreshToken(refreshToken)
+    const userData = await TokenService.validateRefreshToken(refreshToken)
     const token = await TokenService.findToken(refreshToken)
-    if(!userData || token){
-      throw new Error('User is unauthorized')
+    if(!userData || !token){
+      throw new ApiError.UnauthorizedError()
     }
     const user =  await Users.findById(userData.id)
     const userDto = new UserDto(user)

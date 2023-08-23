@@ -3,7 +3,7 @@ import Tokens from '../models/token_model'
 
 class TokenService{
     createTokens(payload){
-        const accessToken = jwt.sign(payload, 'SomeFrase', {expiresIn: '1d'})
+        const accessToken = jwt.sign(payload, 'SomeFrase', {expiresIn: '5m'})
         const refreshToken = jwt.sign(payload, 'SomeFrase', {expiresIn: '30d'})
         return { accessToken, refreshToken }
     }
@@ -26,7 +26,8 @@ class TokenService{
 
     async validateAccessToken(token){
         try{
-            const userData = jwt.verify(token, 'SomeFrase')
+            const userData = await jwt.verify(token, 'SomeFrase')
+            return userData
         } catch(e){
             throw new Error('invalid token')
         }
@@ -34,7 +35,8 @@ class TokenService{
 
     async validateRefreshToken(token){
         try{
-            const userData = jwt.verify(token, 'SomeFrase')
+            const userData = await jwt.verify(token, 'SomeFrase')
+            return userData
         } catch(e){
             throw new Error('invalid token')
         }

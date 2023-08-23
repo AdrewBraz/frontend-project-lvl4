@@ -2,8 +2,8 @@ import _ from 'lodash';
 import UserController from './controllers/UserController';
 import MessageController from './controllers/MessageController';
 import GroupController from './controllers/GroupController';
-import { emit } from 'nodemon';
-
+import authMiddleware from './middlewares/auth-middleware';
+import errorMiddleware from './middlewares/error-middleware';
 const getNextId = () => Number(_.uniqueId());
 
 const buildState = (defaultState) => {
@@ -24,21 +24,21 @@ export default (app, io, defaultState = {}) => {
     .get('/', (_req, reply) => {
       reply.view('index.pug');
     })
-    .get('/api/v1/channels/:id', async (_req, reply) => {
+    .get('/api/v1/channels/:id', {preHandler: authMiddleware}, async (_req, reply) => {
       const data = await GroupController.getChat(_req, reply)
       io.emit('switchChat', data)
     })
-    .post('/api/v1/channels', async (req, reply) => {
+    .post('/api/v1/channels', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.postChat(req)
       io.emit('newChannel', data);
     })
-    .delete('/api/v1/channels/:id', async (req, reply) => {
+    .delete('/api/v1/channels/:id', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.deleteChatById(req, reply)
       await MessageController.deleteMessages(data)
       reply.send('Messages has been deleted')
       io.emit('removeChannel', data);
     })
-    .patch('/api/v1/channels/:id', async (req, reply) => {
+    .patch('/api/v1/channels/:id', {preHandler: authMiddleware}, async (req, reply) => {
       const updatedChat = await GroupController.editChatName(req, reply)
 
       const data = {
@@ -63,7 +63,7 @@ export default (app, io, defaultState = {}) => {
       };
       reply.send(response);
     })
-    .post('/api/v1/channels/:channelId/messages', async (_req, reply) => {
+    .post('/api/v1/channels/:channelId/messages', {preHandler: authMiddleware}, async (_req, reply) => {
       const newMessage = await MessageController.postMessage(_req, reply)
       io.emit('message', {data: {newMessage}})
     })
@@ -77,20 +77,20 @@ export default (app, io, defaultState = {}) => {
     .post('/logout', async (_req, reply) => {
       await UserController.logout(_req, reply)
     })
-    .post('/refresh', async (_req, reply) => {
-      const data  = await UserController.refresh(_req, reply)
-      io.emit('refresh', {data});
+    .get('/refresh', async (_req, reply) => {
+      await UserController.refresh(_req, reply)
     })
-    .get('/chats', async (_req, reply) => {
+    .get('/chats', {preHandler: authMiddleware},  async (_req, reply) => {
       const data  = await GroupController.getChats(_req, reply)
       io.emit('getChats', {chats: data});
     })
-    .post('/subscribe', async (_req, reply) => {
+    .post('/subscribe', {preHandler: authMiddleware}, async (_req, reply) => {
       const data  = await GroupController.subscribeToChannel(_req, reply)
       io.emit('subscribe', data);
     })
-    .post('/unsubscribe', async (_req, reply) => {
+    .post('/unsubscribe', {preHandler: authMiddleware}, async (_req, reply) => {
       const data  = await GroupController.unsubscribeToChannel(_req, reply)
       io.emit('subscribe', data);
     })
+    app.setErrorHandler(errorMiddleware)
 };

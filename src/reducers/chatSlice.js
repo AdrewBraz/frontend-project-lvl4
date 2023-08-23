@@ -28,12 +28,16 @@ const chatSlice = createSlice({
     switchChat(state, { payload: { chat } }) {
       state.currentChannelId = chat.id;
     },
-    loginUser(state, { payload: { chat, user, refreshToken } }) {
+    loginUser(state, { payload: { chat, user, refreshToken, accessToken } }) {
       state.currentChannelId = chat.id
-      state.isAuth = true,
+      state.isAuth = !!accessToken,
       state.userName = user.userName
       state.userId = user.id
-    }
+    },
+    checkAuth(state, { payload: { accessToken } }) {
+      console.log(accessToken)
+      state.isAuth = !!accessToken
+    },
   },
   extraReducers: {
     [removeChannel](state) {
@@ -49,7 +53,8 @@ export const {
   modalStateSubscribe,
   modalStateAdd,
   switchChat,
-  loginUser
+  loginUser,
+  checkAuth
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
