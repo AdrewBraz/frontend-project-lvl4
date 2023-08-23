@@ -24,9 +24,8 @@ export default (app, io, defaultState = {}) => {
     .get('/', (_req, reply) => {
       reply.view('index.pug');
     })
-    .get('/api/v1/channels/:id', {preHandler: authMiddleware}, async (_req, reply) => {
-      const data = await GroupController.getChat(_req, reply)
-      io.emit('switchChat', data)
+    .get('/api/v1/channels/:id', async (_req, reply) => {
+      await GroupController.getChat(_req, reply)
     })
     .post('/api/v1/channels', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.postChat(req)
@@ -84,13 +83,11 @@ export default (app, io, defaultState = {}) => {
       const data  = await GroupController.getChats(_req, reply)
       io.emit('getChats', {chats: data});
     })
-    .post('/subscribe', {preHandler: authMiddleware}, async (_req, reply) => {
-      const data  = await GroupController.subscribeToChannel(_req, reply)
-      io.emit('subscribe', data);
+    .post('/subscribe', async (_req, reply) => {
+      await GroupController.subscribeToChannel(_req, reply)
     })
-    .post('/unsubscribe', {preHandler: authMiddleware}, async (_req, reply) => {
-      const data  = await GroupController.unsubscribeToChannel(_req, reply)
-      io.emit('subscribe', data);
+    .post('/unsubscribe', async (_req, reply) => {
+      await GroupController.unsubscribeToChannel(_req, reply)
     })
     app.setErrorHandler(errorMiddleware)
 };

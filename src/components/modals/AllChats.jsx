@@ -18,20 +18,32 @@ const AllChats = (props) => {
   const userId = useSelector(state => state.chatState.userId);
   const allChats = useSelector((state) => state.allChats);
   const { modal } = props;
+  const subscribeTypes = {
+    subscribe: { text: 'Subscribe', path: '/subscribe', method: actions.addChannelToStore},
+    unsubscribe: { text: 'Unsubscribe', path: '/unsubscribe', method: actions.removeChannel}
+  }
 
-  const handleSubscription = (groupId, userId, path) => async (e) => {
+  const handleSubscription = (groupId, userId, path, func) => async (e) => {
     e.preventDefault()
     try {
-      const {data: { attributes }} = await axios.post(path, {groupId, userId})
+      const {data: { attributes}} = await axios.post(path, {groupId, userId})
+      dispatch(func({ channel: attributes.chat }))
     } catch (e) {
+      console.log(e)
       throw new Error('Something went wrong');
     }
     dispatch(actions.modalStateClose());
   };
 
-  const renderSubscribeBtn = (groupId, userId, path) => {
+  const renderSubscribeBtn = (groupId, userId, type) => {
+    const { path, text, method } = subscribeTypes[type]
     return (
-      <Button className="ml-3" variant="primary" type="button" onClick={handleSubscription(groupId, userId, path)}>{path === '/subscribe'? 'Subscribe' : 'Unsubscribe'}</Button>
+      <Button className="ml-3" 
+              variant="primary" 
+              type="button" 
+              onClick={handleSubscription(groupId, userId, path, method)}>
+                {text}
+      </Button>
     )
   }
 
@@ -45,7 +57,7 @@ const AllChats = (props) => {
       <a className={classList} href={`#${channel._id}`} key={channel._id}>
         {channel.groupName}
         <Badge bg="primary">Participants {channel.participants.length}</Badge>
-        { isSubscriber ? renderSubscribeBtn(channel._id, userId, '/unsubscribe') : renderSubscribeBtn(channel._id, userId, '/subscribe')}
+        { isSubscriber ? renderSubscribeBtn(channel._id, userId, 'unsubscribe') : renderSubscribeBtn(channel._id, userId, 'subscribe')}
       </a>
     )
   }))

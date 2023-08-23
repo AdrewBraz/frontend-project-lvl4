@@ -40,18 +40,13 @@ class GroupController {
     }
     async getChat( req, reply){
       const groupId = req.params.id;
-      console.log('switched', groupId)
       const { chat, messageList } = await GroupService.getChatById(groupId)
       const resources = {
         type: 'channels',
         id: groupId,
         attributes: {messageList, chat},
       };
-      const response = {
-        data: resources,
-      };
-      reply.send(response)
-      return response
+      reply.send(resources)
     }
 
     async editChatName(req, reply){
@@ -71,17 +66,13 @@ class GroupController {
 
     async subscribeToChannel(req, reply){
       const {userId, groupId } = req.body;
-      const { chat } = await GroupService.subscribe(groupId, userId)
+      const { chat  } = await GroupService.subscribe(groupId, userId)
       const resources = {
         type: 'channels',
         id: groupId,
         attributes: {chat},
       };
-      const response = {
-        data: resources,
-      };
-      reply.send(response)
-      return response
+      reply.send(resources)
     }
 
     async unsubscribeToChannel(req, reply){
@@ -92,11 +83,8 @@ class GroupController {
         id: groupId,
         attributes: {chat},
       };
-      const response = {
-        data: resources,
-      };
-      reply.send(response)
-      return response
+ 
+      reply.send(resources)
     }
 }
 
