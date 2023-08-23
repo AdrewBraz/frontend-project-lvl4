@@ -52,7 +52,6 @@ const AllChats = (props) => {
     const classList = cn({
       'list-group-item-action list-group-item': true,
     });
-    console.log(channel)
     return (
       <a className={classList} href={`#${channel._id}`} key={channel._id}>
         {channel.groupName}

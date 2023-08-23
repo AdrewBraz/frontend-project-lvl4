@@ -12,4 +12,21 @@ $api.interceptors.request.use( (config) => {
     return config
 })
 
+$api.interceptors.response((config) => {
+    return config
+}, async (error) => {
+    const originalRequest = error.config
+    if(error.response.status === 401 && !error.config && !error.config._isRetry){
+        originalRequest._isRetry = true
+        try{
+            const { data: {accessToken} } = await axios.get('/refresh', {withCredentials: true})
+            localStorage.setItem('token', accessToken)
+            $api.request(originalRequest)
+        } catch(e){
+            console.log('error')
+        }
+    }
+    throw error
+})
+
 export default $api
