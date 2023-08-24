@@ -9,11 +9,17 @@ import fastifyStatic from '@fastify/static';
 import _ from 'lodash';
 import addRoutes from './routes.js';
 import mongoose from 'mongoose'
-import { async } from 'regenerator-runtime';
+import aws from './aws.js';
+import dotenv from 'dotenv'
 
 const isProduction = process.env.NODE_ENV === 'production';
 const appPath = path.join(__dirname, '..');
 const isDevelopment = !isProduction;
+dotenv.config()
+
+const client = new aws.S3({
+  endpoint: 'https://storage.yandexcloud.net'
+})
 
 const setUpViews = (app) => {
   const domain = isDevelopment ? 'http://localhost:8080' : '';
@@ -41,7 +47,7 @@ const setCookies = ( app ) => {
 
 const connect = async () => {
   try{
-  await mongoose.connect(`mongodb+srv://Admin:CatSam@chat.lzcnnbm.mongodb.net/?retryWrites=true&w=majority`)
+  await mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}.lzcnnbm.mongodb.net/?retryWrites=true&w=majority`)
   console.log('Mongo connnected')
   } catch(e){
     console.error(e)
