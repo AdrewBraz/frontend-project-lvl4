@@ -12,7 +12,7 @@ $api.interceptors.request.use( (config) => {
     return config
 })
 
-$api.interceptors.response((config) => {
+$api.interceptors.response.use((config) => {
     return config
 }, async (error) => {
     const originalRequest = error.config

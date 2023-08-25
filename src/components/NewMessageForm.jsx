@@ -10,12 +10,14 @@ import { useSelector } from 'react-redux/es/exports';
 
 import User from '../context';
 import routes from '../routes';
+import ImageLoaderInput from './ImageLoaderInput';
 
 const generateOnSubmit = ({ currentChannelId }, {userId, userName}) => async (values, { resetForm }) => {
-  console.log(userId)
   const text = values.message;
+  const file = values.file
   const postDate = new Date();
-  const message = { text, author: {id: userId, userName: userName}, date: postDate };
+  const message = { text, author: {id: userId, userName: userName}, date: postDate, attachments: file };
+  console.log(message)
   const data = { attributes: message };
   await axios.post(routes.channelMessagesPath(currentChannelId), { data });
   resetForm();
@@ -31,7 +33,7 @@ const NewMessageForm = (props) => {
   const form = useFormik({
     onSubmit: generateOnSubmit(props, {userId, userName}),
     validationSchema: messageSchema,
-    initialValues: { message: '' },
+    initialValues: { message: ''},
   });
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const NewMessageForm = (props) => {
             value={form.values.message}
             className="form-control"
           />
+          <input accept='image/*' id="input-b5" name="file" type="file" multiple onChange={(e) => {form.setFieldValue("file", e.currentTarget.files[0])}} onBlur={form.handleBlur} />
           <div className="input-group-prepend">
             <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
               {form.isSubmitting ? <Spinner animation="border" /> : t('addBtn')}

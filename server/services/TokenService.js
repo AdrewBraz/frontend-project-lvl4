@@ -15,7 +15,6 @@ class TokenService{
             return user.save()
         }
         const newToken = await Tokens.create({user: userId, refreshToken: token})
-        console.log(newToken)
         return newToken
     }
 

@@ -62,7 +62,8 @@ export default (app, io, defaultState = {}) => {
       };
       reply.send(response);
     })
-    .post('/api/v1/channels/:channelId/messages', {preHandler: authMiddleware}, async (_req, reply) => {
+    .post('/api/v1/channels/:channelId/messages',  async (_req, reply) => {
+      console.log('action')
       const newMessage = await MessageController.postMessage(_req, reply)
       io.emit('message', {data: {newMessage}})
     })
