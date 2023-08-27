@@ -15,11 +15,13 @@ import ImageLoaderInput from './ImageLoaderInput';
 const generateOnSubmit = ({ currentChannelId }, {userId, userName}) => async (values, { resetForm }) => {
   const text = values.message;
   const file = values.file
+  const formData = new FormData()
   const postDate = new Date();
-  const message = { text, author: {id: userId, userName: userName}, date: postDate, attachments: file };
-  console.log(message)
-  const data = { attributes: message };
-  await axios.post(routes.channelMessagesPath(currentChannelId), { data });
+  const message = { text, userId, userName, date: postDate, file };
+  for(let key in message){
+    formData.append(key, message[key])
+  }
+  await axios.post(routes.channelMessagesPath(currentChannelId), formData);
   resetForm();
 };
 
@@ -44,7 +46,7 @@ const NewMessageForm = (props) => {
 
   return (
     <div>
-      <form className="form-inline mb-3" onSubmit={form.handleSubmit}>
+      <form action='' className="form-inline mb-3" onSubmit={form.handleSubmit}>
         <div className="input-group flex-row w-100">
           <input
             type="text"

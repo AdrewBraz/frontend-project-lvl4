@@ -51,16 +51,18 @@ export default () => {
     store.dispatch(socketDisconnected());
   });
   socket.on('newChannel', ({ data: { attributes } }) => {
-    store.dispatch(addChannelToStore({ newChannel: attributes }));
+    const channel = attributes
+    store.dispatch(addChannelToStore({ channel }));
   });
-  socket.on('message', ({data: { newMessage}}) => {
+  socket.on('message', ({data: { newMessage }}) => {
     store.dispatch(addMessage({ newMessage }));
   });
   socket.on('renameChannel', ({ data: { attributes } }) => {
     store.dispatch(renameChannel({ renamedChannel: attributes }));
   });
-  socket.on('removeChannel', ({ data: { id } }) => {
-    store.dispatch(removeChannel({ id }));
+  socket.on('removeChannel', ({ data: { attributes} }) => {
+    const channel = attributes
+    store.dispatch(removeChannel({ channel }));
   });
   // socket.on('registration', ({ data:  {user, refreshToken, accessToken, chat, chatList, messageList}}) => {
   //   store.dispatch(createUser({ user, refreshToken, accessToken, chat, chatList, messageList}));

@@ -7,7 +7,8 @@ const Message = new Schema({
         userName: { type: String, required: true}
     },
     timestamp: {type: Date, required: true},
-    groupId: { type: Schema.Types.ObjectId, ref: 'Group', required: true}
+    groupId: { type: Schema.Types.ObjectId, ref: 'Group', required: true},
+    url: { type: String}
 })
 
 const MessageModel = model('Message', Message)

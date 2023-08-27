@@ -1,7 +1,7 @@
 // @ts-check
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import axios from 'axios';
+import axios from '../../http';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 

@@ -1,9 +1,8 @@
 import TokenService from "../services/TokenService"
 
-export default (req, reply) => {
+export default async (req, reply) => {
     try {
       const authorizationHeader = req.headers.authorization
-      console.log(authorizationHeader)
       if(!authorizationHeader){
         throw Error('Unauthorized user')
       }
@@ -11,7 +10,7 @@ export default (req, reply) => {
       if(!accessToken){
         throw Error('Unauthorized user')
       }
-      const userData = TokenService.validateAccessToken(accessToken)
+      const userData =  await TokenService.validateAccessToken(accessToken)
       if(!userData){
         throw Error('Unauthorized user')
       }

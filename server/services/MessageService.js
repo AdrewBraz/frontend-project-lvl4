@@ -1,9 +1,11 @@
+import { v4 as uuidv4 } from 'uuid';
 import Messages from '../models/message_model'
 import MessageDto from '../dtos/messageDto'
 
 class MessageService {
-  async createMessage(messageText, userName, date, groupId){
-    const newMessage = await Messages.create({text: messageText, author: userName, timestamp: date, groupId})
+  async createMessage(data){
+    console.log(data)
+    const newMessage = await Messages.create({...data})
     return newMessage
     
   }
@@ -16,6 +18,18 @@ class MessageService {
   async deleteMessages(groupId){
     const data = await Messages.deleteMany({groupId})
     return data
+  }
+
+  async imageUpload(file, userId, s3){
+    console.log(file.filename)
+    const fileName = `${uuidv4()}_${file.filename}`
+    const url = await s3.Upload({
+      buffer: file._buf,
+      name: fileName
+    },
+    `/${userId}/`
+    )
+    return url.Location
   }
 }
 

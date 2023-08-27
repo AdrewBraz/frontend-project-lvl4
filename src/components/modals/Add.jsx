@@ -1,6 +1,6 @@
 // @ts-check
 import React, { useRef, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../http';
 import { useFormik } from 'formik';
 import { Modal, Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';

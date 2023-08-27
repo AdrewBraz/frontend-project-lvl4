@@ -77,7 +77,12 @@ class UserService {
     const user =  await Users.findById(userData.id)
     const userDto = new UserDto(user)
     const data = TokenService.createTokens({...userDto})
-    return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto}
+    const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
+    const defaultChat = chatList.find((item) => item.groupName === 'General')
+   
+    const messageList = await MessageService.getChatMessages(defaultChat.id)
+    await TokenService.saveToken(userDto.id, refreshToken)
+    return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto, chatList, messageList, chat: defaultChat}
   }
 }
 

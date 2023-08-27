@@ -1,8 +1,11 @@
-import AWS from 'aws-sdk'
-import dotenv from 'dotenv'
+import EasyYandexS3 from 'easy-yandex-s3'
 
-dotenv.config()
 
-AWS.config.update({ region: 'ru-central1', accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY})
-
-export default AWS;
+export default new EasyYandexS3({
+    auth: {
+      accessKeyId: 
+      secretAccessKey: 
+    },
+    Bucket: 'chat-mongo', // например, "my-storage",
+    debug: false, // Дебаг в консоли, потом можете удалить в релизе
+  });

@@ -37,6 +37,7 @@ const AllChats = (props) => {
 
   const renderSubscribeBtn = (groupId, userId, type) => {
     const { path, text, method } = subscribeTypes[type]
+    console.log(path)
     return (
       <Button className="ml-3" 
               variant="primary" 

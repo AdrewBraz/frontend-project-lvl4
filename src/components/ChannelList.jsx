@@ -13,7 +13,6 @@ const ChannelsList = () => {
   const channelList = useSelector((state) => sortBy(state.channels));
   const currentChannel = useSelector((state) => state.chatState.currentChannelId);
   const dispatch = useDispatch();
-  console.log(channelList)
 
   const handleSwitch = (id) => async (e) => {
     e.preventDefault();

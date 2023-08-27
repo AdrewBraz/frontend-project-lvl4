@@ -4,7 +4,6 @@ import MessageController from './controllers/MessageController';
 import GroupController from './controllers/GroupController';
 import authMiddleware from './middlewares/auth-middleware';
 import errorMiddleware from './middlewares/error-middleware';
-const getNextId = () => Number(_.uniqueId());
 
 const buildState = (defaultState) => {
   const state = {
@@ -17,7 +16,7 @@ const buildState = (defaultState) => {
   return state;
 };
 
-export default (app, io, defaultState = {}) => {
+export default (app, io, s3, defaultState = {}) => {
   const state = buildState(defaultState);
 
   app
@@ -29,7 +28,7 @@ export default (app, io, defaultState = {}) => {
     })
     .post('/api/v1/channels', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.postChat(req)
-      io.emit('newChannel', data);
+      io.emit('newChannel', {data});
     })
     .delete('/api/v1/channels/:id', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.deleteChatById(req, reply)
@@ -63,8 +62,7 @@ export default (app, io, defaultState = {}) => {
       reply.send(response);
     })
     .post('/api/v1/channels/:channelId/messages',  async (_req, reply) => {
-      console.log('action')
-      const newMessage = await MessageController.postMessage(_req, reply)
+      const newMessage = await MessageController.postMessage(_req, reply, s3)
       io.emit('message', {data: {newMessage}})
     })
     .post('/registration', async (_req, reply) => {

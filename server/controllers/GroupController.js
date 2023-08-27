@@ -11,12 +11,11 @@ class GroupController {
             id: chat.id,
           };
         const data = {
-            data: {
               type: 'channels',
               id: channel.id,
               attributes: channel,
-            },
           };
+
         return data
       } catch(e){
         console.log('Something went wrong')
@@ -31,7 +30,7 @@ class GroupController {
         data: {
           type: 'channels',
           id: chat.id,
-          groupName: chat.groupName
+          attributes: chat
         },
       };
       reply.send(data)

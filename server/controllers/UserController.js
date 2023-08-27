@@ -1,4 +1,5 @@
-import UserService from "../services/UserService";
+import UserService from "../services/UserService"
+import ApiError from "../exceptions/api-errors"
 
 class UserController {
     async registration(req, reply){
@@ -10,7 +11,7 @@ class UserController {
         reply.send(data)
       } catch(e){
         console.log(e)
-        throw new Error(e)
+        throw new ApiError(e)
       }
     }
 
@@ -34,11 +35,9 @@ class UserController {
     }
 
     async refresh(req, reply){
-      console.log('check request')
       const { refreshToken } = req.cookies
       const data = await UserService.refreshUserToken(refreshToken, reply)
       reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
-      console.log(data)
       reply.send(data)
     }
 }

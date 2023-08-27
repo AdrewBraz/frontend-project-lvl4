@@ -6,7 +6,7 @@
     useNavigate,
   } from 'react-router-dom';
   import { useEffect } from 'react';
-  import axios from 'axios';
+  import axios from './http';
   import { useDispatch } from 'react-redux/es/exports';
 
   import React from 'react';
@@ -21,12 +21,12 @@ import actions from './actions';
     const isAuth = useSelector((state) => state.chatState.isAuth)
     useEffect(() => {
       const func = async () => {
-        const { data: {accessToken} } = await axios.get('/refresh', {withCredentials: true})
+        const { data: {accessToken, refreshToken, user, chat, chatList, messageList} } = await axios.get('/refresh', {withCredentials: true})
         dispatch(actions.checkAuth({accessToken}))
-        return accessToken
+        dispatch(actions.loginUser({ user, refreshToken, accessToken, chat, chatList, messageList}))
+        localStorage.setItem('token', accessToken)
       }
       if(localStorage.getItem('token')){
-        console.log(localStorage.getItem('token'))
         func()
       }
     }, [])

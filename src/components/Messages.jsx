@@ -1,6 +1,6 @@
 // @ts-check
 import React, { useEffect, useRef } from 'react';
-import { ListGroup, ListGroupItem, Col } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Col, Image } from 'react-bootstrap';
 import { Translation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -42,7 +42,10 @@ const Messages = () => {
               <span className="font-weight-light">{message.timestamp}</span>
             </div>
             <div>
-              {message.text}
+            {message.url ? 
+              <Col><Image className='img-fluid' src={message.url} rounded/></Col> : 
+              null}
+              <p>{message.text}</p>
             </div>
           </ListGroupItem>
         ))}

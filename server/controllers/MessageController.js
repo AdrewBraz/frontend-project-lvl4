@@ -1,23 +1,42 @@
 import MessageService from "../services/MessageService"
-import mongoose from "mongoose"
+import ApiError from "../exceptions/api-errors"
 
 class MessageController {
-    async postMessage(req, reply){
+    async postMessage(req, reply, s3){
       try{
-        const { text, author, date } = req.body.data.attributes
-        const attachments = req.body.data
-        console.log(req.file)
+        const { text, date, userId, userName } = req.body
+        const file = req.body.file
         const groupId = req.params.channelId
-        // const message = await MessageService.createMessage(text, author, date, groupId)
-        // reply.send({message})
-        // return message
-      } catch(e){
-        throw new Error(e)
+        const data = {
+          text: text.value,
+          timestamp: date.value,
+          author: {
+            userName: userName.value,
+            id: userId.value
+          },
+          groupId
+        }
+        if(file.value !== 'undefined'){
+          const url = await MessageService.imageUpload(file, userId.value, s3)
+          const message = await MessageService.createMessage({...data, url})
+          reply.send({message})
+          return message
+        }
+        const message = await MessageService.createMessage(data)
+        reply.send({message})
+          return message
+        } catch(e){
+          console.log(e)
+        throw new ApiError(e)
       }
     }
 
     async deleteMessages({data}){
-      await MessageService.deleteMessages(data.id)
+      try{
+        await MessageService.deleteMessages(data.id)
+      } catch(e){
+        throw new ApiError
+      }
     }
 }
 

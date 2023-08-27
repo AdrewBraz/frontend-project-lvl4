@@ -10,7 +10,9 @@ import fastifyMultipart from '@fastify/multipart'
 import _ from 'lodash';
 import addRoutes from './routes.js';
 import mongoose from 'mongoose'
+import cors from '@fastify/cors'
 import dotenv from 'dotenv'
+import s3 from './aws'
 
 const isProduction = process.env.NODE_ENV === 'production';
 const appPath = path.join(__dirname, '..');
@@ -41,7 +43,12 @@ const setCookies = ( app ) => {
 }
 
 const setMultipart = (app) => {
-  app.register(fastifyMultipart)
+  app.register(fastifyMultipart, { attachFieldsToBody: true, limits: {fileSize: 5 * 1000000} })
+}
+const setCors = (app) => {
+  app.register(cors, {
+    allowedHeaders: ['Authorization']
+  })
 }
 console.log(dotenv.config().parse)
 const connect = async () => {
@@ -62,9 +69,10 @@ export default (state = {}) => {
   setCookies(app)
   setUpStaticAssets(app);
   setMultipart(app)
+  setCors(app)
 
   const io = socket(app.server);
-  addRoutes(app, io, state);
+  addRoutes(app, io, s3, state);
 
   return app;
 };

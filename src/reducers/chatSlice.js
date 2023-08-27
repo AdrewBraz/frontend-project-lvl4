@@ -35,7 +35,6 @@ const chatSlice = createSlice({
       state.userId = user.id
     },
     checkAuth(state, { payload: { accessToken } }) {
-      console.log(accessToken)
       state.isAuth = !!accessToken
     },
   },
