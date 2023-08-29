@@ -14,6 +14,9 @@ const chatSlice = createSlice({
     modalStateSubscribe(state) {
       state.modal = 'subscribing';
     },
+    modalStateProfile(state) {
+      state.modal = 'updating';
+    },
     modalStateEdit(state, { payload }) {
       state.channelEditId = payload.id;
       state.modal = 'renaming';
@@ -50,6 +53,7 @@ export const {
   modalStateDelete,
   modalStateEdit,
   modalStateSubscribe,
+  modalStateProfile,
   modalStateAdd,
   switchChat,
   loginUser,

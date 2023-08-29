@@ -43,7 +43,7 @@ const Messages = () => {
             </div>
             <div>
             {message.url ? 
-              <Col><Image className='img-fluid' src={message.url} rounded/></Col> : 
+              <Col><Image style={{maxHeight: "40vh"}} className='img-fluid' src={message.url} rounded/></Col> : 
               null}
               <p>{message.text}</p>
             </div>

@@ -11,7 +11,9 @@ class MessageService {
   }
 
   async getChatMessages(groupId){
+    console.log(groupId)
     const data = await Messages.find({groupId})
+    console.log(data)
     return data
   }
 

@@ -27,8 +27,8 @@ export default (app, io, s3, defaultState = {}) => {
       await GroupController.getChat(_req, reply)
     })
     .post('/api/v1/channels', {preHandler: authMiddleware}, async (req, reply) => {
-      const data = await GroupController.postChat(req)
-      io.emit('newChannel', {data});
+      await GroupController.postChat(req, reply)
+      // io.emit('newChannel', {data});
     })
     .delete('/api/v1/channels/:id', {preHandler: authMiddleware}, async (req, reply) => {
       const data = await GroupController.deleteChatById(req, reply)

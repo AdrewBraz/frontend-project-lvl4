@@ -8,6 +8,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import axios from '../http';
 import actions from '../actions';
 import routes from '../routes';
+import SubscriptionButton from './Buttons/SubscriptionButton';
 
 const ChannelsList = () => {
   const channelList = useSelector((state) => sortBy(state.channels));
@@ -42,7 +43,7 @@ const ChannelsList = () => {
     return (
       <a className={classList} href={`#${channel.id}`} key={channel.id} onClick={handleSwitch(channel.id)}>
         {channel.groupName}
-        {channel.removable ? renderEditBtn(channel.id) : null}
+        {channel.role === 'admin' ? renderEditBtn(channel.id) : null}
       </a>
     );
   });

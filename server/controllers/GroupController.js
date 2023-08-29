@@ -3,11 +3,11 @@ import GroupService from "../services/GroupService"
 class GroupController {
     async postChat(req, reply){
       try{
-        const { groupName, removable, userId } = req.body.data.attributes
-        const chat = await GroupService.createChat(groupName, userId, removable)
+        const { groupName, role, userId } = req.body.data.attributes
+        const chat = await GroupService.createChat(groupName, userId, role)
         const channel = {
             groupName: chat.groupName,
-            removable: true,
+            role,
             id: chat.id,
           };
         const data = {
@@ -16,7 +16,7 @@ class GroupController {
               attributes: channel,
           };
 
-        return data
+        reply.send(data)
       } catch(e){
         console.log('Something went wrong')
         throw new Error(e)
@@ -63,12 +63,13 @@ class GroupController {
       return data
     }
 
-    async subscribeToChannel(req, reply){
+    async subscribeToChannel(req, reply, role){
       const {userId, groupId } = req.body;
       const { chat  } = await GroupService.subscribe(groupId, userId)
       const resources = {
         type: 'channels',
         id: groupId,
+        role,
         attributes: {chat},
       };
       reply.send(resources)

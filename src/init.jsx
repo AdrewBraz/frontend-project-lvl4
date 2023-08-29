@@ -50,10 +50,10 @@ export default () => {
   socket.on('disconnect', () => {
     store.dispatch(socketDisconnected());
   });
-  socket.on('newChannel', ({ data: { attributes } }) => {
-    const channel = attributes
-    store.dispatch(addChannelToStore({ channel }));
-  });
+  // socket.on('newChannel', ({ data: { attributes } }) => {
+  //   const channel = attributes
+  //   store.dispatch(addChannelToStore({ channel }));
+  // });
   socket.on('message', ({data: { newMessage }}) => {
     store.dispatch(addMessage({ newMessage }));
   });

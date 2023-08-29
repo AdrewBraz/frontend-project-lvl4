@@ -6,6 +6,5 @@ export default class GrouprDto {
     constructor(model){
         this.groupName = model.groupName;
         this.id = model._id;
-        this.removable = model.removable
     }
 }

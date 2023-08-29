@@ -4,28 +4,32 @@ import MessageService from './MessageService'
 
 class GroupService {
   async addUserToDefaultGroups(userId){
-    const user = await Groups.findOne({groupName: 'General', participants: {$in: [userId]}})
-    if(user){
-        console.log("User already in the chat")
-        const generalChat = await Groups.findOne({ groupName: 'General'})
-        return generalChat
+    try {
+      const user = await Groups.findOne({groupName: 'General', participants: {$in: [{userId}]}})
+      if(user){
+          console.log("User already in the chat")
+          const generalChat = await Groups.findOne({ groupName: 'General'})
+          return generalChat
+      }
+      const generalChat = await Groups.findOneAndUpdate({groupName: 'General'},{$push: {participants: {user_id: userId, role: 'user'}}}, {returnOriginal: false})
+      return generalChat
+    } catch(e){
+      console.log('done')
     }
-    const generalChat = await Groups.findOneAndUpdate({groupName: 'General'},{$push: {participants: userId}}, {returnOriginal: false})
-    return generalChat
   }
-  async createChat(groupName, userId, removable){
+  async createChat(groupName, userId, role){
     const chat = await Groups.findOne({groupName})
     if(chat){
         console.log("Channel with this name is already existed")
     }
-    const newChat = await Groups.create({groupName, removable, participants: [userId]})
-    const chatDto =  new GrouprDto(newChat)
+    const newChat = await Groups.create({groupName,  participants: {user_id: userId, role}})
+    console.log(newChat)
     return newChat
   }
 
   async findAvailabelChats(userId){
-    const chatList = await Groups.find({ participants: userId})
-    const result = chatList.map(item => ({id: item.id, removable: item.removable, groupName: item.groupName}))
+    const chatList = await Groups.find({ participants: { $elemMatch: {user_id: userId}}})
+    const result = chatList.map(item => ({id: item.id, role: item.participants.find(item => item.user_id === userId).role, groupName: item.groupName}))
     return result
   }
 
@@ -56,16 +60,16 @@ class GroupService {
     return chats
   }
 
-  async subscribe(groupId, userId){
+  async subscribe(groupId, userId, role){
     //check if user in the chat
-    const chat = await Groups.findOneAndUpdate({ _id: groupId },{$push: {participants: userId}}, {returnOriginal: false})
+    const chat = await Groups.findOneAndUpdate({ _id: groupId },{$push: {participants: {user_id: userId, role }}}, {returnOriginal: false})
     const chatDto = new GrouprDto(chat);
     return { chat: chatDto}
   }
 
   async unSubscribe(groupId, userId){
     //check if user in the chat
-    const chat = await Groups.findOneAndUpdate({ _id: groupId },{$pull: {participants: userId}}, {returnOriginal: false})
+    const chat = await Groups.findOneAndUpdate({ _id: groupId },{$pull: {participants: {user_id: userId, role: 'user'}}}, {returnOriginal: false})
     const chatDto = new GrouprDto(chat);
     return { chat: chatDto}
   }

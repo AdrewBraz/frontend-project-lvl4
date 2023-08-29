@@ -22,8 +22,11 @@ const AddModal = (props) => {
   const generateOnSubmit = () => async (values) => {
     const { name } = values;
     try {
-      const data = { attributes: { groupName: name, userId, removable: true } };
-      await axios.post(routes.channelsPath(), { data });
+      const data = { attributes: { groupName: name, userId, role: 'admin' } };
+      const result = await axios.post(routes.channelsPath(), { data });
+      console.log(result)
+      const channel = result.data.attributes
+      dispatch(actions.addChannelToStore({ channel }));
     } catch (e) {
       throw new Error('Something went wrong');
     }
