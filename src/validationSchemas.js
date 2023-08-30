@@ -13,6 +13,11 @@ const messageSchema = Yup.object().shape({
     .required(),
 });
 
+
+const fileSchema = Yup.object().shape({
+  somefile: Yup.object().required(),
+});
+
 const userSchema = Yup.object().shape({
   userName: Yup.string()
     .min(3, 'UserName is too short!')
@@ -23,4 +28,4 @@ const userSchema = Yup.object().shape({
   .required(),
 });
 
-export { messageSchema, channelSchema, userSchema };
+export { messageSchema, channelSchema, userSchema, fileSchema };

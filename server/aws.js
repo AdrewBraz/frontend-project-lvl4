@@ -3,7 +3,7 @@ import EasyYandexS3 from 'easy-yandex-s3'
 
 export default new EasyYandexS3({
     auth: {
-      accessKeyId: ,
+      accessKeyId: 
       secretAccessKey: 
     },
     Bucket: 'chat-mongo', // например, "my-storage",

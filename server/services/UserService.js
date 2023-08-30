@@ -1,4 +1,5 @@
 import Users from '../models/user_model'
+import UploadService from './UploadService';
 
 import bcrypt from 'bcrypt'
 import TokenService from './TokenService';
@@ -33,31 +34,31 @@ class UserService {
     }
   }
 
-  // async login(userName, password){
-  //   const user = await Users.findOne({userName});
-  //   if(!user){
-  //     throw new Error('User does not exist')
-  //   }
-  //   const isPassEquals = bcrypt.compare(password, user.password)
-  //   if(!isPassEquals){
-  //     throw new Error('Wrong password')
-  //   }
-  //   const userDto = new UserDto(user)
-  //   const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
-  //   const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
-  //   const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
-  //   const chatDto = new GroupDto(chat)
-  //   const messageList = await MessageService.getChatMessages(chatDto.id)
-  //   await TokenService.saveToken(userDto.id, refreshToken)
-  //   return {
-  //     accessToken,
-  //     refreshToken,
-  //     user: userDto,
-  //     chat: chatDto,
-  //     chatList,
-  //     messageList
-  //   }
-  // }
+  async login(userName, password){
+    const user = await Users.findOne({userName});
+    if(!user){
+      throw new ApiError.BadRequest(e, 'User does not exist')
+    }
+    const isPassEquals = bcrypt.compare(password, user.password)
+    if(!isPassEquals){
+      throw new ApiError.BadRequest(e, 'Wrong password')
+    }
+    const userDto = new UserDto(user)
+    const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
+    const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
+    const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
+    const chatDto = new GroupDto(chat)
+    const messageList = await MessageService.getChatMessages(chatDto.id)
+    await TokenService.saveToken(userDto.id, refreshToken)
+    return {
+      accessToken,
+      refreshToken,
+      user: userDto,
+      chat: chatDto,
+      chatList,
+      messageList
+    }
+  }
 
   async logout( refreshToken ){
     const data = await TokenService.removeToken(refreshToken)
@@ -83,6 +84,16 @@ class UserService {
     const messageList = await MessageService.getChatMessages(defaultChat.id)
     await TokenService.saveToken(userDto.id, refreshToken)
     return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto, chatList, messageList, chat: defaultChat}
+  }
+
+  async profileUpdate(file, userId, s3){
+    try{
+      const url = await UploadService.imageUpload(file, userId.value, s3)
+      const user = await Users.findOneAndUpdate({_id: userId}, { $set: { url }}, { new: true})
+      return user
+    } catch(e){
+      throw new ApiError.BadRequest(e, 'Some error occured')
+    }
   }
 }
 

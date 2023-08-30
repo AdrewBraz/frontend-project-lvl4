@@ -1,5 +1,6 @@
 import MessageService from "../services/MessageService"
 import ApiError from "../exceptions/api-errors"
+import UploadService from "../services/UploadService"
 
 class MessageController {
     async postMessage(req, reply, s3){
@@ -17,7 +18,7 @@ class MessageController {
           groupId
         }
         if(file.value !== 'undefined'){
-          const url = await MessageService.imageUpload(file, userId.value, s3)
+          const url = await UploadService.imageUpload(file, userId.value, s3)
           const message = await MessageService.createMessage({...data, url})
           reply.send({message})
           return message
