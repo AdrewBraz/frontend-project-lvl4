@@ -13,9 +13,6 @@ function UserCard() {
   const userName = useSelector(state => state.chatState.userName);
   const { t } = useTranslation();
   const dispatch = useDispatch()
-  const handleClick = () => {
-    dispatch(actions.modalStateSubscribe());
-  };
   const handleUpload = () => {
     dispatch(actions.modalStateProfile());
   };

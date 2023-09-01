@@ -23,7 +23,6 @@ class MessageService {
   }
 
   async imageUpload(file, userId, s3){
-    console.log(file.filename)
     const fileName = `${uuidv4()}_${file.filename}`
     const url = await s3.Upload({
       buffer: file._buf,
