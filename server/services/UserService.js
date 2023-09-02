@@ -44,6 +44,7 @@ class UserService {
       throw new ApiError.BadRequest(e, 'Wrong password')
     }
     const userDto = new UserDto(user)
+    console.log(userDto)
     const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
     const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
     const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
@@ -66,7 +67,6 @@ class UserService {
   }
 
   async refreshUserToken(refreshToken) {
-    console.log(refreshToken)
     if(!refreshToken){
       throw new ApiError.UnauthorizedError()
     }
@@ -77,6 +77,7 @@ class UserService {
     }
     const user =  await Users.findById(userData.id)
     const userDto = new UserDto(user)
+    console.log(userDto)
     const data = TokenService.createTokens({...userDto})
     const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
     const defaultChat = chatList.find((item) => item.groupName === 'General')
@@ -88,7 +89,8 @@ class UserService {
 
   async profileUpdate(file, userId, s3){
     try{
-      const url = await UploadService.imageUpload(file, userId.value, s3)
+      const url = await UploadService.imageUpload(file, userId, s3)
+      console.log(typeof url)
       const user = await Users.findOneAndUpdate({_id: userId}, { $set: { url }}, { new: true})
       return user
     } catch(e){

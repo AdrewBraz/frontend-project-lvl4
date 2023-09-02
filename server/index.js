@@ -17,6 +17,8 @@ import s3 from './aws'
 const isProduction = process.env.NODE_ENV === 'production';
 const appPath = path.join(__dirname, '..');
 const isDevelopment = !isProduction;
+dotenv.config()
+
 
 const setUpViews = (app) => {
   const domain = isDevelopment ? 'http://localhost:8080' : '';
@@ -50,10 +52,10 @@ const setCors = (app) => {
     allowedHeaders: ['Authorization']
   })
 }
-console.log(dotenv.config().parse)
+console.log(process.env.MONGOUSER)
 const connect = async () => {
   try{
-  await mongoose.connect(`mongodb+srv://Admin:CatSam@chat.lzcnnbm.mongodb.net/?retryWrites=true&w=majority`)
+  await mongoose.connect(`mongodb+srv://${process.env.MONGOUSER}.lzcnnbm.mongodb.net/?retryWrites=true&w=majority`)
   console.log('Mongo connnected')
   } catch(e){
     console.error(e)

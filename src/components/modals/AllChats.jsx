@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux/es/exports';
 import cn from 'classnames';
 
-import SubscriptionButton from '../Buttons/SubscriptionButton';
+
 import routes from '../../routes';
 import actions from '../../actions';
 
@@ -23,10 +23,10 @@ const AllChats = (props) => {
     unsubscribe: { text: 'Unsubscribe', path: '/unsubscribe', method: actions.removeChannel}
   }
 
-  const handleSubscription = (chatData, path, func) => async (e) => {
+  const handleSubscription = (groupId, userId, path, func) => async (e) => {
     e.preventDefault()
     try {
-      const {data: { attributes}} = await axios.post(path, chatData)
+      const {data: { attributes}} = await axios.post(path, {groupId, userId})
       dispatch(func({ channel: attributes.chat }))
     } catch (e) {
       console.log(e)
@@ -37,9 +37,13 @@ const AllChats = (props) => {
 
   const renderSubscribeBtn = (groupId, userId, type) => {
     const { path, text, method } = subscribeTypes[type]
-    const chatData = {groupId, userId, role: 'user'}
     return (
-      <SubscriptionButton text={text} onClickHandler={handleSubscription(chatData, path, method)}/>
+      <Button className="ml-3" 
+              variant="primary" 
+              type="button" 
+              onClick={handleSubscription(groupId, userId, path, method)}>
+                {text}
+      </Button>
     )
   }
 

@@ -15,7 +15,7 @@ const messageSchema = Yup.object().shape({
 
 
 const fileSchema = Yup.object().shape({
-  somefile: Yup.object().required(),
+  file: Yup.mixed().required("Required"),
 });
 
 const userSchema = Yup.object().shape({

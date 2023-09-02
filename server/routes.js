@@ -89,7 +89,7 @@ export default (app, io, s3, defaultState = {}) => {
       await GroupController.unsubscribeToChannel(_req, reply)
     })
     .post('/api/v1/profile/:id', {preHandler: authMiddleware}, async (req, reply) => {
-      await GroupController.postChat(req, reply)
+      await UserController.profileUpdate(req, reply, s3)
       // io.emit('newChannel', {data});
     })
     app.setErrorHandler(errorMiddleware)

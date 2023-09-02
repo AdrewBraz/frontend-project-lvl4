@@ -23,7 +23,6 @@ class GroupService {
         console.log("Channel with this name is already existed")
     }
     const newChat = await Groups.create({groupName,  participants: {user_id: userId, role}})
-    console.log(newChat)
     return newChat
   }
 

@@ -23,7 +23,7 @@ class UserController {
         reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
         reply.send(data)
       } catch(e){
-        throw new Error(e)
+        throw new ApiError(e)
       }
     }
 
@@ -41,9 +41,9 @@ class UserController {
       reply.send(data)
     }
 
-    async profileUpload(req, reply, s3){
-      const userId = req.params.id
+    async profileUpdate(req, reply, s3){
       const file = req.body.file
+      const userId = req.params.id
       const user = await UserService.profileUpdate(file, userId, s3)
       reply.send(user)
     }

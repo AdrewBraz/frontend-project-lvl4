@@ -10,7 +10,9 @@ import actions from '../actions';
 
 
 function UserCard() {
-  const userName = useSelector(state => state.chatState.userName);
+  const {userName, url} = useSelector(state => state.chatState);
+  // const url = useSelector(state => state.chatState.url);
+  console.log(`${url}`)
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const handleUpload = () => {
@@ -25,7 +27,7 @@ function UserCard() {
           <div className="card" style={{'borderRadius': "15px"}}>
             <div className="card-body text-center">
               <div className="mt-3 mb-4">
-                <Image onClick={() => { handleUpload()}} src="https://chat-mongo.storage.yandexcloud.net/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg"
+                <Image onClick={() => { handleUpload()}} src={url}
                 className="img-fluid" style={{"width": "100px"}} />
               </div>
               <h4 className="mb-2">{t("logUser")} {userName}</h4>

@@ -29,6 +29,7 @@ export default () => {
     chatState: {
       modal: 'closed',
       userName: '',
+      url: '',
       currentChannelId: '64d4b0faf22e59a3b037df3a',
       isAuth: false
     },

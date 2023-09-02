@@ -15,20 +15,18 @@ import { fileSchema } from '../../validationSchemas';
 const Profile = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const userId = useSelector(state => state.chatState.userId);
-  const userName = useSelector(state => state.chatState.userName);
+  const {userId, userName, url} = useSelector(state => state.chatState);
   const { modal } = props;
 
 
   const generateOnSubmit = () => async (values) => {
-    console.log('sdfsdf')
-    const { name } = values;
+    const file = values.file
+    const formData = new FormData()
+    formData.append('file', file)
     try {
-      const data = { attributes: { groupName: name, userId, role: 'admin' } };
-      const result = await axios.post(routes.channelsPath(), { data });
-      console.log(result)
-      const channel = result.data.attributes
-      dispatch(actions.addChannelToStore({ channel }));
+      const result = await axios.post(routes.profilePath(userId), formData);
+      const updatedProfile = result.data
+      dispatch(actions.updateProfile(updatedProfile ));
     } catch (e) {
       throw new Error('Something went wrong');
     }
@@ -42,7 +40,7 @@ const Profile = (props) => {
   const form = useFormik({
     onSubmit: generateOnSubmit(),
     initialValues: {file: ''},
-   
+    validationSchema: fileSchema
   });
 
   return (
@@ -60,9 +58,9 @@ const Profile = (props) => {
                       <div className="card-body text-center">
                       <div className="mt-3 mb-4">
                           <label  htmlFor="file">
-                              <Image roundedCircle  src="https://chat-mongo.storage.yandexcloud.net/vecteezy_default-profile-account-unknown-icon-black-silhouette_20765399.jpg"
+                              <Image roundedCircle  src={url}
                               className="img-fluid" style={{"width": "100px"}} />
-                              <input name='somefile' onChange={(e) => {form.setFieldValue("file", e.currentTarget.files[0])}} type="file" id="file"  style={{"display": "none"}}/>
+                              <input name='file' onChange={(e) => {form.setFieldValue("file", e.currentTarget.files[0])}} type="file" id="file"  style={{"display": "none"}}/>
                           </label>
                       </div>
                       <div className="input-group-prepend">

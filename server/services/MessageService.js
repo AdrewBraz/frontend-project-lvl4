@@ -4,16 +4,13 @@ import MessageDto from '../dtos/messageDto'
 
 class MessageService {
   async createMessage(data){
-    console.log(data)
     const newMessage = await Messages.create({...data})
     return newMessage
     
   }
 
   async getChatMessages(groupId){
-    console.log(groupId)
     const data = await Messages.find({groupId})
-    console.log(data)
     return data
   }
 

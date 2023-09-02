@@ -7,8 +7,7 @@ import { useSelector } from 'react-redux';
 import NewMessageForm from './NewMessageForm';
 
 const Messages = () => {
-  const currentChannelId = useSelector((state) => state.chatState.currentChannelId);
-  const modal = useSelector((state) => state.chatState.modal);
+  const {currentChannelId, modal} = useSelector((state) => state.chatState);
   const messageList = useSelector((state) => {
     const messages = state.messages.filter((i) => i.groupId === currentChannelId);
     return messages;
