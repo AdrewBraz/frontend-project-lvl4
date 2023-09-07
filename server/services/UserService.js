@@ -48,6 +48,7 @@ class UserService {
     const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
     const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
     const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
+    console.log(chat)
     const chatDto = new GroupDto(chat)
     const messageList = await MessageService.getChatMessages(chatDto.id)
     await TokenService.saveToken(userDto.id, refreshToken)
@@ -81,7 +82,6 @@ class UserService {
     const data = TokenService.createTokens({...userDto})
     const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
     const defaultChat = chatList.find((item) => item.groupName === 'General')
-   
     const messageList = await MessageService.getChatMessages(defaultChat.id)
     await TokenService.saveToken(userDto.id, refreshToken)
     return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto, chatList, messageList, chat: defaultChat}

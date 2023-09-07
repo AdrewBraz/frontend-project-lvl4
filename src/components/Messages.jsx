@@ -1,6 +1,7 @@
 // @ts-check
 import React, { useEffect, useRef } from 'react';
 import { ListGroup, ListGroupItem, Col, Image } from 'react-bootstrap';
+import { format } from 'date-fns'
 import { Translation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -36,11 +37,11 @@ const Messages = () => {
       <ListGroup>
         {messageList.map((message) => (
           <ListGroupItem className="d-flex flex-column" key={message._id}>
-            <div className="d-flex justify-content-between">
-              <strong>{message.author.userName}</strong>
-              <span className="font-weight-light">{message.timestamp}</span>
+            <div >
+              <Image className='mr-1' roundedCircle src={message.userAvi} width={40} height={40} />
+              <span className="text-muted small text-nowrap mt-2">{format(new Date(message.timestamp), 'MMMM dd HH:MM:ss')}</span>
             </div>
-            <div>
+            <div className='flex-shrink-1 bg-light rounded py-2 px-3 mr-3'>
             {message.url ? 
               <Col><Image style={{maxHeight: "40vh"}} className='img-fluid' src={message.url} rounded/></Col> : 
               null}

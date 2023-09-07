@@ -28,7 +28,8 @@ class GroupService {
 
   async findAvailabelChats(userId){
     const chatList = await Groups.find({ participants: { $elemMatch: {user_id: userId}}})
-    const result = chatList.map(item => ({id: item.id, role: item.participants.find(item => item.user_id === userId).role, groupName: item.groupName}))
+    console.log(chatList)
+    const result = chatList.map(item => ({id: item._id, role: item.participants.find(item => item.user_id === userId).role, groupName: item.groupName}))
     return result
   }
 

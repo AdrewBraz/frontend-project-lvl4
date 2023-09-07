@@ -11,7 +11,6 @@ import actions from '../actions';
 
 function UserCard() {
   const {userName, url} = useSelector(state => state.chatState);
-  // const url = useSelector(state => state.chatState.url);
   console.log(`${url}`)
   const { t } = useTranslation();
   const dispatch = useDispatch()

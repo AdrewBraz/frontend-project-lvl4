@@ -10,7 +10,30 @@ class MessageService {
   }
 
   async getChatMessages(groupId){
-    const data = await Messages.find({groupId})
+    console.log(groupId)
+    const data = await Messages.aggregate([
+      {
+        $match: {groupId}
+      },
+      {
+        '$lookup': {
+          'from': 'users', 
+          'localField': 'author.id', 
+          'foreignField': '_id', 
+          'as': 'result'
+        }
+      }, {
+        '$unwind': {
+          'path': '$result', 
+          'includeArrayIndex': 'string', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        '$set': {
+          'userAvi': '$result.url'
+        }
+      }
+    ])
     return data
   }
 
