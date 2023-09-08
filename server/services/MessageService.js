@@ -10,7 +10,6 @@ class MessageService {
   }
 
   async getChatMessages(groupId){
-    console.log(groupId)
     const data = await Messages.aggregate([
       {
         $match: {groupId}

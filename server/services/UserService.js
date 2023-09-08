@@ -10,6 +10,44 @@ import GroupDto from '../dtos/GroupDto'
 import ApiError from '../exceptions/api-errors';
 
 class UserService {
+  async getUserChats(id, type){
+    console.log(id, type)
+    const userTypes = {
+      'newUser': async() => {
+        const chat = await GroupService.addUserToDefaultGroups(id.toString())
+        const chatDto = new GroupDto(chat)
+        const chatList = await GroupService.findAvailabelChats(id.toString())
+        return { chat: chatDto, chatList }
+      },
+      'loggedUser': async() => {
+        const chatList = await GroupService.findAvailabelChats(id.toString())
+        const chat = chatList.find((item) => item.groupName === 'General')
+        console.log(chatList, chat)
+        return { chat, chatList }
+      }
+    }
+    return await userTypes[type]()
+  }
+
+  async getUserData(user, userType){
+    const userDto = new UserDto(user)
+    const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
+    const { chat, chatList } = await this.getUserChats(userDto.id, userType)
+    console.log(chat)
+    const messageList = await MessageService.getChatMessages(chat.id)
+    await TokenService.saveToken(userDto.id, refreshToken)
+    return {
+      accessToken,
+      refreshToken,
+      user: userDto,
+      chat,
+      chatList,
+      messageList
+    }
+
+
+  }
+
   async registration(userName, password){
     const user = await Users.findOne({userName});
     if(user){
@@ -17,21 +55,9 @@ class UserService {
     }
     const hashPassword = await bcrypt.hash(password, 3);
     const newUser = await Users.create({userName, password: hashPassword})
-    const userDto = new UserDto(newUser)
-    const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
-    const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
-    const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
-    const chatDto = new GroupDto(chat)
-    const messageList = await MessageService.getChatMessages(chatDto.id)
-    await TokenService.saveToken(userDto.id, refreshToken)
-    return {
-      accessToken,
-      refreshToken,
-      user: userDto,
-      chat: chatDto,
-      chatList,
-      messageList
-    }
+    
+    const data =  await this.getUserData(newUser, 'newUser')
+    return data
   }
 
   async login(userName, password){
@@ -42,24 +68,10 @@ class UserService {
     const isPassEquals = bcrypt.compare(password, user.password)
     if(!isPassEquals){
       throw new ApiError.BadRequest(e, 'Wrong password')
-    }
-    const userDto = new UserDto(user)
-    console.log(userDto)
-    const { accessToken, refreshToken } = TokenService.createTokens({...userDto})
-    const chat = await GroupService.addUserToDefaultGroups(userDto.id.toString())
-    const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
-    console.log(chat)
-    const chatDto = new GroupDto(chat)
-    const messageList = await MessageService.getChatMessages(chatDto.id)
-    await TokenService.saveToken(userDto.id, refreshToken)
-    return {
-      accessToken,
-      refreshToken,
-      user: userDto,
-      chat: chatDto,
-      chatList,
-      messageList
-    }
+    } 
+    
+    const data =  await this.getUserData(user, 'loggedUser')
+    return data
   }
 
   async logout( refreshToken ){
@@ -67,24 +79,18 @@ class UserService {
     return data
   }
 
-  async refreshUserToken(refreshToken) {
-    if(!refreshToken){
+  async refreshUserToken(userToken) {
+    if(!userToken){
       throw new ApiError.UnauthorizedError()
     }
-    const userData = await TokenService.validateRefreshToken(refreshToken)
-    const token = await TokenService.findToken(refreshToken)
+    const userData = await TokenService.validateRefreshToken(userToken)
+    const token = await TokenService.findToken(userToken)
     if(!userData || !token){
       throw new ApiError.UnauthorizedError()
     }
     const user =  await Users.findById(userData.id)
-    const userDto = new UserDto(user)
-    console.log(userDto)
-    const data = TokenService.createTokens({...userDto})
-    const chatList = await GroupService.findAvailabelChats(userDto.id.toString())
-    const defaultChat = chatList.find((item) => item.groupName === 'General')
-    const messageList = await MessageService.getChatMessages(defaultChat.id)
-    await TokenService.saveToken(userDto.id, refreshToken)
-    return { accessToken: data.accessToken, refreshToken: data.refreshToken, user: userDto, chatList, messageList, chat: defaultChat}
+    const data =  await this.getUserData(user, 'loggedUser')
+    return data
   }
 
   async profileUpdate(file, userId, s3){
