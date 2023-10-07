@@ -7,11 +7,14 @@ const channelSchema = Yup.object().shape({
     .required(),
 });
 
-const messageSchema = Yup.object().shape({
-  message: Yup.string()
-    .max(500, 'Too Long!')
-    .required(),
-});
+const messageSchema = Yup.object({
+  message: Yup.string().when('file', {
+    is: (file) => !file || file.length === 0,
+    then: Yup.string().max(599, 'Message is too long').required(),
+    otherwise: Yup.string()
+  }),
+  file: Yup.mixed()
+} [['message', 'file' ]]);
 
 
 const fileSchema = Yup.object().shape({

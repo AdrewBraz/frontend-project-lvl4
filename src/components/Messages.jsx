@@ -1,5 +1,5 @@
 // @ts-check
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ListGroup, ListGroupItem, Col, Image } from 'react-bootstrap';
 import { format } from 'date-fns'
 import { Translation } from 'react-i18next';
@@ -8,6 +8,9 @@ import { useSelector } from 'react-redux';
 import NewMessageForm from './NewMessageForm';
 
 const Messages = () => {
+  const [drag, setDrag] = useState(false);
+  const [file, setFile] = useState('')
+
   const {currentChannelId, modal} = useSelector((state) => state.chatState);
   const messageList = useSelector((state) => {
     const messages = state.messages.filter((i) => i.groupId === currentChannelId);
@@ -16,8 +19,26 @@ const Messages = () => {
 
   const lastMessageRef = useRef(null);
   useEffect(() => {
+    if( lastMessageRef.current ){
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   });
+
+  const dragStartHandler = (e) => {
+    e.preventDefault();
+    setDrag(true)
+  }
+  
+  const dragLeaveHandler = (e) => {
+    e.preventDefault();
+    setDrag(false)
+  }
+
+  const dropHandler = (e) => {
+    e.preventDefault()
+    setFile(e.dataTransfer.files[0])
+    setDrag(false)
+  }
 
 
 
@@ -55,11 +76,23 @@ const Messages = () => {
 
   return (
     <Col xs={12} md={8} lg={9}>
-      <div style={{ height: '70vh' }} className="border border-dark rounded overflow-auto mt-auto mb-3">
+      {!drag ? 
+      <div style={{ height: '70vh' }} 
+        className="border border-dark rounded overflow-auto mt-auto mb-3"
+        onDragLeave={(e) => dragLeaveHandler(e)}
+        onDragOver={(e) => dragStartHandler(e)}
+      >
         {renderMessages()}
         <span ref={lastMessageRef} />
-      </div>
-      <NewMessageForm modal={modal} currentChannelId={currentChannelId} />
+      </div> :
+      <div style={{ height: '70vh' }} 
+          className="border border-dark opacity-75 text-align-center"
+          onDragLeave={(e) => dragLeaveHandler(e)}
+          onDragOver={(e) => dragStartHandler(e)}
+          onDrop={(e) => {dropHandler(e)}}
+        > Перетащите файл сюда</div>
+      }
+      <NewMessageForm setFile={setFile} file={file} modal={modal} currentChannelId={currentChannelId} />
     </Col>
   );
 };

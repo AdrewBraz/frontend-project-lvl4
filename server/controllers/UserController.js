@@ -37,7 +37,7 @@ class UserController {
     async refresh(req, reply){
       const { refreshToken } = req.cookies
       const data = await UserService.refreshUserToken(refreshToken, reply)
-      reply.setCookie('refreshToken', refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
+      reply.setCookie('refreshToken', data.refreshToken, {maxAge: 15*24*60*60*1000,httpOnly: true})
       reply.send(data)
     }
 

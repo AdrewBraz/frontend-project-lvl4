@@ -32,7 +32,6 @@ const chatSlice = createSlice({
       state.currentChannelId = chat.id;
     },
     updateProfile(state, { payload: { url } }){
-      console.log(url)
       state.url = url
     },
     loginUser(state, { payload: { chat, user, refreshToken, accessToken } }) {
