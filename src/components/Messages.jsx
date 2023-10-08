@@ -8,8 +8,7 @@ import { useSelector } from 'react-redux';
 import NewMessageForm from './NewMessageForm';
 
 const Messages = () => {
-  const [drag, setDrag] = useState(false);
-  const [file, setFile] = useState('')
+
 
   const {currentChannelId, modal} = useSelector((state) => state.chatState);
   const messageList = useSelector((state) => {
@@ -23,23 +22,6 @@ const Messages = () => {
     lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   });
-
-  const dragStartHandler = (e) => {
-    e.preventDefault();
-    setDrag(true)
-  }
-  
-  const dragLeaveHandler = (e) => {
-    e.preventDefault();
-    setDrag(false)
-  }
-
-  const dropHandler = (e) => {
-    e.preventDefault()
-    setFile(e.dataTransfer.files[0])
-    setDrag(false)
-  }
-
 
 
   const renderMessages = () => {
@@ -55,19 +37,24 @@ const Messages = () => {
       );
     }
     return (
-      <ListGroup>
+      <ListGroup className='list-unstyled'>
         {messageList.map((message) => (
-          <ListGroupItem className="d-flex flex-column" key={message._id}>
-            <div >
-              <Image className='mr-1' roundedCircle src={message.userAvi} width={40} height={40} />
-              <span className="text-muted small text-nowrap mt-2">{format(new Date(message.timestamp), 'MMMM dd HH:MM:ss')}</span>
-            </div>
-            <div className='flex-shrink-1 bg-light rounded py-2 px-3 mr-3'>
-            {message.url ? 
-              <Col><Image style={{maxHeight: "40vh"}} className='img-fluid' src={message.url} rounded/></Col> : 
-              null}
-              <p>{message.text}</p>
-            </div>
+          <ListGroupItem className="d-flex mb-4" key={message._id}>
+              <Image className='d-flex align-self-start me-3 shadow-1-strong' roundedCircle src={message.userAvi} width={50} height={50} />
+              <div className="card w-100">
+                <div className="card-header d-flex justify-content-between p-3">
+                  <p className="fw-bold mb-0">{message.author.userName}</p>
+                  <p className="text-muted small mb-0"><i className="far fa-clock"></i> {format(new Date(message.timestamp), 'dd/MM/yyyy HH:mm:ss')}</p>
+                </div>
+              <div className="card-body">
+                {message.url ? 
+                <Col><Image style={{maxHeight: "40vh"}} className='img-fluid' src={message.url} rounded/></Col> : 
+                null}
+                <p className="mb-0">
+                  {message.text}
+                </p>
+              </div>
+              </div>
           </ListGroupItem>
         ))}
       </ListGroup>
@@ -76,23 +63,13 @@ const Messages = () => {
 
   return (
     <Col xs={12} md={8} lg={9}>
-      {!drag ? 
       <div style={{ height: '70vh' }} 
         className="border border-dark rounded overflow-auto mt-auto mb-3"
-        onDragLeave={(e) => dragLeaveHandler(e)}
-        onDragOver={(e) => dragStartHandler(e)}
       >
         {renderMessages()}
         <span ref={lastMessageRef} />
-      </div> :
-      <div style={{ height: '70vh' }} 
-          className="border border-dark opacity-75 text-align-center"
-          onDragLeave={(e) => dragLeaveHandler(e)}
-          onDragOver={(e) => dragStartHandler(e)}
-          onDrop={(e) => {dropHandler(e)}}
-        > Перетащите файл сюда</div>
-      }
-      <NewMessageForm setFile={setFile} file={file} modal={modal} currentChannelId={currentChannelId} />
+      </div> 
+      <NewMessageForm modal={modal} currentChannelId={currentChannelId} />
     </Col>
   );
 };

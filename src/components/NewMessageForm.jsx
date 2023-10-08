@@ -2,26 +2,24 @@
 
 import React, { useContext, useEffect, useRef } from 'react';
 import axios from '../http';
-import { useFormik } from 'formik';
+import { useFormik, Field, FormikProvider } from 'formik';
 import { Spinner, Alert } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { messageSchema } from '../validationSchemas';
 import { useSelector } from 'react-redux/es/exports';
+import DragAndDropField from './DragAndDropField';
 
 import routes from '../routes';
-import { setSubmitFailed } from 'redux-form';
 
-const generateOnSubmit = ({ currentChannelId }, {userId, userName, draggedFile, setFile}) => async (values, { resetForm }) => {
+const generateOnSubmit = ({ currentChannelId }, {userId, userName}) => async (values, { resetForm }) => {
   const text = values.message;
-  const file = draggedFile ? draggedFile : values.file
-  console.log(file)
+  const file = values.file
   const formData = new FormData()
   const postDate = new Date();
   const message = { text, userId, userName, date: postDate, file };
   for(let key in message){
     formData.append(key, message[key])
   }
-  console.log(formData)
   await axios.post(routes.channelMessagesPath(currentChannelId), formData);
   setFile('') 
   resetForm();
@@ -30,12 +28,12 @@ const generateOnSubmit = ({ currentChannelId }, {userId, userName, draggedFile, 
 const NewMessageForm = (props) => {
   const { t } = useTranslation();
   const inputRef = useRef();
-  const { modal, file: draggedFile, setFile } = props;
+  const { modal } = props;
   const userName = useSelector(state => state.chatState.userName);
   const userId = useSelector(state => state.chatState.userId);
 
   const form = useFormik({
-    onSubmit: generateOnSubmit(props, {userId, userName, draggedFile, setFile}),
+    onSubmit: generateOnSubmit(props, {userId, userName }),
     validationSchema: messageSchema,
     initialValues: { message: '', file: ''},
   });
@@ -46,9 +44,27 @@ const NewMessageForm = (props) => {
     }
   });
 
+  const  loadFile = (file) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      form.setFieldValue('file', file);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  const handleFileChange = (e) => {
+    e.persist()
+    if(draggedFile){
+      loadFile(draggedFile)
+    } else
+    if (e.target.files.length > 0) {
+      loadFile(e.target.files[0]);
+    }
+  }
+
   return (
     <div>
-      <form action='' className="form-inline mb-3" onSubmit={form.handleSubmit}>
+      <form action='' className="form-inline mb-3"  onSubmit={form.handleSubmit}>
         <div className="input-group flex-row w-100">
           <input
             type="text"
@@ -60,7 +76,9 @@ const NewMessageForm = (props) => {
             value={form.values.message}
             className="form-control"
           />
-          <input accept='image/*' id="input-b5" name="file" type="file" multiple onChange={(e) => {form.setFieldValue("file", e.currentTarget.files[0])}} onBlur={form.handleBlur} />
+          <FormikProvider value={form}>
+            <Field component={DragAndDropField} accept='image/*' id="input-b5" name="file" type="file" multiple />
+          </FormikProvider>
           <div className="input-group-prepend">
             <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
               {form.isSubmitting ? <Spinner animation="border" /> : t('addBtn')}

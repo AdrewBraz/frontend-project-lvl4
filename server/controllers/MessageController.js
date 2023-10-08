@@ -17,7 +17,7 @@ class MessageController {
           },
           groupId
         }
-        if(file.value !== 'undefined'){
+        if(file.value !== ''){
           const url = await UploadService.imageUpload(file, userId.value, s3)
           const message = await MessageService.createMessage({...data, url})
           reply.send({message})

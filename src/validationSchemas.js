@@ -7,14 +7,13 @@ const channelSchema = Yup.object().shape({
     .required(),
 });
 
-const messageSchema = Yup.object({
-  message: Yup.string().when('file', {
-    is: (file) => !file || file.length === 0,
-    then: Yup.string().max(599, 'Message is too long').required(),
-    otherwise: Yup.string()
+const messageSchema = Yup.object().shape({
+  message: Yup.string().test('required-if-file-empty', 'Message is required when file is empty', function(value) {
+    const { file } = this.parent;
+    return !file || file.length === 0 ? !!value : true;
   }),
   file: Yup.mixed()
-} [['message', 'file' ]]);
+});
 
 
 const fileSchema = Yup.object().shape({

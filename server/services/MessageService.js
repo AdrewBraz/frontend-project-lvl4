@@ -4,8 +4,32 @@ import MessageDto from '../dtos/messageDto'
 
 class MessageService {
   async createMessage(data){
-    const newMessage = await Messages.create({...data})
-    return newMessage
+    const message = await Messages.create({...data})
+    const { _id } = message;
+    const newMessage = await Messages.aggregate([
+      {
+        $match: {_id: _id}
+      },
+      {
+        '$lookup': {
+          'from': 'users', 
+          'localField': 'author.id', 
+          'foreignField': '_id', 
+          'as': 'result'
+        }
+      }, {
+        '$unwind': {
+          'path': '$result', 
+          'includeArrayIndex': 'string', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        '$set': {
+          'userAvi': '$result.url'
+        }
+      }
+    ])
+    return newMessage[0]
     
   }
 
@@ -33,6 +57,7 @@ class MessageService {
         }
       }
     ])
+    console.log(data)
     return data
   }
 
