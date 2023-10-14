@@ -11,6 +11,7 @@ import Select from './Select';
 const App = () => {
   const modal = useSelector((state) => state.chatState.modal);
   const channelEditId = useSelector((state) => state.chatState.channelEditId);
+  console.log(channelEditId)
   const connectionState = useSelector((state) => state.connectionState);
 
   const renderModal = () => {

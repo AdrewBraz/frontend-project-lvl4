@@ -45,6 +45,7 @@ const DragAndDropField = ({
 
   const handleChange = (e) => {
     e.persist();
+    console.log(e)
     if (e.target.files.length > 0) {
       loadFile(e.target.files[0]);
     }

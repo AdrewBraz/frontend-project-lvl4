@@ -21,7 +21,6 @@ const generateOnSubmit = ({ currentChannelId }, {userId, userName}) => async (va
     formData.append(key, message[key])
   }
   await axios.post(routes.channelMessagesPath(currentChannelId), formData);
-  setFile('') 
   resetForm();
 };
 
@@ -44,23 +43,6 @@ const NewMessageForm = (props) => {
     }
   });
 
-  const  loadFile = (file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      form.setFieldValue('file', file);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  const handleFileChange = (e) => {
-    e.persist()
-    if(draggedFile){
-      loadFile(draggedFile)
-    } else
-    if (e.target.files.length > 0) {
-      loadFile(e.target.files[0]);
-    }
-  }
 
   return (
     <div>

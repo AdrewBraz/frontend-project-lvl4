@@ -9,6 +9,7 @@ import axios from '../http';
 import actions from '../actions';
 import routes from '../routes';
 import SubscriptionButton from './Buttons/SubscriptionButton';
+import EditBtn from './Buttons/EditBtn';
 
 const ChannelsList = () => {
   const channelList = useSelector((state) => sortBy(state.channels));
@@ -22,10 +23,8 @@ const ChannelsList = () => {
     dispatch(actions.switchChat({ chat, messageList }))
   };
 
-  const handleModalEdit = (id) => (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(actions.modalStateEdit(id));
+  const handleModalEdit = (id) =>  {
+    dispatch(actions.modalStateEdit({id}));
   };
 
   const renderEditBtn = (id) => (
@@ -38,12 +37,12 @@ const ChannelsList = () => {
     const isActive = channel.id === currentChannel;
     const classList = cn({
       active: isActive,
-      'list-group-item-action list-group-item': true,
+      'list-group-item-action list-group-item d-flex justify-content-between': true,
     });
     return (
       <a className={classList} href={`#${channel.id}`} key={channel.id} onClick={handleSwitch(channel.id)}>
         {channel.groupName}
-        {channel.role === 'admin' ? renderEditBtn(channel.id) : null}
+        {channel.role === 'admin' ? <EditBtn handleClick={handleModalEdit} id={channel.id} /> : null}
       </a>
     );
   });

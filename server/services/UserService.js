@@ -95,8 +95,9 @@ class UserService {
 
   async profileUpdate(file, userId, s3){
     try{
+      console.log(file, userId)
       const url = await UploadService.imageUpload(file, userId, s3)
-      console.log(typeof url)
+      console.log(url)
       const user = await Users.findOneAndUpdate({_id: userId}, { $set: { url }}, { new: true})
       return user
     } catch(e){

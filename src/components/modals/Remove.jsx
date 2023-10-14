@@ -10,6 +10,7 @@ import routes from '../../routes';
 
 const RemoveModal = (props) => {
   const { modal, channelEditId } = props;
+  console.log(props)
   const { t } = useTranslation();
   const dispatch = useDispatch();
 

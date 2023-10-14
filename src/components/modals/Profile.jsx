@@ -5,7 +5,8 @@ import { Modal, Spinner, Image } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux/es/exports';
-import { useFormik } from 'formik';
+import { useFormik, FormikProvider, Field } from 'formik';
+import DragAndDropField from '../DragAndDropField';
 
 import routes from '../../routes';
 import actions from '../../actions';
@@ -19,12 +20,14 @@ const Profile = (props) => {
   const { modal } = props;
 
 
-  const generateOnSubmit = () => async (values) => {
-    const file = values.file
+  const generateOnSubmit = () => async (values, {resetForm}) => {
+    const file = values.avi
+    console.log(file)
     const formData = new FormData()
     formData.append('file', file)
     try {
       const result = await axios.post(routes.profilePath(userId), formData);
+      console.log(result)
       const updatedProfile = result.data
       dispatch(actions.updateProfile(updatedProfile ));
     } catch (e) {
@@ -37,10 +40,11 @@ const Profile = (props) => {
     dispatch(actions.modalStateClose());
   };
 
+
+
   const form = useFormik({
-    onSubmit: generateOnSubmit(),
-    initialValues: {file: ''},
-    validationSchema: fileSchema
+    onSubmit: generateOnSubmit(props),
+    initialValues: {avi: ''},
   });
 
   return (
@@ -56,16 +60,17 @@ const Profile = (props) => {
                   <div >
                   <div className="card" style={{'borderRadius': "15px"}}>
                       <div className="card-body text-center">
-                      <div className="mt-3 mb-4">
+                      <div className="mt-3 mb-4 d-flex align-items-center justify-content-between">
+                      <Image roundedCircle style={{width: '100px'}} src={url}/>
                           <label  htmlFor="file">
-                              <Image roundedCircle  src={url}
-                              className="img-fluid" style={{"width": "100px"}} />
-                              <input name='file' onChange={(e) => {form.setFieldValue("file", e.currentTarget.files[0])}} type="file" id="file"  style={{"display": "none"}}/>
+                          <FormikProvider value={form}>
+                            <Field component={DragAndDropField} placeholder="Drag new Avi here" accept='image/*' id="input-b5" name="avi" type="file" multiple />
+                          </FormikProvider>
                           </label>
                       </div>
                       <div className="input-group-prepend">
                         <button type="submit" disabled={form.isValidating || form.isSubmitting} className=" btn btn-primary btn-sm">
-                          {form.isSubmitting ? <Spinner animation="border" /> : t('addChannel')}
+                          {form.isSubmitting ? <Spinner animation="border" /> : `Update Avi`}
                         </button>
                       </div>
                       <h4 className="mb-2">{t("logUser")} {userName}</h4>
